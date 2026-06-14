@@ -43,7 +43,7 @@ This methodology is central to the Research Page narrative. When generating Rese
 
 **Future axis (out of scope for now):** Italic / slant. Do not design interactions or CSS around this axis until explicitly reintroduced.
 
-**Font file location:** `site/assets/fonts/`
+**Font file location:** `docs/assets/fonts/`
 **Format:** TTF (primary). Add WOFF2 conversion when preparing for production.
 
 **CSS implementation:**

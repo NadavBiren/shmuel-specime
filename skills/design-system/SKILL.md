@@ -12,7 +12,7 @@ This skill governs all code structure, naming conventions, CSS tokens, and techn
 ## File Structure
 
 ```
-site/
+docs/
 ├── index.html           ← Specimen Page
 ├── research.html        ← Research Page
 ├── try-me.html          ← Try-Me Tool Page

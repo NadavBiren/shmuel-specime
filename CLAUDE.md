@@ -5,7 +5,17 @@
 
 ## Project Identity
 
-Shmuel is a Hebrew serif variable font based on medieval "Medium script" (כתב בינוני). This project produces a two-page interactive typography specimen website: a Specimen Page showcasing the font's variable axes and typographic density, and a Research Page documenting the historical digitization process. The site is Hebrew-primary with RTL layout. Tech stack: Vanilla HTML, CSS, JS. No frameworks without explicit justification. All deliverables live in `site/`.
+Shmuel is a Hebrew serif variable font based on medieval "Medium script" (כתב בינוני). This project produces a two-page interactive typography specimen website: a Specimen Page showcasing the font's variable axes and typographic density, and a Research Page documenting the historical digitization process. The site is Hebrew-primary with RTL layout. Tech stack: Vanilla HTML, CSS, JS. No frameworks without explicit justification. All deliverables live in `docs/`. GitHub Pages publishes the live site directly from `docs/` on `main`.
+
+---
+
+## Repository Structure — Single Source of Truth
+
+- `docs/` is the **only** website source folder. It contains the full site: HTML pages, `assets/`, `styles/`, `scripts/`, `components/`.
+- GitHub Pages publishes from `docs/` on `main`. Anything in `docs/` is live.
+- All future website edits — HTML, CSS, JS, assets, fonts, images — happen inside `docs/`. There is no other website source location.
+- The old `site/` folder (a duplicate source tree) has been removed. Never recreate, edit, or reference `site/` again — it does not exist and must not come back.
+- `memory/`, `skills/`, and `xx_backup/` are not website source. Do not edit them unless explicitly asked, per the Permission Model below.
 
 ---
 
@@ -39,8 +49,8 @@ Load the relevant SKILL.md before working on any task in that domain. Skills are
 ### Claude Code may do autonomously:
 - Read any file in the project
 - Write and update all files in `memory/`
-- Create new files in `site/` when explicitly instructed
-- Modify existing files in `site/` when explicitly instructed
+- Create new files in `docs/` when explicitly instructed
+- Modify existing files in `docs/` when explicitly instructed
 - Create or update files in `skills/` when building or refining a skill
 
 ### Claude Code must not do without explicit instruction:
@@ -80,5 +90,5 @@ Peer-level. Direct. No validation noise. Challenge weak directions. Propose alte
 - RTL layout (`dir="rtl"`, `direction: rtl`)
 - Variable font via `@font-face` with `font-variation-settings`
 - No build tools unless explicitly introduced
-- All font files in `site/assets/fonts/`
+- All font files in `docs/assets/fonts/`
 - Hebrew-primary. English only where functionally unavoidable.

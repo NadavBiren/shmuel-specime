@@ -15,9 +15,9 @@ Three separate HTML files. Each is a self-contained page with its own scroll con
 
 | Page | File | Role |
 |---|---|---|
-| Specimen | `site/index.html` | Font showcase, interactive |
-| Research | `site/research.html` | Editorial, historical |
-| Try Me | `site/try-me.html` | Full-screen font testing tool |
+| Specimen | `docs/index.html` | Font showcase, interactive |
+| Research | `docs/research.html` | Editorial, historical |
+| Try Me | `docs/try-me.html` | Full-screen font testing tool |
 
 ---
 
@@ -31,7 +31,7 @@ Each page ends with an exit link leading to the next page in the sequence: Speci
 
 ## Specimen Page — Section Order
 
-File: `site/index.html`
+File: `docs/index.html`
 
 1. **Hero** — 12-layer CSS depth effect, word שמואל. Mouse X/Y drives perspective rotation; weight echoes across layers via history array.
 2. **Try Me** — full-viewport editable textarea with 4 sliders (size, weight, line-height, letter-spacing).
@@ -47,7 +47,7 @@ File: `site/index.html`
 
 ## Research Page — Section Order
 
-File: `site/research.html`
+File: `docs/research.html`
 
 Layout: nested sticky tab system. 5 staggered tabs at the top (30px height each, 20% width each, positioned RTL from right). Each section is ~200vh tall.
 
@@ -63,7 +63,7 @@ Exit link leads to Try-Me Page.
 
 ## Try-Me Page
 
-File: `site/try-me.html`
+File: `docs/try-me.html`
 
 Full-screen contenteditable canvas (default: Hebrew historical passage). Padding: 6vh 4vw. Text color and background driven by state.
 

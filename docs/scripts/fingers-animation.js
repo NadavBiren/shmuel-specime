@@ -1,5 +1,5 @@
 /* Fingers animation component
-   Place this file at: /site/scripts/fingers-animation.js
+   docs/scripts/fingers-animation.js
 */
 
 function initFingersAnimation(root = document) {

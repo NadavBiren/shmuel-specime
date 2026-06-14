@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>נסו אותי — שמואל</title>
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/try-me.css">
+  <!-- Custom CSS injected here by JS -->
+  <style id="tryme-custom-css"></style>
+</head>
+<body class="page-tryme">
+
+  <nav class="sidebar-nav" aria-label="ניווט ראשי">
+    <a href="index.html" class="sidebar-nav__item">
+      <span class="sidebar-nav__label">הפונט</span>
+    </a>
+    <a href="research.html" class="sidebar-nav__item">
+      <span class="sidebar-nav__label">המחקר</span>
+    </a>
+    <a href="try-me.html" class="sidebar-nav__item nav-active">
+      <span class="sidebar-nav__label">הטסטר</span>
+    </a>
+  </nav>
+
+  <!-- ── CANVAS ────────────────────────────────────────────── -->
+  <div class="tryme-canvas"
+       id="tryme-canvas"
+       contenteditable="true"
+       spellcheck="false"
+       dir="rtl"
+       role="textbox"
+       aria-multiline="true"
+       aria-label="אזור כתיבה לבדיקת הפונט"
+       data-placeholder="נסו אותי..."></div>
+
+  <!-- ── SIDEBAR (panel + exit button) ────────────────── -->
+  <div class="tryme-sidebar">
+
+  <!-- ── CONTROL PANEL ─────────────────────────────────── -->
+  <aside class="tryme-panel" id="tryme-panel" aria-label="פאנל כלי בדיקה">
+
+    <!-- Header -->
+    <div class="tp-header">
+      <span class="tp-title">כלי בדיקה</span>
+    </div>
+
+    <!-- Body -->
+    <div class="tp-body" id="tp-body">
+
+      <!-- ① יישור ─────────────────────────────── -->
+      <div class="tp-section">
+        <div class="tp-row tp-row--space">
+          <span class="tp-label">יישור</span>
+          <div class="tp-align-btns" role="group" aria-label="יישור טקסט">
+
+            <button class="tp-align-btn is-active"
+                    data-dir="rtl" type="button" title="ימין לשמאל">
+              <svg width="15" height="11" viewBox="0 0 15 11" fill="none" aria-hidden="true">
+                <line x1="15" y1="1"   x2="0"  y2="1"   stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="15" y1="5.5" x2="4"  y2="5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="15" y1="10"  x2="2"  y2="10"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+
+            <button class="tp-align-btn"
+                    data-dir="center" type="button" title="מרכז">
+              <svg width="15" height="11" viewBox="0 0 15 11" fill="none" aria-hidden="true">
+                <line x1="15"   y1="1"   x2="0"   y2="1"   stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="12.5" y1="5.5" x2="2.5" y2="5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="13"   y1="10"  x2="2"   y2="10"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+
+            <button class="tp-align-btn"
+                    data-dir="ltr" type="button" title="שמאל לימין">
+              <svg width="15" height="11" viewBox="0 0 15 11" fill="none" aria-hidden="true">
+                <line x1="0" y1="1"   x2="15" y2="1"   stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="0" y1="5.5" x2="11" y2="5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="0" y1="10"  x2="13" y2="10"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ② + ③ משקל + הגדרות טיפוגרפיה ──────── -->
+      <div class="tp-section">
+
+        <!-- Weight presets -->
+        <div class="weight-presets-group">
+          <button class="weight-preset-btn" type="button" data-weight="500">רגיל</button>
+          <button class="weight-preset-btn" type="button" data-weight="700">בולד</button>
+          <button class="weight-preset-btn" type="button" data-weight="900">בלאק</button>
+        </div>
+
+        <!-- Weight slider -->
+        <div class="ctrl-group">
+          <label class="ctrl-label" for="wght-range">משקל</label>
+          <input class="ctrl-range" id="wght-range" type="range" min="500" max="900" step="1" value="900">
+          <div class="slider-val-wrapper">
+            <input type="number" class="ctrl-out-input" id="wght-out" min="500" max="900" step="1" value="900">
+            <div class="slider-reload-icon" data-target="tp-wght"></div>
+          </div>
+        </div>
+
+        <div class="ctrl-group">
+          <label class="ctrl-label" for="size-range">גודל</label>
+          <input class="ctrl-range" id="size-range" type="range" min="50" max="400" step="1" value="120">
+          <div class="slider-val-wrapper">
+            <input type="number" class="ctrl-out-input" id="size-out" min="50" max="400" step="1" value="120">
+            <span class="slider-unit">px</span>
+            <div class="slider-reload-icon" data-target="tp-size"></div>
+          </div>
+        </div>
+
+        <div class="ctrl-group">
+          <label class="ctrl-label" for="ls-range">ריווח</label>
+          <input class="ctrl-range" id="ls-range" type="range" min="-0.1" max="0.5" step="0.01" value="0">
+          <div class="slider-val-wrapper">
+            <input type="number" class="ctrl-out-input" id="ls-out" min="-0.1" max="0.5" step="0.01" value="0">
+            <span class="slider-unit">em</span>
+            <div class="slider-reload-icon" data-target="tp-ls"></div>
+          </div>
+        </div>
+
+        <div class="ctrl-group">
+          <label class="ctrl-label" for="lh-range">שורות</label>
+          <input class="ctrl-range" id="lh-range" type="range" min="0.7" max="2.5" step="0.05" value="0.8">
+          <div class="slider-val-wrapper">
+            <input type="number" class="ctrl-out-input" id="lh-out" min="0.7" max="2.5" step="0.05" value="0.8">
+            <span class="slider-unit">em</span>
+            <div class="slider-reload-icon" data-target="tp-lh"></div>
+          </div>
+        </div>
+
+      </div><!-- /merged weight + typography section -->
+
+      <!-- ⑤ צבע ────────────────────────────────── -->
+      <div class="tp-section">
+        <span class="tp-label tp-label--block">צבע</span>
+        <div class="tp-palette-row" id="tp-palette-row"
+             role="group" aria-label="פלטות מוגדרות מראש">
+          <!-- Filled by JS -->
+        </div>
+        <div class="tp-color-row">
+          <label class="tp-color-group">
+            <span class="tp-label">טקסט</span>
+            <input type="color" id="tp-text-color"
+                   value="#39FF14" class="tp-colorpicker">
+            <input type="text" id="tp-text-hex" class="tp-hex-input"
+                   value="#39FF14" placeholder="#000000" maxlength="7" dir="ltr">
+          </label>
+          <label class="tp-color-group">
+            <span class="tp-label">רקע</span>
+            <input type="color" id="tp-bg-color"
+                   value="#0F0E0C" class="tp-colorpicker">
+            <input type="text" id="tp-bg-hex" class="tp-hex-input"
+                   value="#0F0E0C" placeholder="#000000" maxlength="7" dir="ltr">
+          </label>
+        </div>
+      </div>
+
+      <!-- ⑤ קונטור ──────────────────────────────── -->
+      <div class="tp-section" style="display:none">
+        <div class="tp-row tp-row--space">
+          <label class="tp-label" for="tp-outline-enabled">קונטור</label>
+          <input type="checkbox" class="tp-effect-check" id="tp-outline-enabled">
+        </div>
+        <div class="tp-effect-controls" id="tp-outline-controls" hidden>
+          <div class="tp-color-row" style="margin-bottom: 8px;">
+            <label class="tp-color-group">
+              <span class="tp-label">צבע</span>
+              <input type="color" id="tp-outline-color" value="#808080" class="tp-colorpicker">
+              <span class="tp-color-value" id="tp-outline-color-value" data-mode="hex" data-color="#808080">#808080</span>
+            </label>
+          </div>
+          <div class="tp-slider-row">
+            <span class="tp-label">גודל</span>
+            <input class="tp-range" id="tp-outline-size" type="range"
+                   min="0" max="20" step="0.5" value="2">
+            <input class="tp-num"   id="tp-outline-size-num" type="number"
+                   min="0" max="20" step="0.5" value="2">
+            <span class="tp-unit">px</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑥ צל ──────────────────────────────────── -->
+      <div class="tp-section">
+        <div class="tp-row tp-row--space">
+          <label class="tp-label" for="tp-shadow-enabled">צל</label>
+          <input type="checkbox" class="tp-effect-check" id="tp-shadow-enabled">
+        </div>
+        <div class="tp-effect-controls" id="tp-shadow-controls" hidden>
+          <div class="tp-color-row" style="margin-bottom: 8px;">
+            <label class="tp-color-group">
+              <span class="tp-label">צבע</span>
+              <input type="color" id="tp-shadow-color" value="#808080" class="tp-colorpicker">
+              <span class="tp-color-value" id="tp-shadow-color-value" data-mode="hex" data-color="#808080">#808080</span>
+            </label>
+          </div>
+          <div class="tp-slider-row">
+            <span class="tp-label">ציר X</span>
+            <input class="tp-range" id="tp-shadow-x" type="range"
+                   min="-50" max="50" step="1" value="4">
+            <input class="tp-num"   id="tp-shadow-x-num" type="number"
+                   min="-50" max="50" step="1" value="4">
+            <span class="tp-unit">px</span>
+          </div>
+          <div class="tp-slider-row">
+            <span class="tp-label">ציר Y</span>
+            <input class="tp-range" id="tp-shadow-y" type="range"
+                   min="-50" max="50" step="1" value="4">
+            <input class="tp-num"   id="tp-shadow-y-num" type="number"
+                   min="-50" max="50" step="1" value="4">
+            <span class="tp-unit">px</span>
+          </div>
+          <div class="tp-slider-row">
+            <span class="tp-label">פיזור</span>
+            <input class="tp-range" id="tp-shadow-blur" type="range"
+                   min="0" max="40" step="1" value="0">
+            <input class="tp-num"   id="tp-shadow-blur-num" type="number"
+                   min="0" max="40" step="1" value="0">
+            <span class="tp-unit">px</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑦ אנימציית משקל ─────────────────────────── -->
+      <div class="tp-section">
+        <div class="tp-row tp-row--space">
+          <span class="tp-label">אנימציית משקל</span>
+          <button class="tp-btn-anim" id="tp-anim-btn" type="button"
+                  aria-label="הפעל אנימציית משקל">▶</button>
+        </div>
+      </div>
+
+      <!-- ⑧ מאפיינים (collapsible) ─────────────── -->
+      <div class="tp-section">
+        <button class="tp-collapse-btn"
+                data-target="tp-features-body" type="button"
+                aria-expanded="false">
+          <span class="tp-label">מאפיינים</span>
+          <svg class="tp-chevron" width="10" height="6" viewBox="0 0 10 6" aria-hidden="true">
+            <polyline points="1,1 5,5 9,1"
+                      stroke="currentColor" stroke-width="1.5"
+                      stroke-linecap="round" fill="none"/>
+          </svg>
+        </button>
+
+        <div class="tp-collapse-body" id="tp-features-body">
+          <label class="tp-feature-row tp-feature-row--disabled">
+            <input type="checkbox" id="feat-liga" disabled>
+            <span class="tp-feat-name">חיבורי אותיות</span>
+            <span class="tp-feat-code" dir="ltr">liga</span>
+            <span class="tp-feat-soon">בקרוב</span>
+          </label>
+          <label class="tp-feature-row tp-feature-row--disabled">
+            <input type="checkbox" id="feat-ss01" disabled>
+            <span class="tp-feat-name">סט חלופי א</span>
+            <span class="tp-feat-code" dir="ltr">ss01</span>
+            <span class="tp-feat-soon">בקרוב</span>
+          </label>
+          <label class="tp-feature-row tp-feature-row--disabled">
+            <input type="checkbox" id="feat-ss02" disabled>
+            <span class="tp-feat-name">סט חלופי ב</span>
+            <span class="tp-feat-code" dir="ltr">ss02</span>
+            <span class="tp-feat-soon">בקרוב</span>
+          </label>
+          <label class="tp-feature-row tp-feature-row--disabled">
+            <input type="checkbox" id="feat-hist" disabled>
+            <span class="tp-feat-name">צורות היסטוריות</span>
+            <span class="tp-feat-code" dir="ltr">hist</span>
+            <span class="tp-feat-soon">בקרוב</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- ⑨ CSS מותאם (collapsible) ──────────────── -->
+      <div class="tp-section tp-section--last">
+        <button class="tp-collapse-btn"
+                data-target="tp-css-body" type="button"
+                aria-expanded="false">
+          <span class="tp-label">CSS מותאם</span>
+          <svg class="tp-chevron" width="10" height="6" viewBox="0 0 10 6" aria-hidden="true">
+            <polyline points="1,1 5,5 9,1"
+                      stroke="currentColor" stroke-width="1.5"
+                      stroke-linecap="round" fill="none"/>
+          </svg>
+        </button>
+
+        <div class="tp-collapse-body" id="tp-css-body">
+          <textarea class="tp-css-textarea"
+                    id="tp-css-input"
+                    dir="ltr"
+                    spellcheck="false"
+                    placeholder="/* CSS ישירות לטקסט */&#10;text-shadow: 2px 2px 8px rgba(0,0,0,0.3);"></textarea>
+          <p class="tp-css-hint">יוחל על כל אזור הכתיבה</p>
+        </div>
+      </div>
+
+    </div><!-- /tp-body -->
+  </aside>
+
+  <div class="tryme-exit-container">
+    <a class="tryme-exit-link" href="index.html">
+      <span class="tryme-exit-word">הפונט</span>
+      <span class="tryme-exit-sub">חזרה לספסימן  ←</span>
+    </a>
+  </div>
+
+  </div><!-- /tryme-sidebar -->
+
+  <script src="scripts/try-me.js"></script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+/* Fingers animation component
+   Place this file at: /site/styles/fingers-animation.css
+*/
+
+.fingers-section {
+  --yellow: #f5f000;
+  --black: #151515;
+
+  /* משקל הפונט החי משתנה דרך JS לפי הגלילה, ומשותף לכל הטקסטים החיים */
+  --live-text-weight: 500;
+
+  position: relative;
+  min-height: 220vh;
+  background: var(--yellow);
+  font-family: 'Shmuel', serif;
+}
+
+.fingers-section,
+.fingers-section * {
+  box-sizing: border-box;
+}
+
+.fingers-stage {
+  position: sticky;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--yellow);
+}
+
+/* שכבה 1 — ה־SVG הסטטי של המסגרת השחורה */
+.finger-text-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.finger-text-layer img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* שכבת טקסט חי — יושבת מעל המסגרת השחורה ומתחת לאנימציית האצבעות */
+.live-text-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.soda-copy {
+  position: absolute;
+
+  /* כאן מכוונים את מיקום הטקסט בתוך המסגרת השחורה */
+  left: 4.5vw;
+  top: 11.4vh;
+  width: 44.8vw;
+  height: 39vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--yellow);
+  text-align: center;
+  direction: rtl;
+  line-height: 0.76;
+  white-space: nowrap;
+}
+
+.soda-copy__line {
+  display: block;
+  font-family: 'Shmuel', serif;
+  font-variation-settings: 'wght' var(--line-weight);
+  font-weight: var(--line-weight);
+}
+
+.soda-copy__line--top {
+  --line-weight: var(--live-text-weight);
+  font-size: clamp(4rem, 13vw, 16rem);
+  transform: translateY(0.2em);
+}
+
+.soda-copy__line--bottom {
+  --line-weight: var(--live-text-weight);
+  font-size: clamp(4rem, 13vw, 16rem);
+  transform: translateY(1.5em);
+  color: var(--black);
+}
+
+/* שכבה 2 — אצבעות + פקק, מעל הטקסטים החיים */
+.animation-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.finger {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.finger-top {
+  z-index: 3;
+  transform: translateX(22%);
+}
+
+.finger-bottom {
+  z-index: 1;
+  transform: translateX(4%);
+}
+
+/* ה-wrapper ממקם את הפקק ומסתובב כיחידה אחת (התמונה + הטקסט החי). */
+.cap-wrap {
+  position: absolute;
+  z-index: 2;
+  right: -2vw;
+  top: 49vh;
+  width: 26vw;
+  aspect-ratio: 1 / 1;
+  transform-origin: 50% 50%;
+  transform: translate(-50%, -50%);
+}
+
+.cap {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* טקסט "Signha" ממורכז מעל ה-cap.svg ומסתובב עם cap-wrap */
+.cap-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Shmuel', serif;
+  font-variation-settings: 'wght' var(--live-text-weight);
+  font-weight: var(--live-text-weight);
+  font-size: clamp(1.5rem, 7vw, 10rem);
+  color: var(--black);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+
+@media (max-width: 800px) {
+  .soda-copy {
+    left: 3.5vw;
+    top: 16vh;
+    width: 55vw;
+    height: 28vh;
+  }
+
+  .soda-copy__line--top {
+    font-size: clamp(3rem, 13vw, 7rem);
+  }
+
+  .soda-copy__line--bottom {
+    font-size: clamp(2.8rem, 12vw, 6.6rem);
+  }
+}

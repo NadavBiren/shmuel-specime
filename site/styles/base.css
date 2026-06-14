@@ -1,0 +1,211 @@
+@font-face {
+  font-family: 'Shmuel';
+  src: url('../assets/fonts/shmuel-Regular.ttf') format('truetype');
+  font-weight: 500 900;
+  font-display: block; /* specimen must not flash unstyled */
+}
+
+@font-face {
+  font-family: 'SimplerMono';
+  src: url('../assets/fonts/SimplerPro_HLAR_Mono-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'SimplerMono';
+  src: url('../assets/fonts/SimplerPro_HLAR_Mono-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'SimplerMono';
+  src: url('../assets/fonts/SimplerPro_HLAR_Mono-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  color-scheme: dark;
+
+  /* ── Core palette ──────────────────────────────────────── */
+  --color-main:   #FF1493;   /* neon pink   — primary interaction    */
+  --color-second: #FFFF00;   /* neon yellow — secondary accent       */
+  --color-third:  #FF5E00;   /* neon orange — third accent           */
+  --color-fourth: #39FF14;   /* neon green  — fourth accent          */
+
+  --color-black:  #0F0E0C;   /* off-black — body background          */
+  --color-dark:   #3A3835;   /* dark grey — borders, dividers        */
+  --color-grey:   #7A7875;   /* mid grey  — muted text, annotations  */
+  --color-lightgrey:   #c0c0c0;   /* soft paper grey — light theme bg       */
+  --color-white:  #F5F2ED;   /* off-white — text on dark, light bg   */
+
+  /* Ink tones — sidebar and panel backgrounds */
+  --color-ink-warm:  #1A1917;  /* warm near-black — panel / item bg */
+  --color-ink-deep:  #181612;  /* deeper near-black — sidebar bg    */
+
+  /* Derived opacities */
+  --color-main-dim:    rgba(255, 20,  147, 0.12);
+  --color-main-faint:  rgba(255, 20,  147, 0.06);
+  --color-second-dim:  rgba(255, 255, 0,   0.12);
+  --color-third-dim:   rgba(255, 94,  0,   0.12);
+  --color-third-faint: rgba(255, 94,  0,   0.06);
+
+  /* Structure */
+  --color-border-dark:  rgba(245, 242, 237, 0.07);
+  --color-border-light: rgba(15, 14, 12, 0.08);
+
+  /* ── Typography ─────────────────────────────────────────
+     Secondary font is SimplerPro HLAR Mono, served locally.
+     Contrast: calligraphic historical serif vs. sterile
+     machine-precision mono. That tension reads as premium.
+  ──────────────────────────────────────────────────────── */
+  --font-primary:         'Shmuel', serif;
+  --font-secondary:       'SimplerMono', 'Courier New', monospace;
+
+  /* Size scale for secondary / metadata text */
+  --size-meta-large:      clamp(1.1rem, 1.4vw, 1.4rem);   /* ~18–22px */
+  --size-meta-small:      clamp(0.9rem, 1.05vw, 1.1rem);  /* ~14–18px */
+  --tracking-mono:        0.04em;
+
+  /* Legacy weight tokens */
+  --font-weight-light:    300;
+  --font-weight-regular:  400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:     700;
+  --font-weight-heavy:    800;
+  --font-weight-black:    900;
+
+  /* Interactions — driven by JS */
+  --scroll-weight: 500;
+  --cursor-x: 0.5;
+  --cursor-y: 0.5;
+}
+
+body.page-index    { --scrollbar-color: var(--color-main);   --page-accent: var(--color-main);   }
+body.page-research { --scrollbar-color: var(--color-third);  --page-accent: var(--color-third);  }
+body.page-tryme    { --scrollbar-color: var(--color-fourth); --page-accent: var(--color-fourth); }
+
+html {
+  direction: rtl;
+  font-size: 16px;
+  background-color: var(--color-black);
+}
+
+body {
+  font-family: var(--font-primary);
+  color: var(--color-white);
+  background-color: var(--color-black);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  padding-right: 2.5vw;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+body.light-theme,
+html:has(body.light-theme) {
+  background-color: var(--color-lightgrey);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+p {
+  max-width: 30em;
+  line-height: 1.62;
+  margin-bottom: 0.5em;
+}
+
+/* Accessibility utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Sidebar navigation ──────────────────────────── */
+
+.sidebar-nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 2.5vw;
+  height: 100vh;
+  z-index: 500;
+  background: #181612;
+  display: flex;
+  flex-direction: column;
+  padding-left: 3px;
+}
+
+.sidebar-nav__item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-grey);
+  font-family: var(--font-secondary);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.sidebar-nav__label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--font-secondary);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.sidebar-nav__item:nth-child(1):hover { background: color-mix(in srgb, var(--color-main)   15%, transparent); color: var(--color-main);   }
+.sidebar-nav__item:nth-child(2):hover { background: color-mix(in srgb, var(--color-third)  15%, transparent); color: var(--color-third);  }
+.sidebar-nav__item:nth-child(3):hover { background: color-mix(in srgb, var(--color-fourth) 15%, transparent); color: var(--color-fourth); }
+
+.sidebar-nav__item.nav-active {
+  background: var(--color-ink-deep);
+  color: var(--page-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Custom Webkit Scrollbar (Global) ───────────────────────── */
+
+::-webkit-scrollbar {
+  width: 14px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-color, var(--color-grey));
+  border-radius: 10px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-color);
+}

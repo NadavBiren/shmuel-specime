@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>שמואל — פונט עברי וריאבילי</title>
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/specimen.css">
+  <link rel="stylesheet" href="styles/fingers-animation.css">
+  <link rel="stylesheet" href="styles/cacao-ceremony-animation.css">
+</head>
+<body class="page-index">
+
+  <nav class="sidebar-nav" aria-label="ניווט ראשי">
+    <a href="index.html" class="sidebar-nav__item nav-active">
+      <span class="sidebar-nav__label">הפונט</span>
+    </a>
+    <a href="research.html" class="sidebar-nav__item">
+      <span class="sidebar-nav__label">המחקר</span>
+    </a>
+    <a href="try-me.html" class="sidebar-nav__item">
+      <span class="sidebar-nav__label">הטסטר</span>
+    </a>
+  </nav>
+
+  <!-- ② FONT SPECIMEN ────────────────────────────────────── -->
+  <section class="specimen-outer" id="font-specimen">
+    <div class="specimen-sticky-stage">
+
+      <div class="sp-titles-wrapper">
+        <div class="sp-weight-label sp-weight-label--top">WEIGHT: <span id="weight-he">500</span></div>
+        <h2 class="sp-var-title sp-var-title--he" id="title-he" dir="rtl">שמואל</h2>
+        <h2 class="sp-var-title sp-var-title--en" id="title-en" dir="ltr">Shmuel</h2>
+        <div class="sp-weight-label sp-weight-label--bottom">WEIGHT: <span id="weight-en">900</span></div>
+      </div>
+
+      <div class="sp-try-panel" id="specimen-panel">
+        <div class="sp-panel-header">
+          <h3>נסו אותי</h3>
+        </div>
+        <div class="sp-panel-content">
+          <div class="sp-input-row">
+            <div class="sp-input-wrapper">
+              <input type="text" id="print-text" placeholder="כאן ניתן להקליד...">
+              <div id="print-char-count" class="sp-char-count">40 תווים נותרו</div>
+            </div>
+            <button id="print-btn" class="sp-print-btn">להדפסה</button>
+          </div>
+          <a href="#fw-title-he" class="sp-continue-link">להמשך</a>
+        </div>
+      </div>
+
+    </div>
+    <div class="prints-canvas" id="prints-container"></div>
+  </section>
+
+  <section class="section-floating-weights">
+
+    <div class="center-stage">
+
+      <div class="text-column col-hebrew">
+        <div class="center-text-item weights-title" id="fw-title-he">משקלים</div>
+        <div class="center-text-item w-500" id="he-regular">רגיל</div>
+        <div class="center-text-item w-700" id="he-bold">כבד</div>
+        <div class="center-text-item w-900" id="he-black">בלאק</div>
+      </div>
+
+      <div class="text-column col-english">
+        <div class="center-text-item weights-title" id="fw-title-en">Weights</div>
+        <div class="center-text-item w-500" id="en-regular">Regular</div>
+        <div class="center-text-item w-700" id="en-bold">Bold</div>
+        <div class="center-text-item w-900" id="en-black">Black</div>
+      </div>
+
+    </div>
+
+    <div class="weight-icon-wrapper weights-icon-1">
+      <div class="svg-icon-mask icon-1"></div>
+      <div class="weight-icon-text w-700">Triple<br>Belgian<br>Beer</div>
+    </div>
+
+    <div class="weight-icon-wrapper weights-icon-2">
+      <div class="svg-icon-mask icon-2"></div>
+      <div class="weight-icon-text w-500">Aperol<br>Spritz</div>
+    </div>
+
+    <div class="weight-icon-wrapper weights-icon-3">
+      <div class="svg-icon-mask icon-3"></div>
+      <div class="weight-icon-text w-900">Whisky<br>on the<br>Rocks</div>
+    </div>
+
+    <div class="weight-icon-wrapper weights-icon-4">
+      <div class="svg-icon-mask icon-4"></div>
+      <div class="weight-icon-text w-500">יין לבן<br>סוביניון<br>בלאן</div>
+    </div>
+
+    <div class="weight-icon-wrapper weights-icon-5">
+      <div class="svg-icon-mask icon-5"></div>
+      <div class="weight-icon-text w-900">עלית<br>ערק<br>איילים</div>
+    </div>
+
+    <div class="weight-icon-wrapper weights-icon-6">
+      <div class="svg-icon-mask icon-6"></div>
+      <div class="weight-icon-text w-700">ג׳ין<br>וטוניק</div>
+    </div>
+
+  </section>
+
+  <div id="cacaoCeremonyAnimationMount"></div>
+
+  <!-- ④ CHARACTER GRID ────────────────────────────────── -->
+  <section class="section-character-grid">
+    <div class="section-head">
+      <span class="section-label">מפת תווים</span>
+      <span class="section-aside">72 תווים</span>
+    </div>
+
+    <div class="charview-layout">
+
+      <div class="charview-inspector">
+        <div class="charview-stage">
+          <div class="metric-line" data-metric="ascender">
+            <span class="metric-label">Ascender</span>
+            <span class="metric-value">800</span>
+          </div>
+          <div class="metric-line" data-metric="x-height">
+            <span class="metric-label">x-Height</span>
+            <span class="metric-value">550</span>
+          </div>
+          <div class="metric-line" data-metric="baseline">
+            <span class="metric-label">Baseline</span>
+            <span class="metric-value">0</span>
+          </div>
+          <div class="metric-line" data-metric="descender">
+            <span class="metric-label">Descender</span>
+            <span class="metric-value">−200</span>
+          </div>
+          <span class="charview-glyph" id="charview-glyph" aria-hidden="true">א</span>
+        </div>
+        <div class="charview-data">
+          <div class="chardata-row">
+            <span class="chardata-key">שם</span>
+            <span class="chardata-val" id="chardata-name">אלף</span>
+          </div>
+          <div class="chardata-row">
+            <span class="chardata-key">יוניקוד</span>
+            <span class="chardata-val" id="chardata-hex">U+05D0</span>
+          </div>
+          <div class="chardata-row">
+            <span class="chardata-key">שם היוניקוד</span>
+            <span class="chardata-val" id="chardata-unicode-name">alef-hb</span>
+          </div>
+          <div class="chardata-row">
+            <span class="chardata-key">ערך</span>
+            <span class="chardata-val" id="chardata-dec">1488</span>
+          </div>
+          <div class="chardata-row">
+            <span class="chardata-key">משקל</span>
+            <span class="chardata-val" id="chardata-weight">500</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="charview-grid-panel">
+        <div class="char-category">
+          <span class="char-category-label">אותיות</span>
+          <div class="char-grid" id="char-grid"
+               role="region" aria-label="האלפבית העברי"></div>
+        </div>
+        <div class="char-category">
+          <span class="char-category-label">ספרות</span>
+          <div class="char-grid char-grid--numbers" id="char-grid-numbers"
+               role="region" aria-label="ספרות"></div>
+        </div>
+        <div class="char-category">
+          <span class="char-category-label">סימני פיסוק</span>
+          <div class="char-grid char-grid--marks" id="char-grid-marks"
+               role="region" aria-label="סימני פיסוק"></div>
+        </div>
+        <div class="char-category">
+          <span class="char-category-label">לטינית</span>
+          <div class="char-grid char-grid--latin" id="char-grid-latin"
+               role="region" aria-label="אותיות לטיניות"></div>
+        </div>
+        <div class="char-category">
+          <span class="char-category-label">חלופות</span>
+          <div class="char-grid char-grid--alternates" id="char-grid-alternates"
+               role="region" aria-label="תווים חלופיים"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ③ TRY ME ────────────────────────────────────────── -->
+  <section class="section-try-me" id="section-try-me">
+    <div class="try-me-frame">
+      <textarea class="try-me-text" dir="rtl" spellcheck="false"
+                placeholder="אם לא ננסה איך נדע?" rows="1"></textarea>
+    </div>
+    <div class="tryme-controls">
+      <label class="ctrl-group">
+        <span class="ctrl-name">גודל</span>
+        <input class="ctrl-range" id="size-range" type="range"
+               min="32" max="360" step="2" value="200">
+        <output class="ctrl-out" id="size-out">200</output>
+      </label>
+      <label class="ctrl-group">
+        <span class="ctrl-name">משקל</span>
+        <input class="ctrl-range" id="wght-range" type="range"
+               min="500" max="900" step="10" value="900">
+        <output class="ctrl-out" id="wght-out">900</output>
+      </label>
+      <label class="ctrl-group ctrl-group--left">
+        <span class="ctrl-name">מרווח שורות</span>
+        <input class="ctrl-range" id="lh-range" type="range"
+               min="0.7" max="1.3" step="0.05" value="1.00">
+        <output class="ctrl-out" id="lh-out">1.00</output>
+      </label>
+      <label class="ctrl-group ctrl-group--left">
+        <span class="ctrl-name">מרווח אותיות</span>
+        <input class="ctrl-range" id="ls-range" type="range"
+               min="-0.05" max="0.060" step="0.005" value="0">
+        <output class="ctrl-out" id="ls-out">0</output>
+      </label>
+    </div>
+  </section>
+
+  <div id="fingersAnimationMount"></div>
+
+  <!-- ⑤ DISPLAY ──────────────────────────────────────── -->
+  <section class="section-display">
+    <blockquote class="display-quote" dir="rtl">
+      <p class="display-line">רַק עַל עַצְמִי</p>
+      <p class="display-line">לְסַפֵּר יָדַעְתִּי</p>
+      <footer class="display-meta">
+        <cite class="display-attr">רחל בלובשטיין — "מי ידע"</cite>
+        <span class="display-tag">72pt · 400</span>
+      </footer>
+    </blockquote>
+  </section>
+
+  <!-- ⑥ TEXT SPECIMEN ─────────────────────────────────── -->
+  <section class="section-text">
+    <div class="text-wrapper">
+      <p class="text-body" dir="rtl">רַק עַל עַצְמִי לְסַפֵּר יָדַעְתִּי,
+לִשְׁאֹר אֲנִי צְרוּרָה כָּל כָּךְ.
+נַפְשִׁי לִי צָרָה לִכְלוֹל אֶת כָּל הָאָדָם,
+אַךְ אֶת צָמְחִית הַגָּן לִגְמוֹא.</p>
+      <div class="text-meta">
+        <cite class="text-attr">רחל בלובשטיין — "מי ידע"</cite>
+        <span class="text-tag">40pt · 400</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑦ SIZES ─────────────────────────────────────────── -->
+  <section class="section-sizes">
+    <div class="section-head">
+      <span class="section-label">גדלים</span>
+    </div>
+    <div class="size-range" id="features-grid" dir="rtl"></div>
+    <button class="sizes-anim-btn" id="sizes-anim-btn" type="button" aria-label="עצור אנימציה">⏸</button>
+  </section>
+
+  <!-- ⑧ ABOUT ─────────────────────────────────────────── -->
+  <section class="section-about">
+    <div class="about-layout">
+      <aside class="about-side">
+        <h2 class="about-title">על<br>שמואל</h2>
+      </aside>
+      <div class="about-body" dir="rtl">
+        <p>שמואל הוא פונט כותרות סריפי וריאבילי (Variable Font), המבוסס על סגנון הכתב הבינוני — כתב־יד עברי מימי־הביניים ששימש כחוליה מקשרת בין האות המרובעת לרהוטה. הפונט נולד מתוך מחקר אנטומי של כ־20 מקורות כתב־יד, שזוקקו לכדי מערכת טיפוגרפית עקבית המשלבת בין מסורת קליגרפית לבין שפה ווקטורית חדה ועכשווית.</p>
+        <p>העיצוב מאופיין בסריפים אורגניים הצומחים מתוך גג האות, תנועה קליגרפית מרומזת והטיה קלה של 5 מעלות המעניקה לטקסט דינמיות וקצב ייחודי. הפונט כולל ציר משקל וריאבילי (500–900) המאפשר דיוק מקסימלי בהתאמה לכל פורמט, לצד תמיכה מלאה בניקוד, ליגטורות וסטים אלטרנטיביים של אותיות.</p>
+        <p>שמואל אידיאלי לעבודות מיתוג ופרויקטים תרבותיים המחפשים נוכחות דומיננטית עם עומק היסטורי.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑨ EXIT ──────────────────────────────────────────── -->
+  <section class="section-exit">
+    <a class="exit-link" href="research.html">
+      <span class="exit-word">מחקר</span>
+      <span class="exit-sub">המחקר מאחורי הפונט ←</span>
+    </a>
+  </section>
+
+  <script src="scripts/specimen.js"></script>
+  <script src="scripts/fingers-animation.js"></script>
+  <script src="scripts/cacao-ceremony-animation.js"></script>
+  <script>
+    fetch('components/fingers-animation.html')
+      .then(response => response.text())
+      .then(html => {
+        const mount = document.querySelector('#fingersAnimationMount');
+        if (!mount) return;
+        mount.innerHTML = html;
+        if (typeof initFingersAnimation === 'function') {
+          initFingersAnimation(mount);
+        }
+      });
+  </script>
+  <script>
+    fetch('components/cacao-ceremony-animation.html')
+      .then(response => response.text())
+      .then(html => {
+        const mount = document.querySelector('#cacaoCeremonyAnimationMount');
+        if (!mount) return;
+        mount.innerHTML = html;
+        if (typeof initCacaoCeremonyAnimation === 'function') {
+          initCacaoCeremonyAnimation(mount);
+        }
+      });
+  </script>
+</body>
+</html>

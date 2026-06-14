@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fingers Animation</title>
+
+  <style>
+    @font-face {
+      font-family: 'Shmuel';
+      src: url('/site/assets/fonts/shmuel-Regular.ttf') format('truetype');
+      font-weight: 500 900;
+      font-display: block;
+    }
+
+    :root {
+      --yellow: #f5f000;
+      --black: #151515;
+
+      /* משקלי הפונט משתנים דרך JS לפי הגלילה */
+      --soda-weight: 500;
+      --refresh-weight: 900;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      direction: rtl;
+      font-size: 16px;
+      background: var(--yellow);
+    }
+
+    body {
+      margin: 0;
+      background: var(--yellow);
+      overflow-x: hidden;
+      font-family: 'Shmuel', serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .fingers-section {
+      position: relative;
+      min-height: 220vh;
+      background: var(--yellow);
+    }
+
+    .fingers-stage {
+      position: sticky;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: var(--yellow);
+    }
+
+    /* שכבה 1 — ה־SVG הסטטי של המסגרת השחורה */
+    .finger-text-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .finger-text-layer img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* שכבת טקסט חי — יושבת מעל המסגרת השחורה ומתחת לאנימציית האצבעות */
+    .live-text-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .soda-copy {
+      position: absolute;
+
+      /* כאן מכוונים את מיקום הטקסט בתוך המסגרת השחורה */
+      left: 2.5vw;
+      top: 11.4vh;
+      width: 44.8vw;
+      height: 39vh;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      color: var(--yellow);
+      text-align: center;
+      direction: rtl;
+      line-height: 0.76;
+      white-space: nowrap;
+    }
+
+    .soda-copy__line {
+      display: block;
+      font-family: 'Shmuel', serif;
+      font-variation-settings: 'wght' var(--line-weight);
+      font-weight: var(--line-weight);
+    }
+
+    .soda-copy__line--top {
+      --line-weight: var(--soda-weight);
+      font-size: clamp(4rem, 13vw, 16rem);
+      transform: translateY(0.2em);
+    }
+
+    .soda-copy__line--bottom {
+      --line-weight: var(--refresh-weight);
+      font-size: clamp(4rem, 13vw, 16rem);
+      transform: translateY(1.5em);
+      color: var(--black);
+    }
+
+    /* שכבה 2 — אצבעות + פקק, מעל הטקסטים החיים */
+    .animation-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .finger {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .finger-top {
+      z-index: 3;
+      transform: translateX(22%);
+    }
+
+    .finger-bottom {
+      z-index: 1;
+      transform: translateX(4%);
+    }
+
+    /* ה-wrapper ממקם את הפקק. רק ה-img שבתוכו מסתובב. */
+    .cap-wrap {
+      position: absolute;
+      z-index: 2;
+      right: -2vw;
+      top: 49vh;
+      width: 26vw;
+      aspect-ratio: 1 / 1;
+      transform: translate(-50%, -50%);
+    }
+
+    .cap {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      transform-origin: 50% 50%;
+      transform: rotate(0deg);
+    }
+
+    /* כלי עזר לכיוון: אם צריך, אפשר לפתוח את שתי השורות האלה */
+    /* .soda-copy { outline: 1px solid rgba(255, 0, 0, 0.5); } */
+    /* .cap-wrap { outline: 1px solid rgba(255, 0, 0, 0.5); } */
+
+    @media (max-width: 800px) {
+      .soda-copy {
+        left: 3.5vw;
+        top: 16vh;
+        width: 55vw;
+        height: 28vh;
+      }
+
+      .soda-copy__line--top {
+        font-size: clamp(3rem, 13vw, 7rem);
+      }
+
+      .soda-copy__line--bottom {
+        font-size: clamp(2.8rem, 12vw, 6.6rem);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <section class="fingers-section" id="fingersSection">
+
+    <div class="fingers-stage">
+
+      <!-- שכבה 1: SVG סטטי עם המסגרת השחורה -->
+      <div class="finger-text-layer">
+        <img
+          src="/site/assets/images/svg/fingers-animation/finger-text.svg"
+          alt=""
+        />
+      </div>
+
+      <!-- טקסט חי: משתנה במשקל לפי גלילה -->
+      <div class="live-text-layer" aria-hidden="true">
+        <div class="soda-copy">
+          <span class="soda-copy__line soda-copy__line--top">שתו סודה</span>
+          <span class="soda-copy__line soda-copy__line--bottom">טעים ומרענן</span>
+        </div>
+      </div>
+
+      <!-- שכבה 2: אצבעות + פקק -->
+      <div class="animation-layer">
+
+        <img
+          class="finger finger-top"
+          id="fingerTop"
+          src="/site/assets/images/svg/fingers-animation/finger-top.svg"
+          alt=""
+        />
+
+        <img
+          class="finger finger-bottom"
+          id="fingerBottom"
+          src="/site/assets/images/svg/fingers-animation/finger-bottom.svg"
+          alt=""
+        />
+
+        <div class="cap-wrap" id="capWrap">
+          <img
+            class="cap"
+            id="cap"
+            src="/site/assets/images/svg/fingers-animation/cap.svg"
+            alt=""
+          />
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <script>
+    const section = document.querySelector("#fingersSection");
+    const fingerTop = document.querySelector("#fingerTop");
+    const fingerBottom = document.querySelector("#fingerBottom");
+    const cap = document.querySelector("#cap");
+
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
+
+    function lerp(start, end, progress) {
+      return start + (end - start) * progress;
+    }
+
+    function updateAnimation() {
+      const rect = section.getBoundingClientRect();
+      const scrollableDistance = section.offsetHeight - window.innerHeight;
+      const progress = clamp(-rect.top / scrollableDistance, 0, 1);
+
+      // האצבע העליונה: מתחילה מימין ומגיעה למיקום הסופי שלה
+      const topX = lerp(22, 1, progress);
+
+      // האצבע התחתונה: מתחילה במקום שלה וממשיכה ימינה
+      const bottomX = lerp(4, 14, progress);
+
+      // הפקק: מסתובב במקום. מספר שלילי = עם כיוון השעון במבנה הנוכחי שלך.
+      const capRotation = lerp(0, -340, progress);
+
+      // טקסט חי: שורה ראשונה 500→900, שורה שנייה 900→500
+      const sodaWeight = Math.round(lerp(500, 900, progress));
+      const refreshWeight = Math.round(lerp(900, 500, progress));
+
+      fingerTop.style.transform = `translateX(${topX}%)`;
+      fingerBottom.style.transform = `translateX(${bottomX}%)`;
+      cap.style.transform = `rotate(${capRotation}deg)`;
+
+      document.documentElement.style.setProperty("--soda-weight", sodaWeight);
+      document.documentElement.style.setProperty("--refresh-weight", refreshWeight);
+    }
+
+    window.addEventListener("scroll", updateAnimation, { passive: true });
+    window.addEventListener("resize", updateAnimation);
+
+    updateAnimation();
+  </script>
+
+</body>
+</html>

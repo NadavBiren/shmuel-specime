@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sed -i '' 's/var\\(--color-gold-dark\\)/var\\(--color-accent\\)/g' try-me.css)",
+      "Bash(sed -i '' 's/var\\(--color-accent-neon[^\\)]*\\)/var\\(--color-accent\\)/g' try-me.css)",
+      "Bash(sed -i '' 's/rgba\\(200, 146, 42,/rgba\\(255, 107, 53,/g' try-me.css)",
+      "Bash(sed -i '' 's/var\\(--color-grey-warm\\)/var\\(--color-text-muted\\)/g' ../styles/base.css)",
+      "Bash(grep -n \"#FF6B35\\\\|255, 107, 53\\\\|color-accent\\\\|rgba\\(0, 0, 0\\\\|color: #[0-9a-fA-F]\\\\{3,6\\\\}\" /Users/nadavbirenboim/Desktop/01_Shmuel/02_pagmar-website/site/styles/try-me.css)",
+      "Bash(chromium-cli --help)"
+    ]
+  }
+}

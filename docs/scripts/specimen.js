@@ -28,17 +28,6 @@ const ALTERNATE_CHARS = [
   { key: 'w_alt', display: 'w' },
 ];
 
-const SIZE_RANGE = [
-  { pt: 500, weight: 900, text: 'אינטרגלקטיות' },
-  { pt: 400, weight: 900, text: 'מסקרפונה מבורדו' },
-  { pt: 300, weight: 900, text: 'מחוף האוקיינוס האטלנטי ועד לגבולה' },
-  { pt: 200, weight: 900, text: 'הנדסת אווירונאוטיקה וטכנולוגיה צבאית' },
-  { pt: 100, weight: 900, text: 'מכניקת הקוונטים כגון סופרפוזיציה קוונטית וכן שזירה קוונטית' },
-  { pt: 72,  weight: 900, text: 'שולחן עץ נמוך הונחו מפות ישנות, כוסות תה כהות, ופנקסים מלאים בהערות שנכתבו במשך שנים של מסעות' },
-  { pt: 48,  weight: 900, text: 'שורשי אמנות קיפול הנייר אינם ידועים בוודאות היסטוריונים מסוימים טוענים כי סביר שהאמנות התפתחה בסין זמן־מה לאחר המצאת הנייר בשנת 105 על ידי צאי לון' },
-  { pt: 32,  weight: 900, text: 'אליזבת ירשה את הכתר לאחר מות אחותה למחצה הקתולית, מרי הראשונה. היא מיד החזירה את הדת הפרוטסטנטית לאנגליה וביצעה רפורמות דתיות ופוליטיות מקיפות. היא דאגה לשגשוגה הכלכלי. היא תמכה במסחר.' },
-];
-
 const HEBREW_GLYPH_DATA = {
   'א': { name: 'אלף',        unicode: 'U+05D0', decimal: 1488, unicodeName: 'alef-hb'          },
   'ב': { name: 'בית',        unicode: 'U+05D1', decimal: 1489, unicodeName: 'bet-hb'           },
@@ -223,39 +212,6 @@ function buildCharGrid() {
       gridAlts.appendChild(span);
     });
   }
-}
-
-/**
- * Populate the size-range section.
- */
-function buildSizeRange() {
-  const container = document.getElementById('features-grid');
-  if (!container) return;
-
-  SIZE_RANGE.forEach(({ pt, weight, text }, index) => {
-    const row = document.createElement('div');
-    row.className = pt >= 300 ? 'size-row size-row--large size-row--xlarge'
-                 : pt >= 100 ? 'size-row size-row--large'
-                 :             'size-row';
-    row.dataset.pt = pt;
-
-    const label = document.createElement('span');
-    label.className = 'size-label';
-    label.textContent = pt + 'pt';
-    label.setAttribute('aria-hidden', 'true');
-
-    const sample = document.createElement('span');
-    sample.className = 'size-text';
-    sample.style.fontSize = pt + 'px';
-    sample.style.animationDelay = (index * 500) + 'ms';
-    // fontVariationSettings handled by CSS weight-animation keyframe
-    sample.textContent = text;
-    sample.setAttribute('aria-hidden', 'true');
-
-    row.appendChild(label);
-    row.appendChild(sample);
-    container.appendChild(row);
-  });
 }
 
 // ── Character Inspector ───────────────────────────────
@@ -575,34 +531,6 @@ function initHeaderWeightScroll() {
   update();
 }
 
-
-// ── Sizes Animation Play/Pause ────────────────────────
-
-function initSizesAnimation() {
-  const section = document.querySelector('.section-sizes');
-  const btn     = document.getElementById('sizes-anim-btn');
-  if (!section || !btn) return;
-
-  let playing = true;
-
-  btn.addEventListener('click', () => {
-    playing = !playing;
-    const state = playing ? 'running' : 'paused';
-    section.querySelectorAll('.size-text').forEach(el => {
-      el.style.animationPlayState = state;
-    });
-    btn.textContent = playing ? '⏸' : '▶';
-    btn.ariaLabel   = playing ? 'עצור אנימציה' : 'הפעל אנימציה';
-  });
-
-  const observer = new IntersectionObserver(([entry]) => {
-    btn.classList.toggle('is-visible', entry.isIntersecting);
-  }, { threshold: 0 });
-
-  observer.observe(section);
-}
-
-
 // ── Nav Scroll-Reveal ─────────────────────────────────
 
 function initNavScroll() {
@@ -746,12 +674,37 @@ function initSpecimenPrint() {
   const NEON_COLORS = ['#39FF14', '#FF1493', '#FFFF00', '#FF5E00', '#FFFFFF'];
   const SVG_SHAPES  = ['hero-icon-1', 'hero-icon-2', 'hero-icon-3', 'hero-icon-4', 'hero-icon-5'];
   const TEXT_POOL   = [
-    "Happy Hour", "ערב שתייה ללא תחתית", "סדנת ליקוט וחליטות תה",
-    "בירה מהחבית", "קוקטיילים מיוחדים", "יין ללא הגבלה", "צ'ייסר על הבר"
+    "Espresso Blend מספר 4", "Barrel Aged מהדורה מיוחדת", "House Blend מקומי",
+    "Natural Wine תל אביב", "Cold Brew", "בירה Unfiltered מהחבית", "קפה של הבוקר"
   ];
   const WEIGHT_STEPS = [500, 600, 700, 800, 900];
 
   let printCount = 0;
+
+  // Break sticker text into lines so it grows vertically instead of
+  // overflowing horizontally — line-break frequency depends on the
+  // sticker's shape (horizontal / square / vertical mask).
+  function formatStickerText(text, shape) {
+    let wordsPerBreak;
+    if (shape === 'hero-icon-3')      wordsPerBreak = 3; // Horizontal
+    else if (shape === 'hero-icon-2') wordsPerBreak = 2; // Square
+    else                              wordsPerBreak = Math.random() < 0.5 ? 1 : 2; // Vertical
+
+    const words = text.split(' ');
+    const lines = [];
+    let current = [];
+
+    words.forEach((word) => {
+      current.push(word);
+      if (word.includes(',') || current.length >= wordsPerBreak) {
+        lines.push(current.join(' '));
+        current = [];
+      }
+    });
+    if (current.length) lines.push(current.join(' '));
+
+    return lines.join('\n');
+  }
 
   // Character limit + countdown — counts against the actual value
   function updateCharCount() {
@@ -777,13 +730,14 @@ function initSpecimenPrint() {
 
     const len = text.length;
 
-    // Adaptive font size — recalibrated for mask silhouettes, stricter on long text
-    let size;
-if (len <= 4)       size = Math.floor(Math.random() * 61) + 160;  // 160-220
-  else if (len <= 10) size = Math.floor(Math.random() * 51) + 90;   // 90-140
-  else if (len <= 20) size = Math.floor(Math.random() * 31) + 50;   // 50-80
-  else                size = Math.floor(Math.random() * 19) + 32;   // 32-50
-  // 
+    // Adaptive font size + box width — both scale with text length so longer
+    // phrases print larger and wrap across more lines instead of shrinking
+    let size, widthEm;
+    if (len <= 8)       { size = Math.floor(Math.random() * 30) + 85; widthEm = 4.5; } // 85-114
+    else if (len <= 14) { size = Math.floor(Math.random() * 25) + 60; widthEm = 5.5; } // 60-84
+    else if (len <= 22) { size = Math.floor(Math.random() * 18) + 43; widthEm = 6.5; } // 43-60
+    else                { size = Math.floor(Math.random() * 15) + 32; widthEm = 7.5; } // 32-46
+
       // Random weight: one of 500,600,700,800,900
     const randomWeight = WEIGHT_STEPS[Math.floor(Math.random() * WEIGHT_STEPS.length)];
 
@@ -792,19 +746,20 @@ if (len <= 4)       size = Math.floor(Math.random() * 61) + 160;  // 160-220
 
     const item = document.createElement('div');
     item.className = 'printed-item';
-    item.textContent = text;
+    item.textContent = formatStickerText(text, svgShape);
     item.style.backgroundColor = bgColor;
     item.style.maskImage       = maskUrl;
     item.style.webkitMaskImage = maskUrl;
     item.style.fontSize              = size + 'px';
+    item.style.width                 = widthEm + 'em';
     item.style.fontVariationSettings = `'wght' ${randomWeight}`;
 
     // Resolve scroll position within the section's coordinate space
     const sectionTop      = section.getBoundingClientRect().top + window.scrollY;
     const scrollInSection = window.scrollY - sectionTop;
 
-    // Estimate the sticker's own footprint (width: 5.5em, aspect-ratio: 0.83)
-    const itemWidthPx  = size * 5.5;
+    // Estimate the sticker's own footprint (width: widthEm, aspect-ratio: 0.83)
+    const itemWidthPx  = size * widthEm;
     const itemHeightPx = itemWidthPx / 0.83;
 
     // Keep-out box for the fixed bottom-center "Try me" panel
@@ -903,8 +858,6 @@ function initFloatingWeights() {
 
 document.addEventListener('DOMContentLoaded', () => {
   buildCharGrid();
-  buildSizeRange();
-  initSizesAnimation();
   initSpecimenTitles();
   initSpecimenPrint();
   initCharProximity();

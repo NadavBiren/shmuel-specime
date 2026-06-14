@@ -34,6 +34,8 @@
         <div class="sp-weight-label sp-weight-label--bottom">WEIGHT: <span id="weight-en">900</span></div>
       </div>
 
+      <div class="prints-canvas" id="prints-container"></div>
+
       <div class="sp-try-panel" id="specimen-panel">
         <div class="sp-panel-header">
           <h3>נסו אותי</h3>
@@ -51,7 +53,6 @@
       </div>
 
     </div>
-    <div class="prints-canvas" id="prints-container"></div>
   </section>
 
   <section class="section-floating-weights">
@@ -110,9 +111,9 @@
 
   <!-- ④ CHARACTER GRID ────────────────────────────────── -->
   <section class="section-character-grid">
-    <div class="section-head">
-      <span class="section-label">מפת תווים</span>
-      <span class="section-aside">72 תווים</span>
+    <div class="glyph-set-header">
+      <div class="glyph-set-title" dir="rtl">סט תווים</div>
+      <div class="glyph-set-title" dir="ltr">Glyphs Set</div>
     </div>
 
     <div class="charview-layout">
@@ -123,9 +124,17 @@
             <span class="metric-label">Ascender</span>
             <span class="metric-value">800</span>
           </div>
-          <div class="metric-line" data-metric="x-height">
-            <span class="metric-label">x-Height</span>
+          <div class="metric-line" data-metric="cap-height">
+            <span class="metric-label">Cap Height</span>
+            <span class="metric-value">700</span>
+          </div>
+          <div class="metric-line" data-metric="heb-height">
+            <span class="metric-label">Heb Height</span>
             <span class="metric-value">550</span>
+          </div>
+          <div class="metric-line" data-metric="x-height">
+            <span class="metric-label">x height</span>
+            <span class="metric-value">400</span>
           </div>
           <div class="metric-line" data-metric="baseline">
             <span class="metric-label">Baseline</span>
@@ -255,13 +264,7 @@
   </section>
 
   <!-- ⑦ SIZES ─────────────────────────────────────────── -->
-  <section class="section-sizes">
-    <div class="section-head">
-      <span class="section-label">גדלים</span>
-    </div>
-    <div class="size-range" id="features-grid" dir="rtl"></div>
-    <button class="sizes-anim-btn" id="sizes-anim-btn" type="button" aria-label="עצור אנימציה">⏸</button>
-  </section>
+  <section class="section-sizes"></section>
 
   <!-- ⑧ ABOUT ─────────────────────────────────────────── -->
   <section class="section-about">
@@ -284,6 +287,28 @@
       <span class="exit-sub">המחקר מאחורי הפונט ←</span>
     </a>
   </section>
+
+  <!-- ⑩ FOOTER ────────────────────────────────────────── -->
+  <footer class="site-footer" dir="rtl">
+    <span class="site-footer__title">שמואל</span>
+    <div class="site-footer__columns">
+      <div class="site-footer__col">
+        <p>פונט עברי־לטיני המבוסס על הכתב הבינוני, נוצר במסגרת פרויקט גמר במחלקה לתקשורת חזותית, בצלאל אקדמיה לאמנות ועיצוב, ירושלים, 2026.</p>
+        <img class="site-footer__logo" src="assets/images/footer/bezalel-logo.png" alt="בצלאל אקדמיה לאמנות ועיצוב">
+      </div>
+      <div class="site-footer__col">
+        <span>עיצוב: נדב בירנבוים</span>
+        <span>הנחיה: דניאל גרומר וענת גוטברג</span>
+        <span>פונט משני באתר: סימפלר פרו, באדיבות מיכל סהר והגילדה</span>
+      </div>
+      <div class="site-footer__col">
+        <span>יצירת קשר:</span>
+        <a href="mailto:nadavbiren@gmail.com">nadavbiren@gmail.com</a>
+        <a href="https://nadavbireboim.com" target="_blank" rel="noopener">פורטפוליו: nadavbireboim.com</a>
+        <a href="https://www.instagram.com/nadavbirenboim/" target="_blank" rel="noopener">Instagram: nadavbirenboim</a>
+      </div>
+    </div>
+  </footer>
 
   <script src="scripts/specimen.js"></script>
   <script src="scripts/fingers-animation.js"></script>

@@ -284,18 +284,21 @@ function initScriptComparisonScroll() {
   const colMiddle = container.querySelector('.comp-col:nth-child(2)');
   const colLeft   = container.querySelector('.comp-col:nth-child(3)');
 
-  function update() {
-    const rect = container.getBoundingClientRect();
-    const scrolledPx = Math.max(0, -rect.top);
-    const vh = window.innerHeight;
+  const STEP_DELAY = 750;
 
-    colRight.classList.toggle('is-visible',  scrolledPx >= vh * 0.5);
-    colLeft.classList.toggle('is-visible',   scrolledPx >= vh * 1.0);
-    colMiddle.classList.toggle('is-visible', scrolledPx >= vh * 1.5);
-  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
 
-  window.addEventListener('scroll', update, { passive: true });
-  update();
+      observer.disconnect();
+
+      colRight.classList.add('is-visible');
+      setTimeout(() => colLeft.classList.add('is-visible'), STEP_DELAY);
+      setTimeout(() => colMiddle.classList.add('is-visible'), STEP_DELAY * 2);
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(container);
 }
 
 
@@ -339,6 +342,46 @@ function initInfiniteCarousel() {
   track.addEventListener('mouseleave', () => {
     track.getAnimations().forEach(anim => anim.playbackRate = 1);
   });
+
+  // Click-and-drag scrubbing — coexists with the CSS auto-scroll animation
+  // by manipulating its currentTime via the Web Animations API.
+  const wrapper = track.closest('.carousel-wrapper');
+  let isDragging = false;
+  let startX = 0;
+  let startTime = 0;
+
+  wrapper.addEventListener('pointerdown', (e) => {
+    const anim = track.getAnimations()[0];
+    if (!anim) return;
+    isDragging = true;
+    startX = e.clientX;
+    startTime = anim.currentTime;
+    wrapper.classList.add('is-dragging');
+    anim.pause();
+    wrapper.setPointerCapture(e.pointerId);
+  });
+
+  wrapper.addEventListener('pointermove', (e) => {
+    if (!isDragging) return;
+    const anim = track.getAnimations()[0];
+    if (!anim) return;
+    const deltaX = e.clientX - startX;
+    const trackHalfWidth = track.scrollWidth / 2;
+    const durationMs = 60000;
+    let newTime = startTime - (deltaX / trackHalfWidth) * durationMs;
+    newTime = ((newTime % durationMs) + durationMs) % durationMs;
+    anim.currentTime = newTime;
+  });
+
+  function endDrag(e) {
+    if (!isDragging) return;
+    isDragging = false;
+    wrapper.classList.remove('is-dragging');
+    const anim = track.getAnimations()[0];
+    if (anim) anim.play();
+  }
+  wrapper.addEventListener('pointerup', endDrag);
+  wrapper.addEventListener('pointercancel', endDrag);
 }
 
 
@@ -358,5 +401,13 @@ document.addEventListener('DOMContentLoaded', () => {
     themeBtn.addEventListener('click', () => {
       document.body.classList.toggle('light-theme');
     });
+
+    const heroEl = document.getElementById('heroWebglMount');
+    const updateThemeBtnVisibility = () => {
+      const pastHero = !heroEl || window.scrollY >= heroEl.offsetHeight - 10;
+      themeBtn.classList.toggle('is-visible', pastHero);
+    };
+    window.addEventListener('scroll', updateThemeBtnVisibility, { passive: true });
+    updateThemeBtnVisibility();
   }
 });

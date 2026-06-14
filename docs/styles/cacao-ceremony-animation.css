@@ -6,9 +6,6 @@
 */
 
 :root {
-  --color-black: #0F0E0C;
-  --color-main: #FF1493;
-
   /* Crop controls for the cacao ceremony poster */
   --cacao-visible-height: 100%;
   --cacao-poster-offset-y: 0%;
@@ -86,6 +83,7 @@
 .cacao-piece--base {
   z-index: 1;
   transform: translate3d(0, 0, 0);
+  transform-origin: bottom center;
   mask-image: url('../assets/images/svg/cocoa-ceremony/cacao-ceremony-base.svg');
   -webkit-mask-image: url('../assets/images/svg/cocoa-ceremony/cacao-ceremony-base.svg');
 }
@@ -93,6 +91,8 @@
 .cacao-piece--left {
   z-index: 2;
   transform: translate3d(-38%, 0, 0);
+  scale: 0.8;
+  transform-origin: bottom left;
   will-change: transform;
   mask-image: url('../assets/images/svg/cocoa-ceremony/cacao-ceremony-left.svg');
   -webkit-mask-image: url('../assets/images/svg/cocoa-ceremony/cacao-ceremony-left.svg');
@@ -101,6 +101,8 @@
 .cacao-piece--right {
   z-index: 2;
   transform: translate3d(38%, 0, 0);
+  scale: 0.8;
+  transform-origin: bottom right;
   will-change: transform;
   mask-image: url('../assets/images/svg/cocoa-ceremony/cacao-ceremony-right.svg');
   -webkit-mask-image: url('../assets/images/svg/cocoa-ceremony/cacao-ceremony-right.svg');
@@ -150,10 +152,9 @@
   top:58%;
   transform: translateX(-50%);
   width: 54%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 5%;
-  direction: ltr;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   font-weight: 900;
   font-variation-settings: 'wght' 900;
   line-height: 0.82;
@@ -163,16 +164,12 @@
 .cacao-ceremony-location__en {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .cacao-ceremony-location__he {
-  text-align: right;
-  align-items: flex;
-}
-
-.cacao-ceremony-location__en {
-  text-align: left;
-  align-items: flex-start;
+  margin-top: -100px;
 }
 
 .cacao-ceremony-location span {
@@ -210,7 +207,6 @@
   .cacao-ceremony-location {
     top: 63.5%;
     width: 61%;
-    column-gap: 8%;
   }
 
   .cacao-ceremony-location span {

@@ -20,13 +20,6 @@
   margin-bottom: 4rem;
 }
 
-.section-aside {
-  font-family: var(--font-secondary);
-  font-size: var(--size-meta-small);
-  letter-spacing: var(--tracking-mono);
-  color: var(--color-grey);
-}
-
 
 /* ── Nav scroll-reveal (specimen page only) ─────── */
 .sidebar-nav {
@@ -264,6 +257,29 @@
   border-top: 1px solid rgba(245, 242, 237, 0.04);
 }
 
+.glyph-set-header {
+  background-color: var(--color-fourth);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4rem;
+}
+
+.glyph-set-title {
+  width: 200px;
+  background-color: var(--color-black);
+  color: var(--color-fourth);
+  font-family: var(--font-primary);
+  font-variation-settings: 'wght' 700;
+  font-size: 50px;
+  margin: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0.1em 0;
+}
+
 /* Two-panel layout — inspector physical-left, grid physical-right */
 .charview-layout {
   display: grid;
@@ -479,10 +495,6 @@
 
 .char-cell--alt { font-feature-settings: 'salt' 1; }
 .char-sep       { display: none; }
-
-.section-character-grid .section-label {
-  color: var(--color-fourth);
-}
 
 /* ── ⑤ Display — hidden ─────────────────────────── */
 

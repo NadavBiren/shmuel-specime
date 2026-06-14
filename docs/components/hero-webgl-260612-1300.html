@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>שמואל — Canvas 2D Hero</title>
+  <style>
+    /* ── Reset ──────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      /* Body bg: matches canvas bg — prevents flash while images load */
+      background: #FFFFFF;
+    }
+
+    /* ── Hero wrapper ────────────────────────────────────────────── */
+    .hero-canvas-wrap {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      cursor: none; /* We draw our own cursor */
+    }
+
+    #hero-canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: #FFFFFF;
+      /* Canvas pixel dims are set in JS — this just stretches it to fill */
+    }
+
+  </style>
+</head>
+
+<body>
+  <section class="hero-canvas-wrap">
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+  </section>
+
+  <script>
+    /* ══════════════════════════════════════════════════════════════
+       SHMUEL — Canvas 2D Hero
+       Three-layer reveal via mouse-driven circle clips.
+
+       Layer order (back → front):
+         1. texture1_scan.jpg     — base, always visible
+         2. texture2_calligraphy  — revealed inside ECHO circles
+         3. texture3_vector.png   — revealed inside MAIN circle
+
+       Interaction model:
+         • Main circle: tight lerp toward mouse — the leader
+         • Echo chain: echo[0] → main, echo[1] → echo[0], echo[2] → echo[1]
+           progressively slower lerp creates a cascading trail
+         • Echo scale: 1.0× when close to main (hidden), up to 1.3× when far
+           each echo scales independently based on its own dist to main
+         • All circles: crisp clip, no blur, orange stroke border
+    ══════════════════════════════════════════════════════════════ */
+
+    /* ── ① PARAMETERS — tune freely ─────────────────────────────── */
+    const CONFIG = {
+
+      /* Canvas background — visible before images load & outside layers */
+      BG_COLOR: '#c0c0c0',
+
+      /* Stroke color applied to all circle borders */
+      STROKE_COLOR: '#FF5E00',      /* neon orange                    */
+      STROKE_WIDTH: 1.5,            /* px (canvas logical coords)     */
+
+      /* Main circle (reveals texture3_vector) */
+      MAIN_RADIUS:  120,            /* px at 1× DPR                   */
+      MAIN_LERP:    0.1,           /* [0.05–0.30] — lower = heavier  */
+
+      /* Echo circles (reveal texture2_calligraphy)
+         Chain: echo[0] follows main, echo[1] follows echo[0], echo[2] follows echo[1].
+         • lerp: המהירות הבסיסית כשהעיגול רחוק ומיוזע במרדף.
+         • proximitySpeed: כמה העיגול "יישאב" וייצמד מהר כשהוא מתקרב למי שהוא רודף אחריו (1 = נצמד מיד, 0 = שומר על הדיליי המקורי שלו).
+         • scaleMax: הגודל המקסימלי שלו כשהוא רחוק. */
+      ECHOES: [
+        { lerp: 0.02, proximitySpeed: 0.6, scaleMax: 1.35 },  /* echo[0] (C) — נצמד מאוד מהר וממש דבוק לווקטור */
+        { lerp: 0.045, proximitySpeed: 0.8, scaleMax: 1.40 },  /* echo[1] (B) — נצמד די מהר ל-C כדי שלא יראו אותו הרבה */
+        { lerp: 0.05, proximitySpeed: 1, scaleMax: 1.5 },  /* echo[2] (A) — עצלן קיצוני! גם כשהוא קרוב הוא לא מאיץ (0), מה שמשאיר אותו פתוח ענק ומלא זמן */
+      ],
+
+      /* Echo scale dynamics (distance-based size)
+         At dist=0 (resting on main): scale = breathScale (idle pulse, see frame loop).
+         At dist≥ECHO_DIST_MAX: scale = per-echo scaleMax above.          */
+      ECHO_DIST_MAX:   160,  /* px from main at which scale reaches max */
+      ECHO_SCALE_LERP: 0.08, /* how fast each echo's scale transitions  */
+
+      /* Image paths — adjust to your asset structure */
+      PATHS: {
+        scan:         '../assets/images/hero/texture1_scan.jpg',
+        calligraphyA: '../assets/images/hero/texture2_calligraphy-a.jpg',  /* outermost/oldest trail */
+        calligraphyB: '../assets/images/hero/texture2_calligraphy-b.jpg',  /* middle trail           */
+        calligraphyC: '../assets/images/hero/texture2_calligraphy-c.jpg',  /* inner trail            */
+        vector:       '../assets/images/hero/texture3_vector.jpg',
+      },
+    };
+
+
+    /* ── ② IMAGE LOADING ─────────────────────────────────────────── */
+
+    /**
+     * Loads a single image and returns a Promise<HTMLImageElement>.
+     */
+    function loadImage(src) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload  = () => resolve(img);
+        img.onerror = () => reject(new Error(`Failed to load: ${src}`));
+        img.src = src;
+      });
+    }
+
+    /**
+     * Loads all five textures in parallel.
+     * Returns { scan, calligraphyA, calligraphyB, calligraphyC, vector }.
+     */
+    async function loadAllTextures() {
+      const [scan, calligraphyA, calligraphyB, calligraphyC, vector] = await Promise.all([
+        loadImage(CONFIG.PATHS.scan),
+        loadImage(CONFIG.PATHS.calligraphyA),
+        loadImage(CONFIG.PATHS.calligraphyB),
+        loadImage(CONFIG.PATHS.calligraphyC),
+        loadImage(CONFIG.PATHS.vector),
+      ]);
+      return { scan, calligraphyA, calligraphyB, calligraphyC, vector };
+    }
+
+
+    /* ── ③ DRAW HELPERS ──────────────────────────────────────────── */
+
+    /**
+     * Returns { dx, dy, dw, dh } drawImage arguments that implement
+     * object-fit: contain — the image is scaled to fit within the canvas
+     * while preserving aspect ratio, centred. No cropping occurs.
+     */
+    function containRect(imgW, imgH, canvasW, canvasH) {
+      const scale = Math.min(canvasW / imgW, canvasH / imgH);
+      const dw = imgW * scale;
+      const dh = imgH * scale;
+      const dx = (canvasW - dw) / 2;
+      const dy = (canvasH - dh) / 2;
+      return { dx, dy, dw, dh };
+    }
+
+    /**
+     * Draws `img` onto `ctx` using contain-scaling, centered.
+     * The canvas dimensions are taken from ctx.canvas.
+     */
+    function drawContain(ctx, img, canvasW, canvasH) {
+      const { dx, dy, dw, dh } = containRect(img.naturalWidth, img.naturalHeight, canvasW, canvasH);
+      ctx.drawImage(img, dx, dy, dw, dh);
+    }
+
+/**
+ * Clips to a circle, fills with background color, applies multiply blending for the image,
+ * and draws a clean, crisp stroke on top.
+ */
+function drawCircleReveal(ctx, img, cx, cy, radius, canvasW, canvasH) {
+  if (!img) return;
+
+  ctx.save();
+
+  // 1. יצירת מסלול עיגולי לחיתוך (Clip)
+  ctx.beginPath();
+  ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+  ctx.clip();
+
+  // 2. צביעת פנים העיגול בצבע הרקע (מנקה את תמונת הרקע שמתחת)
+  ctx.fillStyle = CONFIG.BG_COLOR;
+  ctx.fill();
+
+  // 3. שינוי מצב השילוב ל-Multiply רק עבור התמונה שמונחת על הרקע האחיד
+  ctx.globalCompositeOperation = 'multiply';
+  drawContain(ctx, img, canvasW, canvasH);
+
+  ctx.restore(); // מחזיר את מצב השילוב ל-source-over הרגיל
+
+  // 4. ציור הקו הכתום מעל הכל - מחוץ ל-Clip ומחוץ ל-Multiply
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+  ctx.strokeStyle = CONFIG.STROKE_COLOR;
+  ctx.lineWidth   = CONFIG.STROKE_WIDTH;
+  ctx.stroke();
+  ctx.restore();
+}
+
+    /* ── ④ HERO CLASS ────────────────────────────────────────────── */
+
+    class Hero2D {
+
+      constructor(canvas) {
+        this.canvas = canvas;
+        this.ctx    = canvas.getContext('2d');
+
+        const initX = window.innerWidth  / 2;
+        const initY = window.innerHeight / 2;
+
+        /* Raw mouse position in CSS pixels */
+        this.mouse = { x: initX, y: initY };
+
+        /* Lerped position of the main circle */
+        this.main  = { x: initX, y: initY };
+
+        /* Lerped positions + individual scale multipliers for each echo circle */
+        this.echoes = CONFIG.ECHOES.map(() => ({ x: initX, y: initY, scaleMult: 1.0 }));
+
+        /* Images — set after loading */
+        this.textures = null;
+
+        /* rAF handle */
+        this.rafId = null;
+
+        this._onMouseMove = this._onMouseMove.bind(this);
+        this._onResize    = this._onResize.bind(this);
+      }
+
+      /* ── Load & start ────────────────────────────────────────── */
+      async init() {
+        /* Size canvas immediately */
+        this.resize();
+
+        /* Load textures */
+        this.textures = await loadAllTextures();
+
+        /* Bind events */
+        document.addEventListener('mousemove', this._onMouseMove, { passive: true });
+        window.addEventListener('resize',    this._onResize,    { passive: true });
+
+        /* Start render loop */
+        this.rafId = requestAnimationFrame(ts => this._frame(ts));
+      }
+
+      /* ── Resize: sync canvas pixel buffer to display size ─────── */
+      resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const w   = this.canvas.offsetWidth;
+        const h   = this.canvas.offsetHeight;
+        this.canvas.width  = w * dpr;
+        this.canvas.height = h * dpr;
+        this.ctx.scale(dpr, dpr); /* Scale once after resize */
+        this.dpr = dpr;
+      }
+
+      /* ── Mouse tracking ─────────────────────────────────────── */
+      _onMouseMove(e) {
+        const rect = this.canvas.getBoundingClientRect();
+        this.mouse.x = e.clientX - rect.left;
+        this.mouse.y = e.clientY - rect.top;
+      }
+
+      _onResize() {
+        this.resize();
+      }
+
+      /* ── Per-frame lerp helper ──────────────────────────────── */
+      static lerp(a, b, t) {
+        return a + (b - a) * t;
+      }
+
+      /* ── Main render loop ───────────────────────────────────── */
+      _frame(ts = 0) {
+        this.rafId = requestAnimationFrame(ts => this._frame(ts));
+
+        if (!this.textures) return; /* Still loading */
+
+        const { ctx, mouse, main, echoes } = this;
+        const { scan, calligraphyA, calligraphyB, calligraphyC, vector } = this.textures;
+        /* Map echo index to texture: 0=closest→C, 1=middle→B, 2=farthest→A */
+        const echoTextures = [calligraphyC, calligraphyB, calligraphyA];
+        const L = Hero2D.lerp;
+
+        /* ── Main circle: leads, follows mouse tightly ── */
+        main.x = L(main.x, mouse.x, CONFIG.MAIN_LERP);
+        main.y = L(main.y, mouse.y, CONFIG.MAIN_LERP);
+
+        /* ── Idle breathing configuration ── */
+        const breathingSpeed = 0.0025;
+
+        const getBreathScale = (index, timestamp) => {
+          const intensities = [0.05, 0.15, 0.35];
+          const intensity = intensities[index] !== undefined ? intensities[index] : 0.15;
+          return 1.05 + intensity * Math.sin(timestamp * breathingSpeed);
+        };
+
+        /* ── Echo chain: each echo follows its predecessor ── */
+        for (let i = 0; i < echoes.length; i++) {
+          const target = i === 0 ? main : echoes[i - 1];
+
+          let lerpFactor = CONFIG.ECHOES[i].lerp;
+
+          const distToTarget = Math.hypot(target.x - echoes[i].x, target.y - echoes[i].y);
+          const proximityFactor = Math.min(1, distToTarget / CONFIG.ECHO_DIST_MAX);
+
+          const speedBoost = CONFIG.ECHOES[i].proximitySpeed;
+          lerpFactor *= (1 - speedBoost) + (speedBoost * proximityFactor);
+
+          echoes[i].x = L(echoes[i].x, target.x, lerpFactor);
+          echoes[i].y = L(echoes[i].y, target.y, lerpFactor);
+
+          const distToMain  = Math.hypot(main.x - echoes[i].x, main.y - echoes[i].y);
+          const scaleFactor = Math.min(1, distToMain / CONFIG.ECHO_DIST_MAX);
+          const currentBreathScale = getBreathScale(i, ts);
+          const targetScale = currentBreathScale + (CONFIG.ECHOES[i].scaleMax - currentBreathScale) * scaleFactor;
+          echoes[i].scaleMult = L(echoes[i].scaleMult, targetScale, CONFIG.ECHO_SCALE_LERP);
+        }
+
+        /* ── Canvas logical dimensions (CSS pixels) ── */
+        const cw = this.canvas.width  / this.dpr;
+        const ch = this.canvas.height / this.dpr;
+
+        /* ── Layer 1: base scan — fills canvas ── */
+        ctx.clearRect(0, 0, cw, ch);
+        ctx.fillStyle = CONFIG.BG_COLOR;
+        ctx.fillRect(0, 0, cw, ch);
+
+        ctx.save();
+        ctx.globalCompositeOperation = 'multiply';
+        drawContain(ctx, scan, cw, ch);
+        ctx.restore();
+
+        /* ── Layer 2: echo circles — calligraphy reveal ── */
+        for (let i = echoes.length - 1; i >= 0; i--) {
+          drawCircleReveal(
+            ctx,
+            echoTextures[i],
+            echoes[i].x,
+            echoes[i].y,
+            CONFIG.MAIN_RADIUS * echoes[i].scaleMult,
+            cw, ch
+          );
+        }
+
+        /* ── Layer 3: main circle — vector reveal ── */
+        const mainBreathScale = getBreathScale(0, ts);
+        drawCircleReveal(ctx, vector, main.x, main.y, CONFIG.MAIN_RADIUS * mainBreathScale, cw, ch);
+      }
+
+      /* ── Cleanup ─────────────────────────────────────────────── */
+      destroy() {
+        if (this.rafId) cancelAnimationFrame(this.rafId);
+        document.removeEventListener('mousemove', this._onMouseMove);
+        window.removeEventListener('resize', this._onResize);
+      }
+    }
+
+
+    /* ── ⑤ BOOTSTRAP ─────────────────────────────────────────────── */
+    document.addEventListener('DOMContentLoaded', () => {
+      const canvas = document.getElementById('hero-canvas');
+      if (!canvas) return;
+
+      const hero = new Hero2D(canvas);
+      hero.init().catch(err => {
+        /* Fallback: if images fail to load, canvas stays gray — not a crash */
+        console.warn('[Hero2D] Texture load failed:', err.message);
+      });
+    });
+  </script>
+</body>
+</html>

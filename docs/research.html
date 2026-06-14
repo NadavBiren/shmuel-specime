@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מחקר — שמואל</title>
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/research.css">
+</head>
+<body class="page-research">
+
+  <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Toggle Light/Dark Theme"></button>
+
+  <nav class="sidebar-nav" aria-label="ניווט ראשי">
+    <a href="index.html" class="sidebar-nav__item">
+      <span class="sidebar-nav__label">הפונט</span>
+    </a>
+    <a href="research.html" class="sidebar-nav__item nav-active">
+      <span class="sidebar-nav__label">המחקר</span>
+    </a>
+    <a href="try-me.html" class="sidebar-nav__item">
+      <span class="sidebar-nav__label">הטסטר</span>
+    </a>
+  </nav>
+
+  <!-- ── NESTED LAYERS — each tab sticks at its own top offset ── -->
+  <main class="content-area nested-layers">
+
+    <div id="heroWebglMount" style="height: 100vh; width: 100%; position: relative; overflow: hidden; z-index: 0;"></div>
+
+    <div class="top-grey-rail" aria-hidden="true"></div>
+
+    <div class="rs-layer">
+      <div class="rs-tab-bar">
+        <button class="rs-tab rs-tab-0" onclick="scrollToSection('rs-section-0')">01 הכתב הבינוני</button>
+      </div>
+
+      <!-- 01 ─── הכתב הבינוני ─────────────────────────────────── -->
+      <section class="rs-section" id="rs-section-0" data-idx="0">
+        <div class="rs-section__inner rs-section__inner--split">
+
+          <header class="rs-section__hd">
+            <h2 class="rs-section__title">הכתב הבינוני</h2>
+          </header>
+
+          <div class="layout-text">
+            <h3 class="rs-section__subhead">מה זה הכתב הבינוני</h3>
+
+
+            <p>בסוף שנה א׳ ללימודיי במחלקה, נתקלתי בשלושת הכרכים של ״אסופות כתבים עבריים מימי־הביניים״ — מחקרם של פרופ׳ מלאכי בית־אריה וד״ר עדנה אנג׳ל, שמתפרס על פני למעלה מ־30 שנה וממפה את הכתיבה העברית בימי הביניים. בשנים האחרונות שבתי ולמדתי את הכתבים ועליהם. המחקר מצביע על שיטת כתיבה בעברית, שבמבט ראשון בכלל לא הייתה נראת כמו עברית — לפעמים כמו לטינית, לפעמים ערבית. משהו בצורות האלו שהיו קצת מוכרות וקצת מוזרת משך אותי להמשיך להתעסק בכתבים האלו. </p>
+
+            <p>במחקרם, בית־אריה ואנגל מצביעים על שלוש שיטות כתיבה מרכזיות שהיו קיימות בעברית. כולנו מכירים את שני קצות הסקאלה: מצד אחד <strong>הכתב המרובע</strong> והרשמי (מה שאנו מכנים היום ״כתב דפוס״), ומצד שני <strong>הכתב הרהוט</strong> והמהיר (״כתב יד״). אך מתברר שבימי הביניים שלטה בכיפה שיטת כתיבה שלישית, שהיוותה נקודת אמצע בין שתי השיטות הללו: <strong>הכתב הבינוני</strong>.</p>
+
+            <p>הצורות של הכתב המרובע נשארו דומות לצורות שהיו קיימות בימי הביניים, בעיקר בגלל ההלכה ומסורת הכתיבה ההדוקה שהגדירה בדיוק איך הצורות צריכות להיראות. הכתיבה הזו הובילה לרוב הפונטים שאנו רגילים לקרוא בהם היום. הכתב הרהוט לעומת זאת, בגלל האופי האישי שלו, השתנה מאוד לאורך השנים, אבל המשיך להתקיים ולהתפתח. אנו מכירים את המופע שלו כפונטים מסוג ״כתב יד״. הכתב הבינוני הפתח לכדי ״כתב רש״י״ במהפכת הדפוס ושם הוא נעצר.</p>
+          </div>
+
+          <div class="layout-media">
+            <div class="scroll-container">
+              <div class="sticky-wrapper">
+                <div class="comparison-grid">
+
+                  <!-- עמודה ימנית (1) -->
+                  <div class="comp-col">
+                    <div class="img-wrapper top-row">
+                      <img class="img-default" src="assets/images/1st-section/fig-script-comparison-1a.jpg" alt="מקור 1">
+                      <img class="img-hover" src="assets/images/1st-section/fig-script-comparison-1a-hover.jpg" alt="מקור 1 הובר">
+                    </div>
+                    <div class="comp-arrow">↓</div>
+                    <div class="img-wrapper bottom-row">
+                      <img class="img-default" src="assets/images/1st-section/fig-script-comparison-1b.jpg" alt="פונט 1">
+                      <img class="img-hover" src="assets/images/1st-section/fig-script-comparison-1b-hover.jpg" alt="פונט 1 הובר">
+                    </div>
+                  </div>
+
+                  <!-- עמודה אמצעית (2) -->
+                  <div class="comp-col">
+                    <div class="img-wrapper top-row">
+                      <img class="img-default" src="assets/images/1st-section/fig-script-comparison-2b.jpg" alt="מקור 2">
+                      <img class="img-hover" src="assets/images/1st-section/fig-script-comparison-2b-hover.jpg" alt="מקור 2 הובר">
+                    </div>
+                    <div class="comp-arrow">↓</div>
+                    <div class="img-wrapper bottom-row">
+                      <img class="img-default" src="assets/images/1st-section/fig-script-comparison-3b.jpg" alt="פונט 2">
+                      <img class="img-hover" src="assets/images/1st-section/fig-script-comparison-3b-hover.jpg" alt="פונט 2 הובר">
+                    </div>
+                  </div>
+
+                  <!-- עמודה שמאלית (3) -->
+                  <div class="comp-col">
+                    <div class="img-wrapper top-row">
+                      <img class="img-default" src="assets/images/1st-section/fig-script-comparison-2a.jpg" alt="מקור 3">
+                      <img class="img-hover" src="assets/images/1st-section/fig-script-comparison-2a-hover.jpg" alt="מקור 3 הובר">
+                    </div>
+                    <div class="comp-arrow">↓</div>
+                    <div class="img-wrapper bottom-row">
+                      <img class="img-default" src="assets/images/1st-section/fig-script-comparison-3a.jpg" alt="פונט 3">
+                      <img class="img-hover" src="assets/images/1st-section/fig-script-comparison-3a-hover.jpg" alt="פונט 3 הובר">
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <figcaption class="rs-figure__caption" style="text-align: right; margin-top: 2rem;"><strong>שורה ראשונה, מימין לשמאל:</strong> כתב יד מרובע, כתב יד בינוני וכתב יד רהוט.<br><strong>שורה שנייה, מימין לשמאל:</strong> פונט נרקיס טקסט (פונט מסוג מרובע), פונט רש״י (פונט מסוג בינוני) וגוטמן יד־בראש (פונט מסוג רהוט).</figcaption>
+          </div>
+
+          <div class="layout-text">
+            <p>כדי להבין למה בכלל היינו צריכים כתב אמצע, צריך להבין את התפקיד של כל כתב. <strong>הכתב המרובע</strong> היה הכתב הייצוגי והקדוש ביותר. הוא שימש כמעט אך ורק לכתיבת ספרי תורה, תנ״ך וטקסטים מקודשים. בגלל קדושתו וחוקי ההלכה הנוקשים, הוא דרש שרטוט איטי, קפדני ומרובה משיכות קולמוס (כמות התנועות של כלי הכתיבה על הדף כדי ליצור את צורת האות), מה שהפך אותו ליקר ואיטי מאוד להפקה — הן מבחינת מקום על הקלף והן מבחינת מהירות הכתיבה. בקצה השני עמד <strong>הכתב הרהוט</strong> — כתב יד מהיר, משוחרר וחסכוני, ששימש בעיקר לטיוטות, מכתבים אישיים ורישומים יומיומיים.</p>
+
+            <p>וכל מה שבין לבין? שם נכנס <strong>הכתב הבינוני</strong>. הוא שימש למסמכים רשמיים, לספרי מדע, רפואה ופילוסופיה, ובעיקר — לכתיבת פירושים (כמו פירוש רש״י או הרמב״ם) שהקיפו את הטקסט המקודש. <strong>הכתב הבינוני</strong> אִפשר למעתיקים לכתוב מהר יותר ולחסוך בקלף או נייר יקרים, לחסוך בזמן ובדיו, אך עדיין לשמור על מראה מכובד וקריא.</p>
+            
+            <p>אם נסתכל על הצורה של הכתבים, נגלה ש<strong>הכתב הבינוני</strong> הוא הלחם בין קודש לחול, בין המרובע לעגול. <strong>הכתב המרובע</strong> מאופיין בנוקשות וביציבות: יש לו גגות (הקווים העליונים) ובסיסים (הקווים התחתונים) ישרים וזקופים. <strong>הכתב הרהוט</strong>, לעומתו, הוא עגול לחלוטין וזורם. <strong>הכתב הבינוני</strong> לוקח קצת מכל העולמות: הוא משמר את ה<strong>גגות הישרים</strong> שנותנים שורות מסודרות וקריאות, אך מאמץ את ה<strong>בסיסים המעוגלים</strong> שמאפשרים ליד לרוץ מהר יותר על הדף. השילוב הזה נותן לו גם נטייה קלה — משהו בין הכתב המרובע הזקוף, לכתב היד שנוטה ממהירות הכתיבה.</p>
+
+            <p>עד כמה הכתב הבינוני היה פופולרי? פרופ׳ מלאכי בית־אריה מסכם זאת במספרים:</p>
+
+            <blockquote class="research-quote">
+              ״בחישוב כולל נמצא שבין שנת 1001 (שנת הפצעתו של הכתב הבינוני והתפשטותו במזרח) ובין שנת 1500 קרוב לרבע מכתבי־היד נכתבו בכתב מרובע וכמעט שלושה רבעים מכל כתבי־היד נכתבו בכתב בינוני, אך רק ארבעה אחוזים מהם נכתבו בכתב רהוט.״
+              <br><cite>מלאכי בית־אריה, קודיקולוגיה עברית: שימור ושינוי</cite>
+            </blockquote>
+
+
+            <br>
+
+            <h3 class="rs-section__subhead">המבטאים של הכתב הבינוני<br><span class="rs-section__subhead-sub">השוואה אזורית</span></h3>
+
+            <p>כמו שלשפה יש מבטאים שונים, כך גם הכתב הבינוני קיבל ״מבטא חזותי״ בכל אזור שבו חיו יהודים. האותיות אמנם היו אותן אותיות, אך הכלים שבהם השתמשו (לדוגמה: נוצה לעומת קנה) והשפעת הכתב של החברה מסביב (ערבית או לטינית) יצרו סגנונות שונים לחלוטין. המחקר על ההבדלים, השינויים וההשפעות רחבים, וקצרה היריעה מלציין כאן את כולם, אך אלו עיקרי ההבדלים:</p>
+          </div>
+
+          <!-- 1. הטיפוס הספרדי -->
+          <div class="layout-media">
+            <div class="rs-ms-type">
+              <div class="rs-ms-type__img-col">
+                <figure class="rs-ms-figure">
+                  <img src="assets/images/ms-type-sephardic.jpg" alt="הטיפוס הספרדי">
+                  <figcaption class="rs-ms-caption">כתב מטיפוס ספרדי. צרפת, 1395 [Paris, BN hebr. 351, fol. 20v]</figcaption>
+                </figure>
+              </div>
+              <div class="rs-ms-type__info-col">
+                <h4 class="rs-ms-type__name">הטיפוס הספרדי</h4>
+                <p class="rs-ms-type__location">ספרד, איטליה, צפון אפריקה ופרובנס</p><br>
+                <div class="rs-ms-type__grid">
+                  <div class="rs-ms-grid-row">
+                    <span class="rs-ms-grid-key">ההשפעה</span>
+                    <span class="rs-ms-grid-val">סביבה מוסלמית והכתב הערבי המעוגל והזורם</span>
+                  </div>
+                  <div class="rs-ms-grid-row">
+                    <span class="rs-ms-grid-key">הכלי</span>
+                    <span class="rs-ms-grid-val">קולמוס עשוי מקנה סוף (צמח), שנחתך בשיפוע. הכלי הזה יוצר הבדלים מתונים בעובי הקווים</span>
+                  </div>
+                  <div class="rs-ms-grid-row">
+                    <span class="rs-ms-grid-key">המראה</span>
+                    <span class="rs-ms-grid-val">זהו כתב קלאסי, עגול, הרמוני ואלגנטי. הוא משלב גגות ישרים וקצרים עם בסיסים מעוגלים וזורמים. השפעת הכתב הזה הייתה עצומה, והוא זה ששימש מודל למדפיסים הראשונים (מה שאנחנו קוראים לו היום ״כתב רש״י״).</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. הטיפוס האשכנזי -->
+          <div class="layout-media">
+            <div class="rs-ms-type">
+              <div class="rs-ms-type__img-col">
+                <figure class="rs-ms-figure">
+                  <img src="assets/images/ms-type-ashkenazi.jpg" alt="הטיפוס האשכנזי">
+                  <figcaption class="rs-ms-caption">כתב מטיפוס אשכנזי. גרמניה, 1232 [Munich, BSB Cod. hebr. 5(2), fol. 27v]</figcaption>
+                </figure>
+              </div>
+              <div class="rs-ms-type__info-col">
+                <h4 class="rs-ms-type__name">הטיפוס האשכנזי</h4>
+                <p class="rs-ms-type__location">גרמניה, צרפת, אנגליה</p><br>
+                <div class="rs-ms-type__grid">
+                  <div class="rs-ms-grid-row">
+                    <span class="rs-ms-grid-key">ההשפעה</span>
+                    <span class="rs-ms-grid-val">סביבה נוצרית והכתב הלטיני ה־״גותי״ (הכתב של אירופה בימי הביניים)</span>
+                  </div>
+                  <div class="rs-ms-grid-row">
+                    <span class="rs-ms-grid-key">הכלי</span>
+                    <span class="rs-ms-grid-val">קולמוס עשוי מנוצה של עוף. נוצה היא כלי גמיש מאוד, ולכן היא מגיבה ללחץ היד</span>
+                  </div>
+                  <div class="rs-ms-grid-row">
+                    <span class="rs-ms-grid-key">המראה</span>
+                    <span class="rs-ms-grid-val">כתב נוקשה, דרמטי ובעל ״קונטרסט״ (ניגודיות) גבוה מאוד: הקווים האופקיים (הגגות) נכתבו רחבים ועבים מאוד, בעוד שהקווים האנכיים (הרגליים) היו דקים מאוד. הכתב הזה נראה לפעמים ״רוטט״ או שבור, עם זוויתיות חדה וללא הרבה עיגולים.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. הטיפוס המזרחי -->
+          <div class="layout-media">
+            <div class="rs-ms-type">
+              <div class="rs-ms-type__img-col">
+                <figure class="rs-ms-figure">
+                  <img src="assets/images/ms-type-mizrahi.jpg" alt="הטיפוס המזרחי">
+                  <figcaption class="rs-ms-caption">כתב מטיפוס מזרחי. מצרים, 1223 [Oxford, BL Poc. 97, fol. 90v]</figcaption>
+                </figure>
+              </div>
+              <div class="rs-ms-type__info-col">
+                <h4 class="rs-ms-type__name">הטיפוס המזרחי</h4>
+                <p class="rs-ms-type__location">המזרח התיכון, איראן, מצרים, לבנון, ארץ ישראל</p><br>
+                <div class="rs-ms-type__grid">
+                  <div class="rs-ms-grid-row">
+                    <span class="rs-ms-grid-key">ההשפעה</span>
+                    <span class="rs-ms-grid-val">הכתב הערבי והפרסי המקומי</span>
+                  </div>
+                  <div class="rs-ms-grid-row">
+                    <span class="rs-ms-grid-key">הכלי</span>
+                    <span class="rs-ms-grid-val">קולמוס קנה</span>
+                  </div>
+                  <div class="rs-ms-grid-row">
+                    <span class="rs-ms-grid-key">המראה</span>
+                    <span class="rs-ms-grid-val">כתב בעל מבנה מלבני ורחב. המאפיין הבולט ביותר שלו הוא הטיה חזקה לשמאל (לכיוון הקריאה). כדי להשיג את המהירות, הסופרים מתחו את בסיסי האותיות באלכסון כלפי מטה, מתחת לשורת הכתב הרגילה, והרגליים של האותיות נטו קדימה.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. הטיפוס התימני -->
+          <div class="layout-media">
+            <div class="rs-ms-type">
+              <div class="rs-ms-type__img-col">
+                <figure class="rs-ms-figure">
+                  <img src="assets/images/ms-type-yemenite.jpg" alt="הטיפוס התימני">
+                  <figcaption class="rs-ms-caption">הטיפוס התימני (פרטים על התמונה שיכנסו בהמשך)</figcaption>
+                </figure>
+              </div>
+              <div class="rs-ms-type__info-col">
+                <h4 class="rs-ms-type__name">הטיפוס התימני</h4>
+                <p class="rs-ms-type__location">תימן</p><br>
+                <div class="rs-ms-type__grid">
+                  <div class="rs-ms-grid-row">
+                    <span class="rs-ms-grid-key">ההשפעה</span>
+                    <span class="rs-ms-grid-val">הכתב התימני הוא מעין ״קפסולת זמן״. הוא התפצל מהענף המזרחי הקדום, אך שמר על שמרנות רבה והקפיא צורות עתיקות שלא שרדו במקומות אחרים</span>
+                  </div>
+                  <div class="rs-ms-grid-row">
+                    <span class="rs-ms-grid-key">הכלי</span>
+                    <span class="rs-ms-grid-val">בקולמוס קנה</span>
+                  </div>
+                  <div class="rs-ms-grid-row">
+                    <span class="rs-ms-grid-key">המראה</span>
+                    <span class="rs-ms-grid-val">כתב מאוד מרובע וזוויתי שמזכיר צורות גיאומטריות. בדומה לכתב המזרחי, גם הכתב התימני נוטה קדימה, והאות אל״ף שלו ייחודית מאוד — עם ציר מרכזי מלוכסן ומקושת שמזכיר קצת משולש.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="layout-text">
+          <p>מתוך המחקר הכללי על האותיות, בחרתי ליצור פונט, עכשווי ורלוונטי לתקופתנו, מתוך דיאלוג עם שיטת הכתיבה. תהליך ייצור הפונט התחיל דרך מחקר מעמיק יותר של המקורות השונים.</p>
+          </div>
+          <br>
+        </div>
+
+
+      </section>
+
+      <div class="rs-layer">
+        <div class="rs-tab-bar">
+          <button class="rs-tab rs-tab-1" onclick="scrollToSection('rs-section-1')">02 מחקר מקורות</button>
+        </div>
+
+        <!-- 02 ─── מחקר מקורות ──────────────────────────────────── -->
+        <section class="rs-section" id="rs-section-1" data-idx="1">
+
+          <!-- שורה עליונה: כותרת + טקסט -->
+          <div class="rs-section__inner rs-section__inner--text rs-section__inner--split">
+
+            <header class="rs-section__hd">
+              <h2 class="rs-section__title">מחקר מקורות</h2>
+            </header>
+
+            <div class="layout-text">
+              <p>תהליך הפיתוח החל במחקר מקיף של 18 מקורות שונים של הכתב הבינוני, שנבחרו מתקופות שונות ומגזרות גאוגרפיות מגוונות. המחקר הקיף את כלל ענפי הכתיבה העברית המרכזיים — בהם הטיפוס האשכנזי, הספרדי, המזרחי והתימני — מתוך מטרה לעמוד על המכנה המשותף ביניהם ועל הייחוד הצורני של כל סגנון.</p>
+              <p>כדי לבחון את ההיתכנות הטיפוגרפית של המקורות, נוצר עבור כל אחד מהם ״מיני־פונט״ ייעודי הכולל מספר אותיות נבחרות. שלב זה אפשר לבחון כיצד האותיות עוברות עריכה ראשונית בכלי ווקטורי ואיך הן מגיבות לדיוק הדיגיטלי. מתוך התנסות זו והשוואה בין הטיפוסים השונים, התגבשה השפה הווקטורית העכשווית של ״שמואל״.</p>
+            </div>
+
+          </div><!-- /rs-section__inner--text -->
+
+          <div class="carousel-wrapper">
+            <div class="marquee-track" id="marquee-track"></div>
+          </div>
+
+          <div class="rs-section__inner rs-section__inner--text" style="min-height: auto; padding-top: 4rem;">
+            <div class="rs-section__bd" style="padding-top: 0;">
+              <p>בסופו של דבר, מתוך כעשרים כתבי־יד שנחקרו, אף אות לא אומצה כצורה מוגמרת. הבחירות היו אנטומיות במהותן: זיקוק של הפרטים הנכונים למערכת המגובשת של ״שמואל״, תוך תרגום התנועה הידנית לדיוק וקטורי ששומר על החיוניות המקורית של הכתב.</p>
+              <p>למטה ניתן לראות השוואות בין המקורות ההיסטוריים לבין הגרסה הדיגיטלית שלהם.</p>
+            </div>
+          </div>
+
+          <!-- כלי השוואת מקורות — גובה מלא -->
+          <div class="rs-section__inner rs-section__inner--sources">
+
+            <div class="sources-group">
+
+              <!-- viewer שמאל: תמונות השוואה -->
+              <div class="sources-viewer" id="sources-viewer">
+                <div class="sources-viewer__track" id="sources-viewer-track">
+                  <!-- JS מאכלס כאן .source-slide לכל מקור -->
+                </div>
+                <div class="sources-viewer__line" id="sources-viewer-line"></div>
+                <button class="src-nav-btn src-nav-prev" aria-label="הקודם">→</button>
+                <button class="src-nav-btn src-nav-next" aria-label="הבא">←</button>
+              </div>
+
+              <!-- aside ימין: בחירה + פרטים -->
+              <div class="sources-aside">
+
+                <div class="sources-selector" id="sources-selector">
+                  <!-- JS מאכלס: <button class="src-btn" data-id="1">01</button> -->
+                </div>
+
+                <div class="sources-meta" id="sources-meta">
+                  <div class="src-meta-row">
+                    <span class="src-meta-key">שם המקור</span>
+                    <span class="src-meta-val" id="smeta-name">—</span>
+                  </div>
+                  <div class="src-meta-row">
+                    <span class="src-meta-key">תאריך</span>
+                    <span class="src-meta-val" id="smeta-year">—</span>
+                  </div>
+                  <div class="src-meta-row">
+                    <span class="src-meta-key">סופר</span>
+                    <span class="src-meta-val" id="smeta-writer">—</span>
+                  </div>
+                  <div class="src-meta-row">
+                    <span class="src-meta-key">מקום</span>
+                    <span class="src-meta-val" id="smeta-place">—</span>
+                  </div>
+                  <div class="src-meta-row">
+                    <span class="src-meta-key">סגנון כתיבה</span>
+                    <span class="src-meta-val" id="smeta-style">—</span>
+                  </div>
+                </div>
+
+                <div class="sources-letters" id="sources-letters">
+                  <img class="sources-letters__img" id="sources-letters-img"
+                       src="" alt="" aria-hidden="true" width="640" height="227">
+                </div>
+
+              </div><!-- /sources-aside -->
+
+            </div><!-- /sources-group -->
+
+          </div><!-- /rs-section__inner--sources -->
+
+        </section>
+
+        <div class="rs-layer">
+          <div class="rs-tab-bar">
+            <button class="rs-tab rs-tab-2" onclick="scrollToSection('rs-section-2')">03 סקיצות</button>
+          </div>
+
+          <!-- 03 ─── סקיצות ──────────────────────────────────────── -->
+          <section class="rs-section" id="rs-section-2" data-idx="2">
+            <div class="rs-section__inner rs-section__inner--split">
+
+              <header class="rs-section__hd">
+                <h2 class="rs-section__title">סקיצות</h2>
+              </header>
+
+              <div class="layout-text">
+                <p>תהליך הפיתוח התבסס על ניסיונות כתיבה בכלים וציפורנים שונות כדי ללמוד את התנועה הקליגרפית המקורית. לאחר העיצוב הווקטורי מתוך המקורות, בוצעו תיקונים וסקיצות ידניות באייפד; אלו נועדו להגיע לדיוק מרבי ולייצר איזון מדויק יותר בין השחור (הדיו) ללבן (החלל הפנימי) של הפונט. לאורך כל התהליך נערכה התבוננות רציפה בסריקות המקוריות, ובוצעו שינויים קטנים שנבעו מתוך ניסיון להבין לעומק את הלוגיקה שמאחורי הצורות והסיבות למראה שלהן.</p>
+                <p>בשל כך, האותיות לא הועתקו אלא תורגמו. כל גליף נבחן מול שתי שאלות: מה הייתה תנועת הכלי המקורית, ומה דורשת המערכת הטיפוגרפית של הפונט כיום. במקרים שבהם נוצר מתח בין השתיים, ההחלטה הוכרעה לטובת הלוגיקה המערכתית, תוך ניסיון להיצמד למקור ככל האפשר, כדי להבטיח שהפונט יתפקד ככלי עיצובי עקבי, שימושי ורלוונטי.</p>
+              </div>
+
+            </div>
+          </section>
+
+          <div class="rs-layer">
+            <div class="rs-tab-bar">
+              <button class="rs-tab rs-tab-3" onclick="scrollToSection('rs-section-3')">04 בדיקות ותיקונים</button>
+            </div>
+
+            <!-- 04 ─── בדיקות ותיקונים ─────────────────────────────── -->
+            <section class="rs-section" id="rs-section-3" data-idx="3">
+              <div class="rs-section__inner rs-section__inner--split">
+
+                <header class="rs-section__hd">
+                  <h2 class="rs-section__title">בדיקות ותיקונים</h2>
+                </header>
+
+                <div class="layout-text">
+                  <p>כל אות נבחנה בהקשר של טקסט חי. הבדיקה בגדלים שונים חשפה בעיות שניתוח של אות בודדת לא יכול לגלות, כמו הריתמוס בין אותיות ישרות לעגולות – אתגר משמעותי במבנה הצפוף המאפיין את הכתב הבינוני. המדד המרכזי לא היה יופי של אות בודדת, אלא עקביות המערכת כולה: עובי הקו בנקודות מגע, זווית הסריפים והיחס המדויק שבין גובה האות (x־height) לגוף שלה.</p>
+                  <p>ציר הווריאציה (300–900) הציב אתגר מורכב, שכן הכתב המקורי מתאפיין בדחיסות גבוהה ויוצר ״צבע״ שחור וצפוף מאוד על הדף. בניגוד לתהליכי עיצוב מודרניים שמתחילים לרוב ממשקל ממוצע, כאן נקודת המוצא הייתה הכתב העמוס והכהה. האתגר היה לפענח את הלוגיקה של התנועה הקליגרפית המקורית ולתרגם אותה למערכת וריאבילית, כך שהאופי הייחודי יישמר גם כשמפשיטים מהאות את ה״בשר״ שלה לכדי משקלים קלים. המטרה הייתה למצוא את האיזון המדויק שבין השחור ללבן, תוך שמירה על המתח הצורני הפנימי של הכתב בכל נקודה על הציר.</p>
+                </div>
+
+              </div>
+            </section>
+
+            <div class="rs-layer">
+              <div class="rs-tab-bar">
+                <button class="rs-tab rs-tab-4" onclick="scrollToSection('rs-section-4')">05 מאפיינים</button>
+              </div>
+
+              <!-- 05 ─── מאפיינים ─────────────────────────────────────── -->
+              <section class="rs-section" id="rs-section-4" data-idx="4">
+                <div class="rs-section__inner rs-section__inner--split">
+
+                  <header class="rs-section__hd">
+                    <h2 class="rs-section__title">מאפיינים</h2>
+                  </header>
+
+                  <div class="layout-text">
+                    <p>שמואל הוא פונט לתצוגה ולכותרות, המיועד לייצר נוכחות ויזואלית חזקה ולא נועד לקריאה של גוף טקסט ארוך. האנטומיה שלו מזקקת את העקרונות המגדירים את הכתב הבינוני: גגות ישרים, בסיסים מעוגלים וחללים פנימיים מצומצמים ועקביים המייצרים ריתמוס צפוף ומובהק.</p>
+                    <p>ציר הווריאציה של הפונט (משקל 500–900) מאפשר שליטה מלאה בעובי האות, תוך שמירה על ה״שלד״ המשותף לסגנון. העיצוב אינו מחקה מסמך היסטורי ספציפי, אלא מייצג מערכת המבוססת על עובי קו מדוד וסריפים בעלי מקור קליגרפי ברור, שאינם מסוגננים באופן מלאכותי אלא נובעים מהלוגיקה של תנועת הקולמוס.</p>
+                    <p>מעבר לצד הטכני, ״שמואל״ הוא ניסיון מחקרי לבדוק האם כתב שנעלם כמעט לחלוטין לפני כחמש מאות שנה יכול להפוך לכלי עבודה פונקציונלי ורלוונטי ב־2026. הפרויקט מציע נקודת אמצע מוגדרת: מחויבות מלאה לעקרונות האנטומיים והקליגרפיים של המקור, לצד חופש עיצובי מכוון בפרטים הקטנים כדי להבטיח את שימושיותו במרחב העיצובי והדיגיטלי העכשווי.</p>
+                  </div>
+
+                </div>
+              </section>
+
+            </div><!-- /rs-layer 4 -->
+          </div><!-- /rs-layer 3 -->
+        </div><!-- /rs-layer 2 -->
+      </div><!-- /rs-layer 1 -->
+    </div><!-- /rs-layer 0 -->
+
+    <section class="section-exit">
+      <a class="exit-link" href="try-me.html">
+        <span class="exit-word">נסו אותי</span>
+        <span class="exit-sub">לכלי בדיקת הפונט ←</span>
+      </a>
+    </section>
+
+  </main>
+
+  <script src="scripts/research.js"></script>
+  <script src="scripts/hero-webgl.js"></script>
+  <script>
+    fetch('components/hero-webgl.html')
+      .then(response => response.text())
+      .then(html => {
+        const mount = document.querySelector('#heroWebglMount');
+        if (!mount) return;
+        mount.innerHTML = html;
+        if (typeof initHeroWebGL === 'function') {
+          initHeroWebGL(mount);
+        }
+      });
+  </script>
+</body>
+</html>

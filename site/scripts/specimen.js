@@ -91,7 +91,7 @@ const HEBREW_GLYPH_DATA = {
   '.': { name: 'נקודה',      unicode: 'U+002E', decimal: 46,   unicodeName: 'period'           },
   ',': { name: 'פסיק',       unicode: 'U+002C', decimal: 44,   unicodeName: 'comma'            },
   ':': { name: 'נקודותיים',  unicode: 'U+003A', decimal: 58,   unicodeName: 'colon'            },
-  ';': { name: 'פסיק-עליון', unicode: 'U+003B', decimal: 59,   unicodeName: 'semicolon'        },
+  ';': { name: 'פסיק עליון', unicode: 'U+003B', decimal: 59,   unicodeName: 'semicolon'        },
   '!': { name: 'קריאה',      unicode: 'U+0021', decimal: 33,   unicodeName: 'exclam'           },
   '?': { name: 'שאלה',       unicode: 'U+003F', decimal: 63,   unicodeName: 'question'         },
   '/': { name: 'לוכסן',      unicode: 'U+002F', decimal: 47,   unicodeName: 'slash'            },

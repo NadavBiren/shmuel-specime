@@ -144,6 +144,11 @@ Entries older than 3 milestones with no active relevance → compressed to one s
 **Next step:** Visual verification of the relocated, recolored Character Grid section in browser.
 
 ### 2026-06-14 (v2)
+**Task:** Added Cap Height and x height metric lines to the character-grid inspector panel.
+**Current state:** `.charview-stage` metric-line stack reordered top to bottom: Ascender (800, top:3%) → Cap Height (700, top:12%, new — CSS rule for `[data-metric="cap-height"]` already existed unused) → Heb Height (550, top:29.5%, renamed from "x-Height"; `data-metric` changed `x-height`→`heb-height`) → x height (400, top:45%, new `[data-metric="x-height"]` rule) → Baseline (0, top:76%) → Descender (−200, top:95%). Also fixed hyphenated label in specimen.js: HEBREW_GLYPH_DATA[';'].name "פסיק-עליון" → "פסיק עליון". Changes mirrored from `site/` to `docs/` for index.html, styles/specimen.css, scripts/specimen.js (docs/ is a 1:1 GitHub Pages mirror).
+**Next step:** Visual verification of the new metric lines/labels in browser; confirm Cap Height (700) and x height (400) values read well against the live glyph.
+
+### 2026-06-14 (v3)
 **Task:** Replaced Character Grid section head with a new "Glyphs Set" header (issue #3).
 **Current state:** index.html — the `.section-head` div (containing `.section-label` "מפת תווים" and `.section-aside` "72 תווים") inside `.section-character-grid` was replaced with `.glyph-set-header`, a flex row containing two `.glyph-set-title` boxes: `סט תווים` (dir="rtl") and `Glyphs Set` (dir="ltr"). specimen.css — added `.glyph-set-header` (green `--color-fourth` background, flex, space-between) and `.glyph-set-title` (200px black boxes, green `--color-fourth` text, `--font-primary` wght 700, 50px) directly after the `.section-character-grid` rule. Removed `.section-character-grid .section-label` (added last session, now unused) and the shared `.section-aside` rule (was only used by this header; `.section-sizes` still uses `.section-head`/`.section-label` so those remain).
 **Next step:** Visual verification of the new green/black "Glyphs Set" header in browser.

@@ -341,7 +341,8 @@
 
 .metric-line[data-metric="ascender"]  { top: 3%;  }
 .metric-line[data-metric="cap-height"]{ top: 12%; border-top-color: rgba(245, 242, 237, 0.22); }
-.metric-line[data-metric="x-height"] { top: 29.5%; }
+.metric-line[data-metric="heb-height"] { top: 29.5%; }
+.metric-line[data-metric="x-height"] { top: 45%; }
 .metric-line[data-metric="baseline"] { top: 76%; border-top-color: rgba(245, 242, 237, 0.30); }
 .metric-line[data-metric="descender"]{ top: 95%; }
 

@@ -6,8 +6,6 @@
   <title>שמואל — פונט עברי וריאבילי</title>
   <link rel="stylesheet" href="styles/base.css">
   <link rel="stylesheet" href="styles/specimen.css">
-  <link rel="stylesheet" href="styles/fingers-animation.css">
-  <link rel="stylesheet" href="styles/cacao-ceremony-animation.css">
 </head>
 <body class="page-index">
 
@@ -36,22 +34,22 @@
 
       <div class="prints-canvas" id="prints-container"></div>
 
-      <div class="sp-try-panel" id="specimen-panel">
-        <div class="sp-panel-header">
-          <h3>נסו אותי</h3>
-        </div>
-        <div class="sp-panel-content">
-          <div class="sp-input-row">
-            <div class="sp-input-wrapper">
-              <input type="text" id="print-text" placeholder="כאן ניתן להקליד...">
-              <div id="print-char-count" class="sp-char-count">40 תווים נותרו</div>
-            </div>
-            <button id="print-btn" class="sp-print-btn">להדפסה</button>
-          </div>
-          <a href="#fw-title-he" class="sp-continue-link">להמשך</a>
-        </div>
-      </div>
+    </div>
 
+    <div class="sp-try-panel" id="specimen-panel">
+      <div class="sp-panel-header">
+        <h3>נסו אותי</h3>
+      </div>
+      <div class="sp-panel-content">
+        <div class="sp-input-row">
+          <div class="sp-input-wrapper">
+            <input type="text" id="print-text" placeholder="כאן ניתן להקליד...">
+            <div id="print-char-count" class="sp-char-count">40 תווים נותרו</div>
+          </div>
+          <button id="print-btn" class="sp-print-btn">להדפסה</button>
+        </div>
+        <a href="#fw-title-he" class="sp-continue-link">להמשך</a>
+      </div>
     </div>
   </section>
 
@@ -107,7 +105,43 @@
 
   </section>
 
-  <div id="cacaoCeremonyAnimationMount"></div>
+  <section class="cacao-ceremony-section" id="cacaoCeremonySection" aria-label="Cacao Ceremony animation">
+    <div class="cacao-ceremony-stage">
+      <div class="cacao-ceremony-poster">
+
+        <div class="cacao-ceremony-svg-layer" aria-hidden="true">
+        <div class="cacao-piece cacao-piece--base"></div>
+
+        <div class="cacao-piece cacao-piece--left" id="cacaoCeremonyLeft"></div>
+
+        <div class="cacao-piece cacao-piece--right" id="cacaoCeremonyRight"></div>
+      </div>
+
+      <div class="cacao-ceremony-text-layer">
+        <div class="cacao-ceremony-title" aria-label="טקס קקאו Cocoa Ceremony">
+          <span class="cacao-ceremony-title__animated">טקס</span>
+          <span class="cacao-ceremony-title__animated cacao-ceremony-title__cacao">קקאו</span>
+          <span>Cocoa</span>
+          <span>Ceremony</span>
+        </div>
+
+        <div class="cacao-ceremony-location" aria-label="חוף פלמחים Palmachim Beach">
+          <div class="cacao-ceremony-location__en" dir="ltr">
+            <span>Palmachim</span>
+            <span>Beach</span>
+          </div>
+
+          <div class="cacao-ceremony-location__he" dir="rtl">
+            <span>חוף</span>
+            <span>פלמחים</span>
+          </div>
+        </div>
+
+      </div>
+
+      </div>
+    </div>
+  </section>
 
   <!-- ④ CHARACTER GRID ────────────────────────────────── -->
   <section class="section-character-grid">
@@ -192,9 +226,9 @@
                role="region" aria-label="אותיות לטיניות"></div>
         </div>
         <div class="char-category">
-          <span class="char-category-label">חלופות</span>
-          <div class="char-grid char-grid--alternates" id="char-grid-alternates"
-               role="region" aria-label="תווים חלופיים"></div>
+          <span class="char-category-label">חלופות סגנוניות</span>
+          <div class="char-grid--alternates" id="char-grid-alternates"
+               role="region" aria-label="חלופות סגנוניות"></div>
         </div>
       </div>
 
@@ -235,7 +269,58 @@
     </div>
   </section>
 
-  <div id="fingersAnimationMount"></div>
+  <section class="fingers-section" id="fingersSection">
+
+    <div class="fingers-stage">
+
+      <!-- שכבה 1: SVG סטטי עם המסגרת השחורה -->
+      <div class="finger-text-layer">
+        <img
+          src="assets/images/svg/fingers-animation/finger-text.svg"
+          alt=""
+        />
+      </div>
+
+      <!-- טקסט חי: משתנה במשקל לפי גלילה -->
+      <div class="live-text-layer" aria-hidden="true">
+        <div class="soda-copy">
+          <span class="soda-copy__line soda-copy__line--top">שתו סודה</span>
+          <span class="soda-copy__line soda-copy__line--bottom">טעים ומרענן</span>
+        </div>
+      </div>
+
+      <!-- שכבה 2: אצבעות + פקק -->
+      <div class="animation-layer">
+
+        <img
+          class="finger finger-top"
+          id="fingerTop"
+          src="assets/images/svg/fingers-animation/finger-top.svg"
+          alt=""
+        />
+
+        <img
+          class="finger finger-bottom"
+          id="fingerBottom"
+          src="assets/images/svg/fingers-animation/finger-bottom.svg"
+          alt=""
+        />
+
+        <div class="cap-wrap" id="capWrap">
+          <img
+            class="cap"
+            id="cap"
+            src="assets/images/svg/fingers-animation/cap.svg"
+            alt=""
+          />
+          <span class="cap-text" id="capText">Signha</span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
 
   <!-- ⑤ DISPLAY ──────────────────────────────────────── -->
   <section class="section-display">
@@ -268,15 +353,14 @@
 
   <!-- ⑧ ABOUT ─────────────────────────────────────────── -->
   <section class="section-about">
-    <div class="about-layout">
-      <aside class="about-side">
-        <h2 class="about-title">על<br>שמואל</h2>
-      </aside>
-      <div class="about-body" dir="rtl">
-        <p>שמואל הוא פונט כותרות סריפי וריאבילי (Variable Font), המבוסס על סגנון הכתב הבינוני — כתב־יד עברי מימי־הביניים ששימש כחוליה מקשרת בין האות המרובעת לרהוטה. הפונט נולד מתוך מחקר אנטומי של כ־20 מקורות כתב־יד, שזוקקו לכדי מערכת טיפוגרפית עקבית המשלבת בין מסורת קליגרפית לבין שפה ווקטורית חדה ועכשווית.</p>
-        <p>העיצוב מאופיין בסריפים אורגניים הצומחים מתוך גג האות, תנועה קליגרפית מרומזת והטיה קלה של 5 מעלות המעניקה לטקסט דינמיות וקצב ייחודי. הפונט כולל ציר משקל וריאבילי (500–900) המאפשר דיוק מקסימלי בהתאמה לכל פורמט, לצד תמיכה מלאה בניקוד, ליגטורות וסטים אלטרנטיביים של אותיות.</p>
-        <p>שמואל אידיאלי לעבודות מיתוג ופרויקטים תרבותיים המחפשים נוכחות דומיננטית עם עומק היסטורי.</p>
-      </div>
+    <div class="about-header">
+      <div class="about-header-title" dir="rtl">על שמואל</div>
+      <div class="about-header-title" dir="ltr">About Shmuel</div>
+    </div>
+    <div class="about-body" dir="rtl">
+      <p>שמואל הוא פונט כותרות סריפי וריאבילי (Variable Font), המבוסס על סגנון הכתב הבינוני — כתב־יד עברי מימי־הביניים ששימש כחוליה מקשרת בין האות המרובעת לרהוטה. הפונט נולד מתוך מחקר אנטומי של כ־20 מקורות כתב־יד, שזוקקו לכדי מערכת טיפוגרפית עקבית המשלבת בין מסורת קליגרפית לבין שפה ווקטורית חדה ועכשווית.</p>
+      <p>העיצוב מאופיין בסריפים אורגניים הצומחים מתוך גג האות, תנועה קליגרפית מרומזת והטיה קלה של 5 מעלות המעניקה לטקסט דינמיות וקצב ייחודי. הפונט כולל ציר משקל וריאבילי (500–900) המאפשר דיוק מקסימלי בהתאמה לכל פורמט, לצד תמיכה מלאה בניקוד, ליגטורות וסטים אלטרנטיביים של אותיות.</p>
+      <p>שמואל אידיאלי לעבודות מיתוג ופרויקטים תרבותיים המחפשים נוכחות דומיננטית עם עומק היסטורי.</p>
     </div>
   </section>
 
@@ -293,49 +377,23 @@
     <span class="site-footer__title">שמואל</span>
     <div class="site-footer__columns">
       <div class="site-footer__col">
-        <p>פונט עברי־לטיני המבוסס על הכתב הבינוני, נוצר במסגרת פרויקט גמר במחלקה לתקשורת חזותית, בצלאל אקדמיה לאמנות ועיצוב, ירושלים, 2026.</p>
+        <p>פונט דו־לשוני המבוסס על הכתב הבינוני, נוצר במסגרת פרויקט גמר במחלקה לתקשורת חזותית, בצלאל אקדמיה לאמנות ועיצוב, ירושלים, 2026.</p>
         <img class="site-footer__logo" src="assets/images/footer/bezalel-logo.png" alt="בצלאל אקדמיה לאמנות ועיצוב">
       </div>
       <div class="site-footer__col">
         <span>עיצוב: נדב בירנבוים</span>
         <span>הנחיה: דניאל גרומר וענת גוטברג</span>
-        <span>פונט משני באתר: סימפלר פרו, באדיבות מיכל סהר והגילדה</span>
+        <span>פונט משני באתר: סימפלר מונו (מיכל סהר, הגילדה)</span>
       </div>
       <div class="site-footer__col">
-        <span>יצירת קשר:</span>
+        <span>בואו נדבר —</span>
         <a href="mailto:nadavbiren@gmail.com">nadavbiren@gmail.com</a>
-        <a href="https://nadavbireboim.com" target="_blank" rel="noopener">פורטפוליו: nadavbireboim.com</a>
-        <a href="https://www.instagram.com/nadavbirenboim/" target="_blank" rel="noopener">Instagram: nadavbirenboim</a>
+        <!-- <a href="https://nadavbireboim.com" target="_blank" rel="noopener">פורטפוליו: nadavbireboim.com</a> -->
+        <!-- <a href="https://www.instagram.com/nadavbirenboim/" target="_blank" rel="noopener">Instagram: nadavbirenboim</a> -->
       </div>
     </div>
   </footer>
 
   <script src="scripts/specimen.js"></script>
-  <script src="scripts/fingers-animation.js"></script>
-  <script src="scripts/cacao-ceremony-animation.js"></script>
-  <script>
-    fetch('components/fingers-animation.html')
-      .then(response => response.text())
-      .then(html => {
-        const mount = document.querySelector('#fingersAnimationMount');
-        if (!mount) return;
-        mount.innerHTML = html;
-        if (typeof initFingersAnimation === 'function') {
-          initFingersAnimation(mount);
-        }
-      });
-  </script>
-  <script>
-    fetch('components/cacao-ceremony-animation.html')
-      .then(response => response.text())
-      .then(html => {
-        const mount = document.querySelector('#cacaoCeremonyAnimationMount');
-        if (!mount) return;
-        mount.innerHTML = html;
-        if (typeof initCacaoCeremonyAnimation === 'function') {
-          initCacaoCeremonyAnimation(mount);
-        }
-      });
-  </script>
 </body>
 </html>

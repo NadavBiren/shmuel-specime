@@ -12,21 +12,8 @@ const HEBREW_LETTERS = 'אבגדהוזחטיכךלמםנןסעפףצץקרשת'.
 const NUMBER_CHARS   = '0123456789'.split('');
 const MARK_CHARS     = [':', ';', '!', '?', '/', '\\', '-', '—', '_', '(', ')', '[', ']', '.', ',', '־', "'", '"', '״', '׳', '&'];
 const LATIN_CHARS    = 'abcdefghijklmnopqrstuvwxyz'.split('').concat('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''));
-const ALTERNATE_CHARS = [
-  { key: '0_alt', display: '0' },
-  { key: '1_alt', display: '1' },
-  { key: '2_alt', display: '2' },
-  { key: '3_alt', display: '3' },
-  { key: '4_alt', display: '4' },
-  { key: '5_alt', display: '5' },
-  { key: '6_alt', display: '6' },
-  { key: '7_alt', display: '7' },
-  { key: '8_alt', display: '8' },
-  { key: '9_alt', display: '9' },
-  { key: 's_alt', display: 's' },
-  { key: 'v_alt', display: 'v' },
-  { key: 'w_alt', display: 'w' },
-];
+const SS01_DIGITS = ['0','1','2','3','4','5','6','7','8','9'];
+const SS02_DIGITS = ['0','2','3','4','5','6','9'];
 
 const HEBREW_GLYPH_DATA = {
   'א': { name: 'אלף',        unicode: 'U+05D0', decimal: 1488, unicodeName: 'alef-hb'          },
@@ -76,6 +63,13 @@ const HEBREW_GLYPH_DATA = {
   '7_alt': { name: '7', unicode: 'U+0037', decimal: 55, unicodeName: 'seven.001' },
   '8_alt': { name: '8', unicode: 'U+0038', decimal: 56, unicodeName: 'eight.001' },
   '9_alt': { name: '9', unicode: 'U+0039', decimal: 57, unicodeName: 'nine.001'  },
+  '0_alt2': { name: '0', unicode: 'U+0030', decimal: 48, unicodeName: 'zero.002'  },
+  '2_alt2': { name: '2', unicode: 'U+0032', decimal: 50, unicodeName: 'two.002'   },
+  '3_alt2': { name: '3', unicode: 'U+0033', decimal: 51, unicodeName: 'three.002' },
+  '4_alt2': { name: '4', unicode: 'U+0034', decimal: 52, unicodeName: 'four.002'  },
+  '5_alt2': { name: '5', unicode: 'U+0035', decimal: 53, unicodeName: 'five.005'  },
+  '6_alt2': { name: '6', unicode: 'U+0036', decimal: 54, unicodeName: 'six.002'   },
+  '9_alt2': { name: '9', unicode: 'U+0039', decimal: 57, unicodeName: 'nine.002'  },
   '־': { name: 'מקף עברי',   unicode: 'U+05BE', decimal: 1470, unicodeName: 'maqaf-hb'         },
   '.': { name: 'נקודה',      unicode: 'U+002E', decimal: 46,   unicodeName: 'period'           },
   ',': { name: 'פסיק',       unicode: 'U+002C', decimal: 44,   unicodeName: 'comma'            },
@@ -203,14 +197,34 @@ function buildCharGrid() {
   }
 
   if (gridAlts) {
-    ALTERNATE_CHARS.forEach(({ key, display }) => {
-      const span = document.createElement('span');
-      span.className = 'char-cell';
-      span.textContent = display;
-      span.dataset.glyphKey = key;
-      span.setAttribute('aria-hidden', 'true');
-      gridAlts.appendChild(span);
-    });
+    function buildAltGroup(container, digits, ssKey, label) {
+      const group = document.createElement('div');
+      group.className = 'char-alt-group';
+
+      const groupLabel = document.createElement('span');
+      groupLabel.className = 'char-alt-group-label';
+      groupLabel.textContent = label;
+      group.appendChild(groupLabel);
+
+      const grid = document.createElement('div');
+      grid.className = 'char-grid';
+
+      const glyphKeySuffix = ssKey === 'ss02' ? '_alt2' : '_alt';
+      digits.forEach(digit => {
+        const span = document.createElement('span');
+        span.className = `char-cell char-cell--${ssKey}`;
+        span.textContent = digit;
+        span.dataset.glyphKey = digit + glyphKeySuffix;
+        span.setAttribute('aria-hidden', 'true');
+        grid.appendChild(span);
+      });
+
+      group.appendChild(grid);
+      container.appendChild(group);
+    }
+
+    buildAltGroup(gridAlts, SS01_DIGITS, 'ss01', 'ss01');
+    buildAltGroup(gridAlts, SS02_DIGITS, 'ss02', 'ss02');
   }
 }
 
@@ -268,8 +282,10 @@ function initCharInspector() {
     if (uNameEl) uNameEl.textContent = data.unicodeName ?? '';
 
     document.querySelectorAll('.char-cell').forEach(cell => {
-      cell.classList.toggle('char-cell--selected',
-        cell.textContent.trim() === ch);
+      const match = key
+        ? cell.dataset.glyphKey === key
+        : cell.textContent.trim() === ch && !cell.dataset.glyphKey;
+      cell.classList.toggle('char-cell--selected', match);
     });
   }
 
@@ -666,7 +682,6 @@ function initSpecimenPrint() {
   const section    = document.getElementById('font-specimen');
   const inputEl    = document.getElementById('print-text');
   const charCount  = document.getElementById('print-char-count');
-  const panel      = document.getElementById('specimen-panel');
   if (!printBtn || !container || !section || !inputEl) return;
 
   const MAX_CHARS   = 40;
@@ -746,6 +761,9 @@ function initSpecimenPrint() {
 
     const item = document.createElement('div');
     item.className = 'printed-item';
+    if (svgShape === 'hero-icon-3') {
+      item.classList.add('shape-icon-3');
+    }
     item.textContent = formatStickerText(text, svgShape);
     item.style.backgroundColor = bgColor;
     item.style.maskImage       = maskUrl;
@@ -758,49 +776,17 @@ function initSpecimenPrint() {
     const sectionTop      = section.getBoundingClientRect().top + window.scrollY;
     const scrollInSection = window.scrollY - sectionTop;
 
-    // Estimate the sticker's own footprint (width: widthEm, aspect-ratio: 0.83)
-    const itemWidthPx  = size * widthEm;
-    const itemHeightPx = itemWidthPx / 0.83;
-
-    // Keep-out box for the fixed bottom-center "Try me" panel
-    const PANEL_WIDTH  = panel ? panel.getBoundingClientRect().width  : Math.min(window.innerWidth * 0.9, 640);
-    const PANEL_HEIGHT = panel ? panel.getBoundingClientRect().height : 220;
-    const MARGIN = 24;
-
-    const keepOut = {
-      left:   (window.innerWidth - PANEL_WIDTH) / 2 - MARGIN,
-      right:  (window.innerWidth + PANEL_WIDTH) / 2 + MARGIN,
-      top:    window.innerHeight - (window.innerHeight * 0.04) - PANEL_HEIGHT - MARGIN,
-      bottom: window.innerHeight + MARGIN
-    };
-
     // Horizontal: first 2 prints stay on left half; rest span full width
     const safeWidth = window.innerWidth - 300;
     const leftHalf  = window.innerWidth * 0.52;
     const maxX      = printCount < 2 ? Math.min(leftHalf, safeWidth) : safeWidth;
 
-    let randomX, randomY, viewportY;
-    const MAX_ATTEMPTS = 8;
+    // Vertical: keep stickers out of the lowest 10% of the viewport
+    const minY = 60;
+    const maxY = window.innerHeight * 0.9;
 
-    for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
-      randomX = Math.random() * maxX;
-      randomY = scrollInSection + Math.random() * (window.innerHeight * 0.75) + 60;
-      viewportY = randomY - scrollInSection;
-
-      const overlapsKeepOut =
-        (randomX + itemWidthPx) > keepOut.left &&
-        randomX < keepOut.right &&
-        (viewportY + itemHeightPx) > keepOut.top &&
-        viewportY < keepOut.bottom;
-
-      if (!overlapsKeepOut) break;
-
-      // Last attempt: clamp above the keep-out band instead of re-rolling forever
-      if (attempt === MAX_ATTEMPTS - 1) {
-        viewportY = Math.max(0, keepOut.top - itemHeightPx - 8);
-        randomY = scrollInSection + viewportY;
-      }
-    }
+    const randomX = Math.random() * maxX;
+    const randomY = scrollInSection + minY + Math.random() * (maxY - minY);
 
     const wrapper = document.createElement('div');
     wrapper.className = 'printed-item-wrapper';
@@ -868,4 +854,151 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavScroll();
   initSlantedCaret();
   initFloatingWeights();
+  initFingersAnimation();
+  initCacaoCeremonyAnimation();
 });
+
+// ── Fingers animation component ──────────────────────
+
+function initFingersAnimation(root = document) {
+  const section = root.querySelector("#fingersSection");
+  if (!section) return;
+
+  const fingerTop = section.querySelector("#fingerTop");
+  const fingerBottom = section.querySelector("#fingerBottom");
+  const capWrap = section.querySelector("#capWrap");
+
+  if (!fingerTop || !fingerBottom || !capWrap) return;
+
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
+
+  function lerp(start, end, progress) {
+    return start + (end - start) * progress;
+  }
+
+  function updateAnimation() {
+    const rect = section.getBoundingClientRect();
+    const scrollableDistance = section.offsetHeight - window.innerHeight;
+    const progress = clamp(-rect.top / scrollableDistance, 0, 1);
+
+    // האצבע העליונה: מתחילה מימין ומגיעה למיקום הסופי שלה
+    const topX = lerp(22, 1, progress);
+
+    // האצבע התחתונה: מתחילה במקום שלה וממשיכה ימינה
+    const bottomX = lerp(4, 14, progress);
+
+    // הפקק (+ הטקסט החי עליו): מסתובב סיבוב מלא אחד. מספר שלילי = עם כיוון השעון במבנה הנוכחי שלך.
+    const capRotation = lerp(0, -360, progress);
+
+    // כל הטקסטים החיים (עליון, תחתון, ופקק) עוברים יחד מ-500 ל-900
+    const liveTextWeight = Math.round(lerp(500, 900, progress));
+
+    fingerTop.style.transform = `translateX(${topX}%)`;
+    fingerBottom.style.transform = `translateX(${bottomX}%)`;
+    capWrap.style.transform = `translate(-50%, -50%) rotate(${capRotation}deg)`;
+
+    section.style.setProperty("--live-text-weight", liveTextWeight);
+  }
+
+  window.addEventListener("scroll", updateAnimation, { passive: true });
+  window.addEventListener("resize", updateAnimation);
+
+  updateAnimation();
+}
+
+// ── Cacao Ceremony animation component ───────────────
+
+function initCacaoCeremonyAnimation(root = document) {
+  const section = root.querySelector
+    ? root.querySelector("#cacaoCeremonySection")
+    : document.querySelector("#cacaoCeremonySection");
+
+  if (!section) return;
+
+  const titleContainer = section.querySelector(".cacao-ceremony-title");
+  if (!titleContainer) return;
+
+  const titleSpans = section.querySelectorAll(".cacao-ceremony-title span");
+  const locationSpans = section.querySelectorAll(".cacao-ceremony-location span");
+
+  const leftHead = section.querySelector("#cacaoCeremonyLeft");
+  const rightHead = section.querySelector("#cacaoCeremonyRight");
+
+  let ticking = false;
+
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
+
+  function lerp(start, end, progress) {
+    return start + (end - start) * progress;
+  }
+
+  function updateAnimation() {
+    const viewportHeight = window.innerHeight;
+
+    /*
+      titleProgress:
+      0 = כשהטקסט מגיע למרכז המסך
+      1 = כשהטקסט עבר מרכז המסך לחלוטין (הגיע לראש המסך)
+    */
+    const titleRect = titleContainer.getBoundingClientRect();
+    const titleAnimationStart = viewportHeight * 0.5;
+    const titleAnimationDistance = titleAnimationStart;
+    const titleProgress = clamp(
+      (titleAnimationStart - titleRect.top) / titleAnimationDistance,
+      0,
+      1
+    );
+
+    const titleWeight = Math.round(lerp(500, 900, titleProgress));
+    const locationWeight = Math.round(lerp(700, 500, titleProgress));
+
+    titleSpans.forEach((span) => {
+      span.style.fontVariationSettings = `'wght' ${titleWeight}`;
+    });
+
+    locationSpans.forEach((span) => {
+      span.style.fontVariationSettings = `'wght' ${locationWeight}`;
+    });
+
+    /*
+      headsProgress:
+      0 = ראש הסקשן עדיין בתחתית המסך (לא נכנס)
+      1 = ראש הסקשן הגיע לראש המסך (נחשף במלואו)
+    */
+    const sectionRect = section.getBoundingClientRect();
+    const headsProgress = clamp(
+      (viewportHeight - sectionRect.top) / viewportHeight,
+      0,
+      1
+    );
+
+    const leftX = lerp(-38, 0, headsProgress);
+    const rightX = lerp(38, 0, headsProgress);
+
+    if (leftHead) {
+      leftHead.style.transform = `translate3d(${leftX}%, 0, 0)`;
+    }
+
+    if (rightHead) {
+      rightHead.style.transform = `translate3d(${rightX}%, 0, 0)`;
+    }
+
+    ticking = false;
+  }
+
+  function requestUpdate() {
+    if (!ticking) {
+      window.requestAnimationFrame(updateAnimation);
+      ticking = true;
+    }
+  }
+
+  window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("resize", requestUpdate);
+
+  updateAnimation();
+}

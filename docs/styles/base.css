@@ -223,8 +223,7 @@ p {
 .site-footer {
   display: flex;
   flex-direction: column;
-  background-color: var(--color-black);
-  color: var(--color-main);
+  background-color: var(--page-accent);
   padding: 2rem clamp(3rem, 8vw, 8rem);
   font-family: var(--font-secondary);
   font-size: var(--size-meta-small);
@@ -241,29 +240,53 @@ p {
 .site-footer__col {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 0.75em;
 }
 
 .site-footer__logo {
-  height: 48px;
+  height: 55px;
   width: auto;
-  margin-top: 0.75em;
+  margin-top: -0.5em;
+  margin-bottom: 0.75em;
   align-self: flex-start;
   object-fit: contain;
 }
 
 .site-footer__title {
   display: block;
-  width: 100%;
   font-family: var(--font-primary);
   font-variation-settings: 'wght' 900;
   font-weight: 900;
-  font-size: 5vw;
-  margin-bottom: 2rem;
+  font-size: 7vw;
+  margin: -2rem 0 -2.6rem;
+  background-color: var(--page-accent);
+  color: var(--color-black);
+}
+
+.site-footer__title,
+.site-footer__col p,
+.site-footer__col span,
+.site-footer__col a {
+  padding: 5px 10px;
+  width: max-content;
+  max-width: 100%; /* Prevents long paragraphs from overflowing the screen */
+  white-space: normal;
+}
+
+.site-footer__col p,
+.site-footer__col span,
+.site-footer__col a {
+  background-color: var(--color-black);
+  color: var(--page-accent);
+}
+
+.site-footer__col p {
+  max-width: 45ch;
 }
 
 .site-footer a {
-  color: var(--color-main);
+  color: var(--page-accent);
   text-decoration: underline;
   transition: opacity 0.15s ease;
 }

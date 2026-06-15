@@ -364,12 +364,12 @@
   z-index: 1;
 }
 
-.metric-line[data-metric="ascender"]  { top: 3%;  }
-.metric-line[data-metric="cap-height"]{ top: 12%; border-top-color: color-mix(in srgb, var(--color-white) 22%, transparent); }
-.metric-line[data-metric="heb-height"] { top: 22%; }
+.metric-line[data-metric="ascender"]  { top: 3%;  } 
+.metric-line[data-metric="cap-height"]{ top: 16%; border-top-color: color-mix(in srgb, var(--color-white) 22%, transparent); }
+.metric-line[data-metric="heb-height"] { top: 29%; }
 .metric-line[data-metric="x-height"]  { top: 35%; }
 .metric-line[data-metric="baseline"] { top: 77%; border-top-color: color-mix(in srgb, var(--color-white) 30%, transparent); }
-.metric-line[data-metric="descender"]{ top: 95%; }
+.metric-line[data-metric="descender"]{ top: 93%; }
 
 .metric-label {
   position: absolute;
@@ -505,6 +505,31 @@
 .char-cell--alt { font-feature-settings: 'salt' 1; }
 .char-sep       { display: none; }
 
+/* ── Stylistic Alternates grid ───────────────────────── */
+
+.char-grid--alternates {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.char-alt-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.char-alt-group-label {
+  font-family: var(--font-secondary);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-white) 28%, transparent);
+}
+
+.char-cell--ss01 { font-feature-settings: "ss01" 1; }
+.char-cell--ss02 { font-feature-settings: "ss02" 1; }
+
 /* ── ⑤ Display — hidden ─────────────────────────── */
 
 .section-display {
@@ -598,73 +623,48 @@
 
 .section-about {
   background: var(--color-black);
-  padding: 9rem 6rem;
-  border-top: 1px solid var(--color-border-dark);
+  padding: 13vh 6vw;
 }
 
-.about-layout {
+.about-header {
+  background-color: var(--color-soda-yellow);
   display: flex;
-  direction: rtl;
-  gap: 7rem;
-  align-items: flex-start;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: -13vh;
+  margin-left: -6vw;
+  margin-right: -6vw;
+  padding: 0 6vw;
+  margin-bottom: 8vh;
 }
 
-/* aside is first child → appears on RIGHT in RTL flex */
-.about-side {
-  flex: 0 0 28%;
-}
-
-.about-title {
+.about-header-title {
+  background-color: var(--color-black);
+  color: var(--color-lightgrey);
   font-family: var(--font-primary);
-  font-size: clamp(3.5rem, 6vw, 9rem);
-  font-variation-settings: 'wght' 900;
-  color: var(--color-white);
-  line-height: 0.92;
-  text-align: right;
-  margin-bottom: 4rem;
+  font-variation-settings: 'wght' 700;
+  font-size: clamp(3rem, 5vw, 75px);
+  margin: 20px 0 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0.1em 0.5em;
 }
 
-.about-specs {
+.about-body {
+  width: 100%;
+  max-width: 45em;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 0;
-}
-
-.spec-item {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  direction: rtl;
-  padding: 0.9rem 0;
-  border-bottom: 1px solid var(--color-third-faint);
-}
-
-.spec-key {
-  font-family: var(--font-secondary);
-  font-size: var(--size-meta-large);
-  letter-spacing: var(--tracking-mono);
-  color: var(--color-third);
-}
-
-.spec-val {
-  font-family: var(--font-secondary);
-  font-size: var(--size-meta-large);
-  letter-spacing: var(--tracking-mono);
-  color: color-mix(in srgb, var(--color-white) 65%, transparent);
-  text-align: left;
-}
-
-/* body is second child → appears on LEFT in RTL flex */
-.about-body {
-  flex: 1;
-  min-width: 0;
 }
 
 .about-body p {
   font-family: var(--font-secondary);
-  font-size: clamp(1.1rem, 1.3vw, 1.55rem);
-  color: color-mix(in srgb, var(--color-white) 70%, transparent);
-  line-height: 1.62;
+  font-size: clamp(18px, 22px, 32px) !important;
+  color: var(--color-lightgrey);
+  line-height: 1.5;
   text-align: right;
   margin-bottom: 0.5em;
 }
@@ -697,7 +697,7 @@
   font-family: var(--font-primary);
   font-size: clamp(5rem, 15vw, 22rem);
   font-variation-settings: 'wght' var(--scroll-weight, 400);
-  color: color-mix(in srgb, var(--color-white) 12%, transparent);
+  color: color-mix(in srgb, var(--color-white) 50%, transparent);
   line-height: 1;
   transition: color 0.4s ease, font-variation-settings 0.4s ease;
   text-align: center;
@@ -726,7 +726,7 @@
 
 .specimen-outer {
   position: relative;
-  height: 125vh;
+  height: 200vh;
   background: var(--color-black);
   overflow: visible;
 }
@@ -746,7 +746,7 @@
   text-align: center;
   user-select: none;
   pointer-events: none;
-  transform: translateY(-20vh);
+  transform: translateY(-8vh);
   z-index: 1;
 }
 
@@ -786,9 +786,9 @@
 /* Try-Me Panel — bottom-center, scrolls out with the specimen section */
 .sp-try-panel {
   position: absolute;
-  bottom: 4vh;
-  left: 50%;
   top: auto;
+  bottom: 100vh;
+  left: 50%;
   right: auto;
   transform: translateX(-50%);
   width: auto;
@@ -957,6 +957,11 @@
   -webkit-mask-repeat: no-repeat;
   mask-position: center;
   -webkit-mask-position: center;
+}
+
+.printed-item.shape-icon-3 {
+  position: relative;
+  top: -15%;
 }
 
 #section-try-me { display: none; }
@@ -1198,5 +1203,404 @@
   .sp-input-row {
     flex-direction: column;
     align-items: stretch;
+  }
+}
+
+/* Fingers animation component
+   docs/styles/fingers-animation.css
+*/
+
+.fingers-section {
+  --yellow: var(--color-soda-yellow);
+  --black: var(--color-black);
+
+  /* משקל הפונט החי משתנה דרך JS לפי הגלילה, ומשותף לכל הטקסטים החיים */
+  --live-text-weight: 500;
+
+  position: relative;
+  min-height: 220vh;
+  background: var(--color-black);
+  font-family: 'Shmuel', serif;
+}
+
+.fingers-section,
+.fingers-section * {
+  box-sizing: border-box;
+}
+
+.fingers-stage {
+  position: sticky;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--yellow);
+}
+
+/* שכבה 1 — ה־SVG הסטטי של המסגרת השחורה */
+.finger-text-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.finger-text-layer img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* שכבת טקסט חי — יושבת מעל המסגרת השחורה ומתחת לאנימציית האצבעות */
+.live-text-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.soda-copy {
+  position: absolute;
+
+  /* כאן מכוונים את מיקום הטקסט בתוך המסגרת השחורה */
+  left: 4.5vw;
+  top: 11.4vh;
+  width: 44.8vw;
+  height: 39vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--yellow);
+  text-align: center;
+  direction: rtl;
+  line-height: 0.76;
+  white-space: nowrap;
+}
+
+.soda-copy__line {
+  display: block;
+  font-family: 'Shmuel', serif;
+  font-variation-settings: 'wght' var(--line-weight);
+  font-weight: var(--line-weight);
+}
+
+.soda-copy__line--top {
+  --line-weight: var(--live-text-weight);
+  font-size: clamp(4rem, 13vw, 16rem);
+  transform: translateY(0.2em);
+}
+
+.soda-copy__line--bottom {
+  --line-weight: var(--live-text-weight);
+  font-size: clamp(4rem, 13vw, 16rem);
+  transform: translateY(1.5em);
+  color: var(--color-black);
+}
+
+/* שכבה 2 — אצבעות + פקק, מעל הטקסטים החיים */
+.animation-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.finger {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.finger-top {
+  z-index: 3;
+  transform: translateX(22%);
+}
+
+.finger-bottom {
+  z-index: 1;
+  transform: translateX(4%);
+}
+
+/* ה-wrapper ממקם את הפקק ומסתובב כיחידה אחת (התמונה + הטקסט החי). */
+.cap-wrap {
+  position: absolute;
+  z-index: 2;
+  right: -2vw;
+  top: 49vh;
+  width: 26vw;
+  aspect-ratio: 1 / 1;
+  transform-origin: 50% 50%;
+  transform: translate(-50%, -50%);
+}
+
+.cap {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* טקסט "Signha" ממורכז מעל ה-cap.svg ומסתובב עם cap-wrap */
+.cap-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Shmuel', serif;
+  font-variation-settings: 'wght' var(--live-text-weight);
+  font-weight: var(--live-text-weight);
+  font-size: clamp(1.5rem, 7vw, 10rem);
+  color: var(--color-black);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+
+@media (max-width: 800px) {
+  .soda-copy {
+    left: 3.5vw;
+    top: 16vh;
+    width: 55vw;
+    height: 28vh;
+  }
+
+  .soda-copy__line--top {
+    font-size: clamp(3rem, 13vw, 7rem);
+  }
+
+  .soda-copy__line--bottom {
+    font-size: clamp(2.8rem, 12vw, 6.6rem);
+  }
+}
+
+/* Cacao Ceremony animation component
+   SVG assets:
+   /assets/images/svg/cocoa-ceremony/cacao-ceremony-base.svg
+   /assets/images/svg/cocoa-ceremony/cacao-ceremony-left.svg
+   /assets/images/svg/cocoa-ceremony/cacao-ceremony-right.svg
+*/
+
+:root {
+  /* Crop controls for the cacao ceremony poster */
+  --cacao-visible-height: 100%;
+  --cacao-poster-offset-y: 0%;
+}
+
+.cacao-ceremony-section {
+  position: relative;
+  width: 100%;
+  background: var(--color-black);
+  overflow: visible;
+}
+
+.cacao-ceremony-stage {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: var(--color-black);
+}
+
+.cacao-ceremony-stage::before {
+  content: "";
+  display: block;
+  padding-top: var(--cacao-visible-height);
+}
+
+.cacao-ceremony-poster {
+  position: absolute;
+  left: 0;
+  top: var(--cacao-poster-offset-y);
+  width: 100%;
+  aspect-ratio: 1920 / 2260;
+  overflow: visible;
+}
+
+.cacao-ceremony-svg-layer,
+.cacao-ceremony-text-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.cacao-ceremony-svg-layer {
+  z-index: 1;
+  pointer-events: none;
+}
+
+.cacao-ceremony-text-layer {
+  z-index: 2;
+  pointer-events: none;
+  color: var(--color-main);
+  font-family: var(--font-primary, 'Shmuel', serif);
+  text-align: center;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.cacao-piece {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  background-color: var(--color-fourth);
+  mask-size: contain;
+  -webkit-mask-size: contain;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-position: center;
+}
+
+.cacao-piece--base {
+  z-index: 1;
+  transform: translate3d(0, 0, 0);
+  transform-origin: bottom center;
+  mask-image: url('../assets/images/svg/cocoa-ceremony/cacao-ceremony-base.svg');
+  -webkit-mask-image: url('../assets/images/svg/cocoa-ceremony/cacao-ceremony-base.svg');
+}
+
+.cacao-piece--left {
+  z-index: 2;
+  transform: translate3d(-38%, 0, 0);
+  scale: 0.8;
+  transform-origin: bottom left;
+  will-change: transform;
+  mask-image: url('../assets/images/svg/cocoa-ceremony/cacao-ceremony-left.svg');
+  -webkit-mask-image: url('../assets/images/svg/cocoa-ceremony/cacao-ceremony-left.svg');
+}
+
+.cacao-piece--right {
+  z-index: 2;
+  transform: translate3d(38%, 0, 0);
+  scale: 0.8;
+  transform-origin: bottom right;
+  will-change: transform;
+  mask-image: url('../assets/images/svg/cocoa-ceremony/cacao-ceremony-right.svg');
+  -webkit-mask-image: url('../assets/images/svg/cocoa-ceremony/cacao-ceremony-right.svg');
+}
+
+.cacao-ceremony-title {
+  position: absolute;
+  left: 50%;
+  top: 20.5%;
+  transform: translateX(-50%);
+  width: 48%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-variation-settings: 'wght' 900;
+  line-height: 0.78;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+}
+
+.cacao-ceremony-title span:nth-child(1),
+.cacao-ceremony-title span:nth-child(2) {
+  font-size: clamp(5.625rem, 14.75vw, 18.75rem);
+}
+
+.cacao-ceremony-title span:nth-child(3),
+.cacao-ceremony-title span:nth-child(4) {
+  font-size: clamp(4rem, 9.25vw, 12.5rem);
+  line-height: 0.84;
+}
+
+.cacao-ceremony-title__animated {
+  font-weight: var(--cacao-title-weight, 500);
+  font-variation-settings: 'wght' var(--cacao-title-weight, 500);
+}
+
+.cacao-ceremony-title span,
+.cacao-ceremony-location span {
+  will-change: font-variation-settings;
+}
+
+.cacao-ceremony-location {
+  position: absolute;
+  left: 50%;
+  top:58%;
+  transform: translateX(-50%);
+  width: 54%;
+  display: flex;
+  flex-direction: row;
+  direction: ltr;
+  justify-content: center;
+  align-items: center;
+  font-weight: 900;
+  font-variation-settings: 'wght' 900;
+  line-height: 0.82;
+}
+
+.cacao-ceremony-location__en {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  margin-right: -35px;
+}
+
+.cacao-ceremony-location__he {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+
+}
+
+.cacao-ceremony-location span {
+  font-size: clamp(2.75rem, 6.125vw, 8.125rem);
+}
+
+/* Alignment helpers. Uncomment while tuning. */
+/*
+.cacao-ceremony-title,
+.cacao-ceremony-location {
+  outline: 1px solid rgba(255, 255, 255, 0.35);
+}
+*/
+
+@media (max-width: 800px) {
+  :root {
+    --cacao-visible-height: 99%;
+  }
+
+  .cacao-ceremony-title {
+    top: 21%;
+    width: 56%;
+  }
+
+  .cacao-ceremony-title span:nth-child(1),
+  .cacao-ceremony-title span:nth-child(2) {
+    font-size: clamp(5.25rem, 20vw, 11.875rem);
+  }
+
+  .cacao-ceremony-title span:nth-child(3),
+  .cacao-ceremony-title span:nth-child(4) {
+    font-size: clamp(3.875rem, 13.125vw, 8.5rem);
+  }
+
+  .cacao-ceremony-location {
+    top: 63.5%;
+    width: 61%;
+  }
+
+  .cacao-ceremony-location span {
+    font-size: clamp(2.625rem, 8.75vw, 5.25rem);
   }
 }

@@ -13,58 +13,94 @@ This skill governs all code structure, naming conventions, CSS tokens, and techn
 
 ```
 docs/
-├── index.html           ← Specimen Page
-├── research.html        ← Research Page
-├── try-me.html          ← Try-Me Tool Page
+├── index.html                    ← Specimen Page
+├── research.html                 ← Research Page
+├── try-me.html                   ← Try-Me Tool Page
 ├── assets/
-│   ├── fonts/           ← All font files live here
-│   ├── data/            ← sources.json (18 manuscript sources)
-│   └── images/          ← scan-to-font/ JPG pairs
+│   ├── fonts/                    ← All font files live here
+│   ├── data/                     ← sources.json (18 manuscript sources)
+│   └── images/                   ← scan-to-font/ JPG pairs, svg/, footer/, from-Inspiration-to-font/
 ├── styles/
-│   ├── base.css         ← Global tokens, resets, shared rules, sidebar nav
-│   ├── specimen.css     ← Specimen Page specific styles
-│   ├── research.css     ← Research Page specific styles
-│   └── try-me.css       ← Try-Me Tool Page specific styles
+│   ├── base.css                  ← Global tokens, resets, shared rules, sidebar nav, footer
+│   ├── specimen.css              ← Specimen Page specific styles
+│   ├── research.css              ← Research Page specific styles
+│   ├── try-me.css                ← Try-Me Tool Page specific styles
+│   └── inspiration-showcase.css  ← Inspiration showcase component (research page only)
 └── scripts/
-    ├── specimen.js      ← Specimen Page logic
-    ├── research.js      ← Research Page logic
-    └── try-me.js        ← Try-Me Tool Page logic
+    ├── specimen.js               ← Specimen Page logic
+    ├── research.js               ← Research Page logic
+    ├── try-me.js                 ← Try-Me Tool Page logic
+    └── inspiration-showcase.js  ← Inspiration showcase component logic
 ```
 
 Load order in every HTML file:
 1. `base.css`
-2. Page-specific CSS (`specimen.css`, `research.css`, or `try-me.css`)
-3. Page-specific JS at end of `<body>`
+2. Page-specific CSS
+3. Component CSS if needed (e.g., `inspiration-showcase.css` in research.html)
+4. Page-specific JS at end of `<body>`
+5. Component JS before page JS if needed
 
 ---
 
 ## Color Palette
 
-Ten surface and accent tokens. No fixed semantic roles — sections assign colors freely from this palette. Adjust hex values directly in `base.css` as the visual design develops.
+The site uses a **neon dark theme**. Background is near-black; accents are high-contrast neons. All tokens live in `base.css :root`.
 
 ```css
 :root {
+  /* Neon accents */
+  --color-main:   #FF1493;   /* neon pink   — index/specimen page accent */
+  --color-second: #FFFF00;   /* neon yellow — secondary accent           */
+  --color-third:  #FF5E00;   /* neon orange — research page accent       */
+  --color-fourth: #39FF14;   /* neon green  — try-me page accent         */
+
   /* Surfaces */
-  --color-cream:        #F5F2ED;   /* specimen page background */
-  --color-ink:          #141414;   /* body text on cream */
-  --color-ink-warm:     #181612;   /* warm near-black, section backgrounds */
-  --color-ink-deep:     #0F0E0C;   /* deepest sections */
-  --color-panel-bg:     #F4F4F2;   /* try-me floating panel background */
+  --color-black:     #151515;   /* off-black — body background           */
+  --color-dark:      #3A3835;   /* dark grey — borders, dividers         */
+  --color-grey:      #7A7875;   /* mid grey  — muted text, annotations   */
+  --color-lightgrey: #c0c0c0;   /* soft grey — light mode background     */
+  --color-white:     #F5F2ED;   /* off-white — text on dark, light bg    */
 
-  /* Accents */
-  --color-gold-dark:    #C8922A;   /* warm amber */
-  --color-gold-light:   #F0C84A;   /* bright gold */
+  /* Ink tones */
+  --color-ink-warm:  #151515;   /* warm near-black — panel/item bg       */
+  --color-ink-deep:  #151515;   /* deeper near-black — sidebar bg        */
 
-  /* Greens */
-  --color-green-olive:  #3A4920;   /* dark aged-ink olive */
-  --color-green-sage:   #7B9068;   /* muted desaturated sage */
+  /* Derived opacities */
+  --color-main-dim:    rgba(255, 20,  147, 0.12);
+  --color-main-faint:  rgba(255, 20,  147, 0.06);
+  --color-second-dim:  rgba(255, 255, 0,   0.12);
+  --color-third-dim:   rgba(255, 94,  0,   0.12);
+  --color-third-faint: rgba(255, 94,  0,   0.06);
+  --color-fourth-glow: rgba(57,  255, 20,  0.5);
 
-  /* Grey */
-  --color-grey-warm:    #C4C0B8;   /* light warm grey */
+  /* Structure */
+  --color-border-dark:  rgba(245, 242, 237, 0.07);
+  --color-border-light: rgba(15, 14, 12, 0.08);
+
+  /* Other */
+  --color-pure-black:   #000000;
+  --color-surface-dark: #1E1E1C;
+  --color-focus:        #D3D3D3;
+  --color-muted-warm:   #888880;
+  --color-soda-yellow:  #f5f000;  /* fingers-animation stage yellow */
 }
 ```
 
-Never introduce hex values or rgb() directly in component styles — always reference a token. Exception: the try-me.css panel uses direct hex values for its neutral interactive states (hover/active on panel controls) — those are too granular and context-specific for the global palette.
+Never introduce hex values or `rgb()` directly in component styles — always reference a token. Exception: `try-me.css` panel uses direct hex for neutral interactive states too granular for the global palette.
+
+---
+
+## Per-Page Accent System (`--page-accent`)
+
+Each page declares `--page-accent` via a body class selector in `base.css`. This single variable drives: footer background, footer text color, sidebar active state, and scrollbar thumb color.
+
+```css
+body.page-index    { --scrollbar-color: var(--color-main);   --page-accent: var(--color-main);   }
+body.page-research { --scrollbar-color: var(--color-third);  --page-accent: var(--color-third);  }
+body.page-tryme    { --scrollbar-color: var(--color-fourth); --page-accent: var(--color-fourth); }
+```
+
+When adding any element that should match the current page's color without hardcoding it, use `var(--page-accent)`.
 
 ---
 
@@ -72,21 +108,26 @@ Never introduce hex values or rgb() directly in component styles — always refe
 
 ```css
 :root {
-  --font-primary:        'Shmuel', serif;
-  --font-secondary:      'GretaSans', sans-serif;
-  --font-weight-light:   300;
-  --font-weight-regular: 400;
-  --font-weight-medium:  500;
-  --font-weight-semibold:600;
-  --font-weight-bold:    700;
-  --font-weight-heavy:   800;
-  --font-weight-black:   900;
+  --font-primary:         'Shmuel', serif;
+  --font-secondary:       'SimplerMono', 'Courier New', monospace;
 
-  --font-size-min:       32px;
+  /* Secondary font size scale */
+  --size-meta-large:      clamp(1.1rem, 1.4vw, 1.4rem);   /* ~18–22px */
+  --size-meta-small:      clamp(0.9rem, 1.05vw, 1.1rem);  /* ~14–18px */
+  --tracking-mono:        0.04em;
+
+  /* Weight name tokens */
+  --font-weight-light:    300;
+  --font-weight-regular:  400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:     700;
+  --font-weight-heavy:    800;
+  --font-weight-black:    900;
 }
 ```
 
-No type scale is locked — sizes are defined per section. Minimum font size is 32px. Do not set body text below this without explicit instruction.
+No type scale is locked — sizes are defined per section using `clamp()` for fluid scaling. The secondary font (`SimplerMono`) provides typographic contrast: calligraphic historical serif vs. sterile machine-precision mono.
 
 ---
 
@@ -96,35 +137,75 @@ No type scale is locked — sizes are defined per section. Minimum font size is 
 @font-face {
   font-family: 'Shmuel';
   src: url('../assets/fonts/shmuel-Regular.ttf') format('truetype');
-  font-weight: 300 900;
-  font-display: block; /* specimen must not flash unstyled */
+  font-weight: 500 900;             /* variable axis covers 500–900 only */
+  font-display: block;              /* specimen must not flash unstyled */
 }
 
 @font-face {
-  font-family: 'GretaSans';
-  src: url('../assets/fonts/GretaSansH+L-Regular.ttf') format('truetype');
+  font-family: 'SimplerMono';
+  src: url('../assets/fonts/SimplerPro_HLAR_Mono-Regular.otf') format('opentype');
   font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'SimplerMono';
+  src: url('../assets/fonts/SimplerPro_HLAR_Mono-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'SimplerMono';
+  src: url('../assets/fonts/SimplerPro_HLAR_Mono-Bold.otf') format('opentype');
+  font-weight: 700;
   font-display: swap;
 }
 ```
 
-Current format: TTF. The variable font (`shmuel-Regular.ttf`) covers wght 300–900 and is live. Add WOFF2 when preparing for production.
+Shmuel's `font-weight` range is **500–900**. There is no Light (300) or Regular (400) — the axis starts at Medium. Current format: TTF. Add WOFF2 when preparing for production.
 
 ---
 
 ## Interactive Tokens
 
-All interactive state is driven by CSS custom properties set via JS. Define them in `:root` with defaults:
+All interactive state is driven by CSS custom properties set via JS. Defined in `:root` with defaults:
 
 ```css
 :root {
-  --scroll-weight:   300;    /* Updated by scroll listener */
-  --cursor-x:        0.5;    /* 0–1, normalized */
-  --cursor-y:        0.5;    /* 0–1, normalized */
+  --scroll-weight: 500;   /* Updated by scroll listener — drives font weight */
+  --cursor-x:      0.5;   /* 0–1, normalized cursor position */
+  --cursor-y:      0.5;
 }
 ```
 
-JS sets values. CSS consumes them. Keep JS out of style logic.
+JS sets values. CSS consumes them. Keep style logic in CSS, not JS.
+
+---
+
+## Global Footer (in `base.css`)
+
+`.site-footer` is defined in `base.css` and shared across all three pages. It uses `--page-accent` for its color so it automatically changes color per page — no per-page overrides needed.
+
+```css
+.site-footer {
+  background-color: var(--page-accent);  /* neon pink / orange / green per page */
+  font-family: var(--font-secondary);
+}
+
+.site-footer__title {
+  font-variation-settings: 'wght' 900;
+  font-size: 7vw;
+  color: var(--color-black);             /* black text on accent background */
+}
+
+.site-footer__col span,
+.site-footer__col a,
+.site-footer__col p {
+  background-color: var(--color-black);  /* reversed-out label strips */
+  color: var(--page-accent);
+}
+```
+
+Structure: title row + 3-column grid (`repeat(3, 1fr)` with `clamp` gap). Markup duplicated in all three HTML files.
 
 ---
 
@@ -133,9 +214,9 @@ JS sets values. CSS consumes them. Keep JS out of style logic.
 - All global tokens in `base.css` only
 - Page-specific rules in their respective CSS file
 - No inline styles except when set by JS for performance-critical animation (e.g. `transform` on `requestAnimationFrame`)
-- No `!important`
+- No `!important` except inside `@media (prefers-reduced-motion: reduce)` — correct standard practice
 - No deeply nested selectors — maximum 3 levels
-- Sections styled by their `<section>` element and a single descriptive class: e.g. `section-hero`, `section-weights`, `section-character-grid`
+- Sections styled by their `<section>` element and a single descriptive class
 
 ---
 
@@ -154,7 +235,7 @@ JS sets values. CSS consumes them. Keep JS out of style logic.
 
 | Type | Format | Example |
 |---|---|---|
-| CSS token | `--category-descriptor` | `--color-gold-dark` |
+| CSS token | `--category-descriptor` | `--color-main` |
 | Section class | `section-[name]` | `section-hero` |
 | JS variable | camelCase | `scrollWeight` |
 | JS function | camelCase verb | `updateScrollWeight()` |
@@ -179,4 +260,3 @@ Introducing any new dependency requires explicit discussion and a logged decisio
 ## Open Items
 
 - [ ] WOFF2 conversion — deferred to production phase
-- [ ] FedraSansVariableVF.ttf loaded in assets but not used in CSS — confirm if needed or remove

@@ -41,6 +41,8 @@ Load the relevant SKILL.md before working on any task in that domain. Skills are
 | Page structure, layout, user flow               | `skills/ux-architecture/SKILL.md` |
 | Animation, interaction, creative dev logic      | `skills/interaction/SKILL.md`     |
 | CSS vars, tokens, code conventions, tech stack  | `skills/design-system/SKILL.md`   |
+| Deploy, push to main, GitHub Pages    | `skills/deploy/SKILL.md`          |
+
 
 ---
 

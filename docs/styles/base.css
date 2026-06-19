@@ -34,10 +34,16 @@
   color-scheme: dark;
 
   /* ── Core palette ──────────────────────────────────────── */
-  --color-main:   #FF1493;   /* neon pink   — primary interaction    */
-  --color-second: #FFFF00;   /* neon yellow — secondary accent       */
-  --color-third:  #FF5E00;   /* neon orange — third accent           */
-  --color-fourth: #39FF14;   /* neon green  — fourth accent          */
+  --color-main:   #ed3d66;   /* Eugenia Red   — primary interaction    */
+  --color-second: #ffe600;   /* Apricot Yellow — secondary accent       */
+  --color-third:  #ff7340;   /* Apricot Orange — third accent           */
+  --color-fourth: #94ff94;   /* Sea Green  — fourth accent          */
+
+  /* ── Core palette (backup) ─────────────────────────────── */
+  /*  --color-main:   #FF1493;   /* neon pink   — primary interaction    */
+  /*  --color-second: #FFFF00;   /* neon yellow — secondary accent       */
+  /*  --color-third:  #FF5E00;   /* neon orange — third accent           */
+  /*  --color-fourth: #39FF14;   /* neon green  — fourth accent   */      
 
   --color-black:  #151515;   /* off-black — body background          */
   --color-dark:   #3A3835;   /* dark grey — borders, dividers        */
@@ -66,7 +72,6 @@
   --color-surface-dark: #1E1E1C; /* near-black surface — char grid lines   */
   --color-focus:       #D3D3D3;  /* light grey — focus outlines            */
   --color-muted-warm:  #888880;  /* warm grey — muted meta text            */
-  --color-soda-yellow: #f5f000;  /* fingers-animation stage yellow         */
 
   /* ── Typography ─────────────────────────────────────────
      Secondary font is SimplerPro HLAR Mono, served locally.

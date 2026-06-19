@@ -627,7 +627,7 @@
 }
 
 .about-header {
-  background-color: var(--color-soda-yellow);
+  background-color: var(--color-second);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -753,8 +753,8 @@
 .sp-var-title {
   font-family: var(--font-primary);
   margin: 0;
-  line-height: 0.92;
-  color: var(--color-white);
+  line-height: 0.85;
+  color: var(--color-main);
   will-change: font-variation-settings;
 }
 
@@ -1211,12 +1211,10 @@
 */
 
 .fingers-section {
-  --yellow: var(--color-soda-yellow);
+  --yellow: var(--color-second);
   --black: var(--color-black);
-
   /* משקל הפונט החי משתנה דרך JS לפי הגלילה, ומשותף לכל הטקסטים החיים */
   --live-text-weight: 500;
-
   position: relative;
   min-height: 220vh;
   background: var(--color-black);
@@ -1234,7 +1232,7 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: var(--yellow);
+  background: var(--color-second);
 }
 
 /* שכבה 1 — ה־SVG הסטטי של המסגרת השחורה */
@@ -1603,4 +1601,65 @@
   .cacao-ceremony-location span {
     font-size: clamp(2.625rem, 8.75vw, 5.25rem);
   }
+}
+
+
+/* ── Hero Corners Layer ─────────────────────────────────── */
+.hero-corners-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  --grid-x: 4vw;
+  --grid-x-r: calc(var(--grid-x) - 2.5vw); /* compensate for body padding-right (sidebar) */
+  --grid-y: 6vh;
+}
+
+.hc-naked {
+  color: var(--color-main);
+  font-family: var(--font-secondary);
+  font-size: var(--size-meta-large);
+  line-height: 1.4;
+  position: absolute;
+  pointer-events: auto;
+  margin: 0;
+}
+.hc-tl {
+  top: var(--grid-y);
+  left: var(--grid-x);
+  text-align: left;
+}
+.hc-br {
+  bottom: var(--grid-y);
+  right: var(--grid-x-r);
+  text-align: right;
+}
+
+.hc-tr,
+.hc-bl {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: auto;
+}
+.hc-tr {
+  top: calc(var(--grid-y) - 15px);
+  right: calc(var(--grid-x-r) - 15px);
+  text-align: right;
+}
+.hc-bl {
+  bottom: calc(var(--grid-y) - 15px);
+  left: calc(var(--grid-x) - 15px);
+  text-align: left;
+}
+
+.hc-box {
+  background-color: var(--color-main);
+  color: var(--color-black);
+  padding: 15px;
+  width: 350px;
+  font-family: 'Shmuel', serif;
+  font-size: 4vw;
+  will-change: font-variation-settings;
 }

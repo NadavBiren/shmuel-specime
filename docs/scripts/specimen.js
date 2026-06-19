@@ -663,6 +663,11 @@ function initSpecimenTitles() {
   const labelEn = document.getElementById('weight-en');
   if (!titleHe || !titleEn) return;
 
+  const trBoxes = document.querySelectorAll('.hc-tr .hc-box');
+  const blBoxes = document.querySelectorAll('.hc-bl .hc-box');
+  if (trBoxes[1]) trBoxes[1].style.fontVariationSettings = "'wght' 700";
+  if (blBoxes[1]) blBoxes[1].style.fontVariationSettings = "'wght' 700";
+
   window.addEventListener('mousemove', e => {
     const percent   = e.clientX / window.innerWidth;
     const weightHe  = Math.round(500 + percent * 400);
@@ -671,6 +676,16 @@ function initSpecimenTitles() {
     titleEn.style.fontVariationSettings = `'wght' ${weightEn}`;
     if (labelHe) labelHe.textContent = weightHe;
     if (labelEn) labelEn.textContent = weightEn;
+
+    const progressY = Math.max(0, Math.min(1, e.clientY / window.innerHeight));
+    const wTop = Math.round(500 + (400 * (1 - progressY)));
+    const wBot = Math.round(500 + (400 * progressY));
+    [trBoxes[0], blBoxes[0]].forEach(el => {
+      if (el) el.style.fontVariationSettings = `'wght' ${wTop}`;
+    });
+    [trBoxes[2], blBoxes[2]].forEach(el => {
+      if (el) el.style.fontVariationSettings = `'wght' ${wBot}`;
+    });
   }, { passive: true });
 }
 
@@ -686,7 +701,7 @@ function initSpecimenPrint() {
 
   const MAX_CHARS   = 40;
   const MAX_ITEMS   = 25;
-  const NEON_COLORS = ['#39FF14', '#FF1493', '#FFFF00', '#FF5E00', '#FFFFFF'];
+  const NEON_COLORS = ['var(--color-main)', 'var(--color-second)', 'var(--color-third)', 'var(--color-fourth)', 'var(--color-white)'];
   const SVG_SHAPES  = ['hero-icon-1', 'hero-icon-2', 'hero-icon-3', 'hero-icon-4', 'hero-icon-5'];
   const TEXT_POOL   = [
     "Espresso Blend מספר 4", "Barrel Aged מהדורה מיוחדת", "House Blend מקומי",
@@ -772,21 +787,22 @@ function initSpecimenPrint() {
     item.style.width                 = widthEm + 'em';
     item.style.fontVariationSettings = `'wght' ${randomWeight}`;
 
-    // Resolve scroll position within the section's coordinate space
-    const sectionTop      = section.getBoundingClientRect().top + window.scrollY;
-    const scrollInSection = window.scrollY - sectionTop;
+    const itemWidthPx  = widthEm * size;
+    const itemHeightPx = size * 2;
 
-    // Horizontal: first 2 prints stay on left half; rest span full width
-    const safeWidth = window.innerWidth - 300;
-    const leftHalf  = window.innerWidth * 0.52;
-    const maxX      = printCount < 2 ? Math.min(leftHalf, safeWidth) : safeWidth;
+    // Allow stickers to bleed slightly off the edges (negative padding)
+    const bleed = 40;
 
-    // Vertical: keep stickers out of the lowest 10% of the viewport
-    const minY = 60;
-    const maxY = window.innerHeight * 0.9;
+    // Calculate bounds allowing the stickers to exit the screen slightly on all sides
+    const minX = -bleed;
+    const maxX = window.innerWidth - itemWidthPx + bleed;
 
-    const randomX = Math.random() * maxX;
-    const randomY = scrollInSection + minY + Math.random() * (maxY - minY);
+    const minY = -bleed;
+    const maxY = window.innerHeight - itemHeightPx - 80;
+
+    // Generate random coordinates within the new organic bounds
+    const randomX = minX + Math.random() * (maxX - minX);
+    const randomY = minY + Math.random() * (maxY - minY);
 
     const wrapper = document.createElement('div');
     wrapper.className = 'printed-item-wrapper';

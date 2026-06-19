@@ -44,11 +44,12 @@ body.page-tryme .sidebar-nav__item {
   overflow: hidden;
   padding: 6vh 4vw 6vh calc(18vw + 4vw);
   font-family: var(--font-primary);
+  font-size: clamp(4rem, 13.6vh, 20rem);
   outline: none;
   cursor: text;
   word-break: break-word;
   white-space: pre-wrap;
-  caret-color: var(--ui-accent);
+  caret-color: transparent !important;
   transition: color 0.2s ease;
 }
 
@@ -59,6 +60,25 @@ body.page-tryme .sidebar-nav__item {
   opacity: 0.18;
   pointer-events: none;
   user-select: none;
+}
+
+/* Fake blinking cursor */
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+.tryme-canvas.has-fake-cursor::after {
+  content: '|';
+  animation: blink-cursor 1s step-end infinite;
+  pointer-events: none;
+  color: var(--ui-accent);
+  display: inline-block;
+  font-weight: 100;
+  font-family: var(--font-secondary);
+  margin-right: 0.02em;
+  transform-origin: center;
+  transform: rotate(5deg);
 }
 
 /* Smooth weight transitions on inline spans created by the tool */
@@ -647,7 +667,9 @@ body.page-tryme .sidebar-nav__item {
 
 .tp-css-textarea::placeholder {
   opacity: 0.4;
-  direction: ltr;
+  direction: rtl;
+  text-align: right;
+  unicode-bidi: embed;
 }
 
 .tp-css-textarea:focus {
@@ -659,6 +681,22 @@ body.page-tryme .sidebar-nav__item {
   color: rgba(245, 242, 237, 0.30);
   margin-top: 5px;
   letter-spacing: 0.04em;
+}
+
+.css-example-hint {
+  font-size: 11px;
+  color: rgba(245, 242, 237, 0.28);
+  margin-top: 6px;
+  letter-spacing: 0.03em;
+  font-family: var(--font-secondary);
+  direction: rtl;
+}
+
+.css-example-hint code {
+  font-family: 'Courier New', monospace;
+  color: rgba(245, 242, 237, 0.42);
+  direction: ltr;
+  unicode-bidi: embed;
 }
 
 
@@ -975,6 +1013,30 @@ body.page-tryme .sidebar-nav__item.nav-active {
 }
 
 
+/* ── SLANTED PROXY CARET ──────────────────────────────── */
+
+.caret-proxy {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  width: 3px;
+  background: var(--ui-accent);
+  transform-origin: center;
+  transform: rotate(5deg);
+  animation: caret-proxy-blink 1s step-end infinite;
+  display: none;
+}
+
+.caret-proxy.is-active { display: block; }
+
+body.is-light-mode .caret-proxy { background: var(--color-ink-warm); }
+
+@keyframes caret-proxy-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+
 /* ── LIGHT MODE OVERRIDES ─────────────────────────────── */
 
 /* Redefine the accent inside the dark panel to grey so
@@ -986,10 +1048,6 @@ body.is-light-mode .tryme-panel {
 /* Canvas-level elements that sit on the light bg: use ink-warm (dark) */
 body.is-light-mode.page-tryme .sidebar-nav__item.nav-active {
   color: var(--color-ink-warm);
-}
-
-body.is-light-mode .tryme-canvas {
-  caret-color: var(--color-ink-warm);
 }
 
 body.is-light-mode .tryme-canvas ::selection {
@@ -1006,5 +1064,18 @@ body.is-light-mode .tryme-exit-word {
 
 body.is-light-mode .tryme-exit-sub {
   color: rgba(0, 0, 0, 0.4);
+}
+
+
+/* ── GLOBAL CURSOR OVERRIDES ────────────────────────────── */
+
+p, h1, h2, h3, h4, h5, h6, span {
+  cursor: default;
+}
+
+input:not([type="range"]):not([type="color"]):not([type="checkbox"]),
+textarea,
+[contenteditable="true"] {
+  cursor: text;
 }
 

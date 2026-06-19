@@ -1,0 +1,146 @@
+/* ─── Component Root ───────────────────────────────── */
+
+.inspiration-showcase {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+
+  --grid-gap:   12px;
+  --grid-padding: 12px;
+  --transition: 0.4s ease;
+}
+
+/* ─── Layer 0: Static Background ──────────────────── */
+
+.inspiration-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  z-index: 0;
+  user-select: none;
+  opacity: 0.9;
+}
+
+/* ─── Layer 1: Global Hover Overlay ───────────────── */
+
+.inspiration-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.inspiration-overlay.is-visible {
+  opacity: 1;
+}
+
+/* ─── Layer 2: CSS Grid ────────────────────────────── */
+
+.inspiration-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: var(--grid-gap);
+  padding: var(--grid-padding);
+}
+
+/* ─── Image Slots ──────────────────────────────────── */
+
+.grid-item {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.grid-item img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity var(--transition);
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.grid-item .item-hover {
+  opacity: 0;
+}
+
+.grid-item.is-hovered .item-base {
+  opacity: 0;
+}
+
+.grid-item.is-hovered .item-hover {
+  opacity: 1;
+}
+
+/* ─── Row 2 Cells ──────────────────────────────────── */
+
+.grid-btn-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid-empty-cell {
+  /* transparent — lets background show through */
+}
+
+/* ─── Mode Toggle Buttons ──────────────────────────── */
+
+.mode-btn {
+  font-family: var(--font-secondary);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-black);
+  background: var(--color-lightgrey);
+  border: 1px solid var(--color-fourth);
+  border-radius: 0;
+  padding: 10px 24px;
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, opacity 0.3s ease;
+  white-space: nowrap;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+[data-mode="scans"] .mode-btn[data-target="fonts"]:hover,
+[data-mode="fonts"] .mode-btn[data-target="scans"]:hover {
+  background: color-mix(in srgb, var(--color-fourth) 50%, transparent);
+  opacity: 1;
+}
+
+/* ── Active state: button matches the current data-mode ── */
+
+[data-mode="scans"] .mode-btn[data-target="scans"],
+[data-mode="fonts"] .mode-btn[data-target="fonts"] {
+  background: var(--color-fourth);
+  border-color: var(--color-fourth);
+  color: var(--color-black);
+  opacity: 1;
+}
+
+/* ─── Reduced Motion ───────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .inspiration-overlay,
+  .grid-item img,
+  .mode-btn {
+    transition-duration: 0.01ms;
+  }
+}

@@ -12,32 +12,8 @@ const HEBREW_LETTERS = 'אבגדהוזחטיכךלמםנןסעפףצץקרשת'.
 const NUMBER_CHARS   = '0123456789'.split('');
 const MARK_CHARS     = [':', ';', '!', '?', '/', '\\', '-', '—', '_', '(', ')', '[', ']', '.', ',', '־', "'", '"', '״', '׳', '&'];
 const LATIN_CHARS    = 'abcdefghijklmnopqrstuvwxyz'.split('').concat('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''));
-const ALTERNATE_CHARS = [
-  { key: '0_alt', display: '0' },
-  { key: '1_alt', display: '1' },
-  { key: '2_alt', display: '2' },
-  { key: '3_alt', display: '3' },
-  { key: '4_alt', display: '4' },
-  { key: '5_alt', display: '5' },
-  { key: '6_alt', display: '6' },
-  { key: '7_alt', display: '7' },
-  { key: '8_alt', display: '8' },
-  { key: '9_alt', display: '9' },
-  { key: 's_alt', display: 's' },
-  { key: 'v_alt', display: 'v' },
-  { key: 'w_alt', display: 'w' },
-];
-
-const SIZE_RANGE = [
-  { pt: 500, weight: 900, text: 'אינטרגלקטיות' },
-  { pt: 400, weight: 900, text: 'מסקרפונה מבורדו' },
-  { pt: 300, weight: 900, text: 'מחוף האוקיינוס האטלנטי ועד לגבולה' },
-  { pt: 200, weight: 900, text: 'הנדסת אווירונאוטיקה וטכנולוגיה צבאית' },
-  { pt: 100, weight: 900, text: 'מכניקת הקוונטים כגון סופרפוזיציה קוונטית וכן שזירה קוונטית' },
-  { pt: 72,  weight: 900, text: 'שולחן עץ נמוך הונחו מפות ישנות, כוסות תה כהות, ופנקסים מלאים בהערות שנכתבו במשך שנים של מסעות' },
-  { pt: 48,  weight: 900, text: 'שורשי אמנות קיפול הנייר אינם ידועים בוודאות היסטוריונים מסוימים טוענים כי סביר שהאמנות התפתחה בסין זמן־מה לאחר המצאת הנייר בשנת 105 על ידי צאי לון' },
-  { pt: 32,  weight: 900, text: 'אליזבת ירשה את הכתר לאחר מות אחותה למחצה הקתולית, מרי הראשונה. היא מיד החזירה את הדת הפרוטסטנטית לאנגליה וביצעה רפורמות דתיות ופוליטיות מקיפות. היא דאגה לשגשוגה הכלכלי. היא תמכה במסחר.' },
-];
+const SS01_DIGITS = ['0','1','2','3','4','5','6','7','8','9'];
+const SS02_DIGITS = ['0','2','3','4','5','6','9'];
 
 const HEBREW_GLYPH_DATA = {
   'א': { name: 'אלף',        unicode: 'U+05D0', decimal: 1488, unicodeName: 'alef-hb'          },
@@ -87,6 +63,13 @@ const HEBREW_GLYPH_DATA = {
   '7_alt': { name: '7', unicode: 'U+0037', decimal: 55, unicodeName: 'seven.001' },
   '8_alt': { name: '8', unicode: 'U+0038', decimal: 56, unicodeName: 'eight.001' },
   '9_alt': { name: '9', unicode: 'U+0039', decimal: 57, unicodeName: 'nine.001'  },
+  '0_alt2': { name: '0', unicode: 'U+0030', decimal: 48, unicodeName: 'zero.002'  },
+  '2_alt2': { name: '2', unicode: 'U+0032', decimal: 50, unicodeName: 'two.002'   },
+  '3_alt2': { name: '3', unicode: 'U+0033', decimal: 51, unicodeName: 'three.002' },
+  '4_alt2': { name: '4', unicode: 'U+0034', decimal: 52, unicodeName: 'four.002'  },
+  '5_alt2': { name: '5', unicode: 'U+0035', decimal: 53, unicodeName: 'five.005'  },
+  '6_alt2': { name: '6', unicode: 'U+0036', decimal: 54, unicodeName: 'six.002'   },
+  '9_alt2': { name: '9', unicode: 'U+0039', decimal: 57, unicodeName: 'nine.002'  },
   '־': { name: 'מקף עברי',   unicode: 'U+05BE', decimal: 1470, unicodeName: 'maqaf-hb'         },
   '.': { name: 'נקודה',      unicode: 'U+002E', decimal: 46,   unicodeName: 'period'           },
   ',': { name: 'פסיק',       unicode: 'U+002C', decimal: 44,   unicodeName: 'comma'            },
@@ -214,48 +197,35 @@ function buildCharGrid() {
   }
 
   if (gridAlts) {
-    ALTERNATE_CHARS.forEach(({ key, display }) => {
-      const span = document.createElement('span');
-      span.className = 'char-cell';
-      span.textContent = display;
-      span.dataset.glyphKey = key;
-      span.setAttribute('aria-hidden', 'true');
-      gridAlts.appendChild(span);
-    });
+    function buildAltGroup(container, digits, ssKey, label) {
+      const group = document.createElement('div');
+      group.className = 'char-alt-group';
+
+      const groupLabel = document.createElement('span');
+      groupLabel.className = 'char-alt-group-label';
+      groupLabel.textContent = label;
+      group.appendChild(groupLabel);
+
+      const grid = document.createElement('div');
+      grid.className = 'char-grid';
+
+      const glyphKeySuffix = ssKey === 'ss02' ? '_alt2' : '_alt';
+      digits.forEach(digit => {
+        const span = document.createElement('span');
+        span.className = `char-cell char-cell--${ssKey}`;
+        span.textContent = digit;
+        span.dataset.glyphKey = digit + glyphKeySuffix;
+        span.setAttribute('aria-hidden', 'true');
+        grid.appendChild(span);
+      });
+
+      group.appendChild(grid);
+      container.appendChild(group);
+    }
+
+    buildAltGroup(gridAlts, SS01_DIGITS, 'ss01', 'ss01');
+    buildAltGroup(gridAlts, SS02_DIGITS, 'ss02', 'ss02');
   }
-}
-
-/**
- * Populate the size-range section.
- */
-function buildSizeRange() {
-  const container = document.getElementById('features-grid');
-  if (!container) return;
-
-  SIZE_RANGE.forEach(({ pt, weight, text }, index) => {
-    const row = document.createElement('div');
-    row.className = pt >= 300 ? 'size-row size-row--large size-row--xlarge'
-                 : pt >= 100 ? 'size-row size-row--large'
-                 :             'size-row';
-    row.dataset.pt = pt;
-
-    const label = document.createElement('span');
-    label.className = 'size-label';
-    label.textContent = pt + 'pt';
-    label.setAttribute('aria-hidden', 'true');
-
-    const sample = document.createElement('span');
-    sample.className = 'size-text';
-    sample.style.fontSize = pt + 'px';
-    sample.style.animationDelay = (index * 500) + 'ms';
-    // fontVariationSettings handled by CSS weight-animation keyframe
-    sample.textContent = text;
-    sample.setAttribute('aria-hidden', 'true');
-
-    row.appendChild(label);
-    row.appendChild(sample);
-    container.appendChild(row);
-  });
 }
 
 // ── Character Inspector ───────────────────────────────
@@ -312,8 +282,10 @@ function initCharInspector() {
     if (uNameEl) uNameEl.textContent = data.unicodeName ?? '';
 
     document.querySelectorAll('.char-cell').forEach(cell => {
-      cell.classList.toggle('char-cell--selected',
-        cell.textContent.trim() === ch);
+      const match = key
+        ? cell.dataset.glyphKey === key
+        : cell.textContent.trim() === ch && !cell.dataset.glyphKey;
+      cell.classList.toggle('char-cell--selected', match);
     });
   }
 
@@ -575,34 +547,6 @@ function initHeaderWeightScroll() {
   update();
 }
 
-
-// ── Sizes Animation Play/Pause ────────────────────────
-
-function initSizesAnimation() {
-  const section = document.querySelector('.section-sizes');
-  const btn     = document.getElementById('sizes-anim-btn');
-  if (!section || !btn) return;
-
-  let playing = true;
-
-  btn.addEventListener('click', () => {
-    playing = !playing;
-    const state = playing ? 'running' : 'paused';
-    section.querySelectorAll('.size-text').forEach(el => {
-      el.style.animationPlayState = state;
-    });
-    btn.textContent = playing ? '⏸' : '▶';
-    btn.ariaLabel   = playing ? 'עצור אנימציה' : 'הפעל אנימציה';
-  });
-
-  const observer = new IntersectionObserver(([entry]) => {
-    btn.classList.toggle('is-visible', entry.isIntersecting);
-  }, { threshold: 0 });
-
-  observer.observe(section);
-}
-
-
 // ── Nav Scroll-Reveal ─────────────────────────────────
 
 function initNavScroll() {
@@ -719,6 +663,11 @@ function initSpecimenTitles() {
   const labelEn = document.getElementById('weight-en');
   if (!titleHe || !titleEn) return;
 
+  const trBoxes = document.querySelectorAll('.hc-tr .hc-box');
+  const blBoxes = document.querySelectorAll('.hc-bl .hc-box');
+  if (trBoxes[1]) trBoxes[1].style.fontVariationSettings = "'wght' 700";
+  if (blBoxes[1]) blBoxes[1].style.fontVariationSettings = "'wght' 700";
+
   window.addEventListener('mousemove', e => {
     const percent   = e.clientX / window.innerWidth;
     const weightHe  = Math.round(500 + percent * 400);
@@ -727,6 +676,16 @@ function initSpecimenTitles() {
     titleEn.style.fontVariationSettings = `'wght' ${weightEn}`;
     if (labelHe) labelHe.textContent = weightHe;
     if (labelEn) labelEn.textContent = weightEn;
+
+    const progressY = Math.max(0, Math.min(1, e.clientY / window.innerHeight));
+    const wTop = Math.round(500 + (400 * (1 - progressY)));
+    const wBot = Math.round(500 + (400 * progressY));
+    [trBoxes[0], blBoxes[0]].forEach(el => {
+      if (el) el.style.fontVariationSettings = `'wght' ${wTop}`;
+    });
+    [trBoxes[2], blBoxes[2]].forEach(el => {
+      if (el) el.style.fontVariationSettings = `'wght' ${wBot}`;
+    });
   }, { passive: true });
 }
 
@@ -738,20 +697,44 @@ function initSpecimenPrint() {
   const section    = document.getElementById('font-specimen');
   const inputEl    = document.getElementById('print-text');
   const charCount  = document.getElementById('print-char-count');
-  const panel      = document.getElementById('specimen-panel');
   if (!printBtn || !container || !section || !inputEl) return;
 
   const MAX_CHARS   = 40;
   const MAX_ITEMS   = 25;
-  const NEON_COLORS = ['#39FF14', '#FF1493', '#FFFF00', '#FF5E00', '#FFFFFF'];
+  const NEON_COLORS = ['var(--color-main)', 'var(--color-second)', 'var(--color-third)', 'var(--color-fourth)', 'var(--color-white)'];
   const SVG_SHAPES  = ['hero-icon-1', 'hero-icon-2', 'hero-icon-3', 'hero-icon-4', 'hero-icon-5'];
   const TEXT_POOL   = [
-    "Happy Hour", "ערב שתייה ללא תחתית", "סדנת ליקוט וחליטות תה",
-    "בירה מהחבית", "קוקטיילים מיוחדים", "יין ללא הגבלה", "צ'ייסר על הבר"
+    "Espresso Blend מספר 4", "Barrel Aged מהדורה מיוחדת", "House Blend מקומי",
+    "Natural Wine תל אביב", "Cold Brew", "בירה Unfiltered מהחבית", "קפה של הבוקר"
   ];
   const WEIGHT_STEPS = [500, 600, 700, 800, 900];
 
   let printCount = 0;
+
+  // Break sticker text into lines so it grows vertically instead of
+  // overflowing horizontally — line-break frequency depends on the
+  // sticker's shape (horizontal / square / vertical mask).
+  function formatStickerText(text, shape) {
+    let wordsPerBreak;
+    if (shape === 'hero-icon-3')      wordsPerBreak = 3; // Horizontal
+    else if (shape === 'hero-icon-2') wordsPerBreak = 2; // Square
+    else                              wordsPerBreak = Math.random() < 0.5 ? 1 : 2; // Vertical
+
+    const words = text.split(' ');
+    const lines = [];
+    let current = [];
+
+    words.forEach((word) => {
+      current.push(word);
+      if (word.includes(',') || current.length >= wordsPerBreak) {
+        lines.push(current.join(' '));
+        current = [];
+      }
+    });
+    if (current.length) lines.push(current.join(' '));
+
+    return lines.join('\n');
+  }
 
   // Character limit + countdown — counts against the actual value
   function updateCharCount() {
@@ -777,13 +760,14 @@ function initSpecimenPrint() {
 
     const len = text.length;
 
-    // Adaptive font size — recalibrated for mask silhouettes, stricter on long text
-    let size;
-if (len <= 4)       size = Math.floor(Math.random() * 61) + 160;  // 160-220
-  else if (len <= 10) size = Math.floor(Math.random() * 51) + 90;   // 90-140
-  else if (len <= 20) size = Math.floor(Math.random() * 31) + 50;   // 50-80
-  else                size = Math.floor(Math.random() * 19) + 32;   // 32-50
-  // 
+    // Adaptive font size + box width — both scale with text length so longer
+    // phrases print larger and wrap across more lines instead of shrinking
+    let size, widthEm;
+    if (len <= 8)       { size = Math.floor(Math.random() * 30) + 85; widthEm = 4.5; } // 85-114
+    else if (len <= 14) { size = Math.floor(Math.random() * 25) + 60; widthEm = 5.5; } // 60-84
+    else if (len <= 22) { size = Math.floor(Math.random() * 18) + 43; widthEm = 6.5; } // 43-60
+    else                { size = Math.floor(Math.random() * 15) + 32; widthEm = 7.5; } // 32-46
+
       // Random weight: one of 500,600,700,800,900
     const randomWeight = WEIGHT_STEPS[Math.floor(Math.random() * WEIGHT_STEPS.length)];
 
@@ -792,60 +776,33 @@ if (len <= 4)       size = Math.floor(Math.random() * 61) + 160;  // 160-220
 
     const item = document.createElement('div');
     item.className = 'printed-item';
-    item.textContent = text;
+    if (svgShape === 'hero-icon-3') {
+      item.classList.add('shape-icon-3');
+    }
+    item.textContent = formatStickerText(text, svgShape);
     item.style.backgroundColor = bgColor;
     item.style.maskImage       = maskUrl;
     item.style.webkitMaskImage = maskUrl;
     item.style.fontSize              = size + 'px';
+    item.style.width                 = widthEm + 'em';
     item.style.fontVariationSettings = `'wght' ${randomWeight}`;
 
-    // Resolve scroll position within the section's coordinate space
-    const sectionTop      = section.getBoundingClientRect().top + window.scrollY;
-    const scrollInSection = window.scrollY - sectionTop;
+    const itemWidthPx  = widthEm * size;
+    const itemHeightPx = size * 2;
 
-    // Estimate the sticker's own footprint (width: 5.5em, aspect-ratio: 0.83)
-    const itemWidthPx  = size * 5.5;
-    const itemHeightPx = itemWidthPx / 0.83;
+    // Allow stickers to bleed slightly off the edges (negative padding)
+    const bleed = 40;
 
-    // Keep-out box for the fixed bottom-center "Try me" panel
-    const PANEL_WIDTH  = panel ? panel.getBoundingClientRect().width  : Math.min(window.innerWidth * 0.9, 640);
-    const PANEL_HEIGHT = panel ? panel.getBoundingClientRect().height : 220;
-    const MARGIN = 24;
+    // Calculate bounds allowing the stickers to exit the screen slightly on all sides
+    const minX = -bleed;
+    const maxX = window.innerWidth - itemWidthPx + bleed;
 
-    const keepOut = {
-      left:   (window.innerWidth - PANEL_WIDTH) / 2 - MARGIN,
-      right:  (window.innerWidth + PANEL_WIDTH) / 2 + MARGIN,
-      top:    window.innerHeight - (window.innerHeight * 0.04) - PANEL_HEIGHT - MARGIN,
-      bottom: window.innerHeight + MARGIN
-    };
+    const minY = -bleed;
+    const maxY = window.innerHeight - itemHeightPx - 80;
 
-    // Horizontal: first 2 prints stay on left half; rest span full width
-    const safeWidth = window.innerWidth - 300;
-    const leftHalf  = window.innerWidth * 0.52;
-    const maxX      = printCount < 2 ? Math.min(leftHalf, safeWidth) : safeWidth;
-
-    let randomX, randomY, viewportY;
-    const MAX_ATTEMPTS = 8;
-
-    for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
-      randomX = Math.random() * maxX;
-      randomY = scrollInSection + Math.random() * (window.innerHeight * 0.75) + 60;
-      viewportY = randomY - scrollInSection;
-
-      const overlapsKeepOut =
-        (randomX + itemWidthPx) > keepOut.left &&
-        randomX < keepOut.right &&
-        (viewportY + itemHeightPx) > keepOut.top &&
-        viewportY < keepOut.bottom;
-
-      if (!overlapsKeepOut) break;
-
-      // Last attempt: clamp above the keep-out band instead of re-rolling forever
-      if (attempt === MAX_ATTEMPTS - 1) {
-        viewportY = Math.max(0, keepOut.top - itemHeightPx - 8);
-        randomY = scrollInSection + viewportY;
-      }
-    }
+    // Generate random coordinates within the new organic bounds
+    const randomX = minX + Math.random() * (maxX - minX);
+    const randomY = minY + Math.random() * (maxY - minY);
 
     const wrapper = document.createElement('div');
     wrapper.className = 'printed-item-wrapper';
@@ -903,8 +860,6 @@ function initFloatingWeights() {
 
 document.addEventListener('DOMContentLoaded', () => {
   buildCharGrid();
-  buildSizeRange();
-  initSizesAnimation();
   initSpecimenTitles();
   initSpecimenPrint();
   initCharProximity();
@@ -915,4 +870,151 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavScroll();
   initSlantedCaret();
   initFloatingWeights();
+  initFingersAnimation();
+  initCacaoCeremonyAnimation();
 });
+
+// ── Fingers animation component ──────────────────────
+
+function initFingersAnimation(root = document) {
+  const section = root.querySelector("#fingersSection");
+  if (!section) return;
+
+  const fingerTop = section.querySelector("#fingerTop");
+  const fingerBottom = section.querySelector("#fingerBottom");
+  const capWrap = section.querySelector("#capWrap");
+
+  if (!fingerTop || !fingerBottom || !capWrap) return;
+
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
+
+  function lerp(start, end, progress) {
+    return start + (end - start) * progress;
+  }
+
+  function updateAnimation() {
+    const rect = section.getBoundingClientRect();
+    const scrollableDistance = section.offsetHeight - window.innerHeight;
+    const progress = clamp(-rect.top / scrollableDistance, 0, 1);
+
+    // האצבע העליונה: מתחילה מימין ומגיעה למיקום הסופי שלה
+    const topX = lerp(22, 1, progress);
+
+    // האצבע התחתונה: מתחילה במקום שלה וממשיכה ימינה
+    const bottomX = lerp(4, 14, progress);
+
+    // הפקק (+ הטקסט החי עליו): מסתובב סיבוב מלא אחד. מספר שלילי = עם כיוון השעון במבנה הנוכחי שלך.
+    const capRotation = lerp(0, -360, progress);
+
+    // כל הטקסטים החיים (עליון, תחתון, ופקק) עוברים יחד מ-500 ל-900
+    const liveTextWeight = Math.round(lerp(500, 900, progress));
+
+    fingerTop.style.transform = `translateX(${topX}%)`;
+    fingerBottom.style.transform = `translateX(${bottomX}%)`;
+    capWrap.style.transform = `translate(-50%, -50%) rotate(${capRotation}deg)`;
+
+    section.style.setProperty("--live-text-weight", liveTextWeight);
+  }
+
+  window.addEventListener("scroll", updateAnimation, { passive: true });
+  window.addEventListener("resize", updateAnimation);
+
+  updateAnimation();
+}
+
+// ── Cacao Ceremony animation component ───────────────
+
+function initCacaoCeremonyAnimation(root = document) {
+  const section = root.querySelector
+    ? root.querySelector("#cacaoCeremonySection")
+    : document.querySelector("#cacaoCeremonySection");
+
+  if (!section) return;
+
+  const titleContainer = section.querySelector(".cacao-ceremony-title");
+  if (!titleContainer) return;
+
+  const titleSpans = section.querySelectorAll(".cacao-ceremony-title span");
+  const locationSpans = section.querySelectorAll(".cacao-ceremony-location span");
+
+  const leftHead = section.querySelector("#cacaoCeremonyLeft");
+  const rightHead = section.querySelector("#cacaoCeremonyRight");
+
+  let ticking = false;
+
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
+
+  function lerp(start, end, progress) {
+    return start + (end - start) * progress;
+  }
+
+  function updateAnimation() {
+    const viewportHeight = window.innerHeight;
+
+    /*
+      titleProgress:
+      0 = כשהטקסט מגיע למרכז המסך
+      1 = כשהטקסט עבר מרכז המסך לחלוטין (הגיע לראש המסך)
+    */
+    const titleRect = titleContainer.getBoundingClientRect();
+    const titleAnimationStart = viewportHeight * 0.5;
+    const titleAnimationDistance = titleAnimationStart;
+    const titleProgress = clamp(
+      (titleAnimationStart - titleRect.top) / titleAnimationDistance,
+      0,
+      1
+    );
+
+    const titleWeight = Math.round(lerp(500, 900, titleProgress));
+    const locationWeight = Math.round(lerp(700, 500, titleProgress));
+
+    titleSpans.forEach((span) => {
+      span.style.fontVariationSettings = `'wght' ${titleWeight}`;
+    });
+
+    locationSpans.forEach((span) => {
+      span.style.fontVariationSettings = `'wght' ${locationWeight}`;
+    });
+
+    /*
+      headsProgress:
+      0 = ראש הסקשן עדיין בתחתית המסך (לא נכנס)
+      1 = ראש הסקשן הגיע לראש המסך (נחשף במלואו)
+    */
+    const sectionRect = section.getBoundingClientRect();
+    const headsProgress = clamp(
+      (viewportHeight - sectionRect.top) / viewportHeight,
+      0,
+      1
+    );
+
+    const leftX = lerp(-38, 0, headsProgress);
+    const rightX = lerp(38, 0, headsProgress);
+
+    if (leftHead) {
+      leftHead.style.transform = `translate3d(${leftX}%, 0, 0)`;
+    }
+
+    if (rightHead) {
+      rightHead.style.transform = `translate3d(${rightX}%, 0, 0)`;
+    }
+
+    ticking = false;
+  }
+
+  function requestUpdate() {
+    if (!ticking) {
+      window.requestAnimationFrame(updateAnimation);
+      ticking = true;
+    }
+  }
+
+  window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("resize", requestUpdate);
+
+  updateAnimation();
+}

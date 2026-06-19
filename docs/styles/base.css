@@ -34,20 +34,26 @@
   color-scheme: dark;
 
   /* ── Core palette ──────────────────────────────────────── */
-  --color-main:   #FF1493;   /* neon pink   — primary interaction    */
-  --color-second: #FFFF00;   /* neon yellow — secondary accent       */
-  --color-third:  #FF5E00;   /* neon orange — third accent           */
-  --color-fourth: #39FF14;   /* neon green  — fourth accent          */
+  --color-main:   #ed3d66;   /* Eugenia Red   — primary interaction    */
+  --color-second: #ffe600;   /* Apricot Yellow — secondary accent       */
+  --color-third:  #ff7340;   /* Apricot Orange — third accent           */
+  --color-fourth: #94ff94;   /* Sea Green  — fourth accent          */
 
-  --color-black:  #0F0E0C;   /* off-black — body background          */
+  /* ── Core palette (backup) ─────────────────────────────── */
+  /*  --color-main:   #FF1493;   /* neon pink   — primary interaction    */
+  /*  --color-second: #FFFF00;   /* neon yellow — secondary accent       */
+  /*  --color-third:  #FF5E00;   /* neon orange — third accent           */
+  /*  --color-fourth: #39FF14;   /* neon green  — fourth accent   */      
+
+  --color-black:  #151515;   /* off-black — body background          */
   --color-dark:   #3A3835;   /* dark grey — borders, dividers        */
   --color-grey:   #7A7875;   /* mid grey  — muted text, annotations  */
   --color-lightgrey:   #c0c0c0;   /* soft paper grey — light theme bg       */
   --color-white:  #F5F2ED;   /* off-white — text on dark, light bg   */
 
   /* Ink tones — sidebar and panel backgrounds */
-  --color-ink-warm:  #1A1917;  /* warm near-black — panel / item bg */
-  --color-ink-deep:  #181612;  /* deeper near-black — sidebar bg    */
+  --color-ink-warm:  #151515;  /* warm near-black — panel / item bg */
+  --color-ink-deep:  #151515;  /* deeper near-black — sidebar bg    */
 
   /* Derived opacities */
   --color-main-dim:    rgba(255, 20,  147, 0.12);
@@ -55,10 +61,17 @@
   --color-second-dim:  rgba(255, 255, 0,   0.12);
   --color-third-dim:   rgba(255, 94,  0,   0.12);
   --color-third-faint: rgba(255, 94,  0,   0.06);
+  --color-fourth-glow: rgba(57,  255, 20,  0.5);
 
   /* Structure */
   --color-border-dark:  rgba(245, 242, 237, 0.07);
   --color-border-light: rgba(15, 14, 12, 0.08);
+
+  /* ── Other ─────────────────────────────────────────────── */
+  --color-pure-black:  #000000;  /* pure black — marks on bright accent bg */
+  --color-surface-dark: #1E1E1C; /* near-black surface — char grid lines   */
+  --color-focus:       #D3D3D3;  /* light grey — focus outlines            */
+  --color-muted-warm:  #888880;  /* warm grey — muted meta text            */
 
   /* ── Typography ─────────────────────────────────────────
      Secondary font is SimplerPro HLAR Mono, served locally.
@@ -147,7 +160,7 @@ p {
   width: 2.5vw;
   height: 100vh;
   z-index: 500;
-  background: #181612;
+  background: var(--color-black);
   display: flex;
   flex-direction: column;
   padding-left: 3px;
@@ -208,4 +221,88 @@ p {
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: var(--scrollbar-color);
+}
+
+/* ── Site Footer (Global) ──────────────────────────────────── */
+
+.site-footer {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--page-accent);
+  padding: 2rem clamp(3rem, 8vw, 8rem);
+  font-family: var(--font-secondary);
+  font-size: var(--size-meta-small);
+  line-height: 1.7;
+}
+
+.site-footer__columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+  width: 100%;
+}
+
+.site-footer__col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75em;
+}
+
+.site-footer__logo {
+  height: 55px;
+  width: auto;
+  margin-top: -0.5em;
+  margin-bottom: 0.75em;
+  align-self: flex-start;
+  object-fit: contain;
+}
+
+.site-footer__title {
+  display: block;
+  font-family: var(--font-primary);
+  font-variation-settings: 'wght' 900;
+  font-weight: 900;
+  font-size: 7vw;
+  margin: -2rem 0 -2.6rem;
+  background-color: var(--page-accent);
+  color: var(--color-black);
+}
+
+.site-footer__title,
+.site-footer__col p,
+.site-footer__col span,
+.site-footer__col a {
+  padding: 5px 10px;
+  width: max-content;
+  max-width: 100%; /* Prevents long paragraphs from overflowing the screen */
+  white-space: normal;
+}
+
+.site-footer__col p,
+.site-footer__col span,
+.site-footer__col a {
+  background-color: var(--color-black);
+  color: var(--page-accent);
+}
+
+.site-footer__col p {
+  max-width: 45ch;
+}
+
+.site-footer a {
+  color: var(--page-accent);
+  text-decoration: underline;
+  transition: opacity 0.15s ease;
+}
+
+.site-footer a:hover {
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  .site-footer__columns {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
 }

@@ -16,7 +16,7 @@ Each entry: decision | rationale | what it rules out.
 **Rules out:** LTR-default layout patterns. All structural CSS must account for RTL flow.
 
 ### Font delivery: local @font-face
-**Rationale:** Variable font file(s) served from `site/assets/fonts/`. No CDN, no Google Fonts.
+**Rationale:** Variable font file(s) served from `docs/assets/fonts/`. No CDN, no Google Fonts.
 **Rules out:** Any remote font loading for Shmuel itself.
 
 ### Three-page structure: Specimen + Research + Try Me
@@ -32,5 +32,9 @@ Each entry: decision | rationale | what it rules out.
 **Rules out:** Any compromise of desktop experience for cross-device compatibility.
 
 ### Navigation: Vertical sidebar, right edge, three sections
-**Rationale:** Replaced fixed top-right pill with a 3vw vertical sidebar on the right. Labels (top to bottom): פונט, מחקר, נסו אותי. Each section is ~33.33vh. Active page gets --color-second (#27D8A8) background with dark text; hover gets rgba(39,216,168,0.15) with --color-second text. CSS lives in base.css (shared). Sidebar HTML is duplicated across all three pages with nav-active on the current page's item.
+**Rationale:** 2.5vw wide, right edge, full viewport height, fixed. Labels (top → bottom): הפונט / המחקר / הטסטר. Active item: `color: var(--page-accent)` on `--color-ink-deep` background. Hover: 15% tint of each section's own accent color (pink/orange/green). CSS lives in `base.css` (shared). HTML duplicated across all three pages with `nav-active` on the current page's item. `body` gets `padding-right: 2.5vw` to clear the sidebar.
 **Rules out:** Horizontal nav, pill/button nav, hamburger menu, bottom nav.
+
+### Repo consolidated to single source folder: `docs/`
+**Rationale:** The repo had two near-identical website folders (`docs/` and `site/`). `docs/` is the GitHub Pages publish source and was the more current copy; `site/` was a stale duplicate that caused ambiguity about where edits should land. `site/` removed (user retained a backup outside the repo).
+**Rules out:** Ever recreating, editing, or referencing `site/`. All website source — HTML, CSS, JS, assets, fonts — lives exclusively in `docs/`.

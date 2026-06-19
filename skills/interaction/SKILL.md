@@ -47,11 +47,11 @@ The word שמואל is rendered as 12 stacked `<span>` elements inside a CSS per
 ## Scroll Interactions
 
 **Primary behavior: font weight changes on scroll.**
-Scroll progress maps to weight range 300–900. Used on both the Specimen and Research pages.
+Scroll progress maps to weight range 500–900 (the font's actual axis range). Used on both the Specimen and Research pages.
 
 ```javascript
 const scrollFraction = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-const weight = 300 + scrollFraction * 600;
+const weight = 500 + scrollFraction * 400;
 document.documentElement.style.setProperty('--scroll-weight', weight);
 ```
 
@@ -113,6 +113,50 @@ Collapsed panel section. Textarea content is injected (with debounce) into a `<s
 
 **Panel toggle:**
 Collapse/expand button. Panel height animates; collapsed state is preserved across interactions.
+
+---
+
+## Slanted Caret Proxy (`.caret-proxy`)
+
+Both `try-me.js` and `specimen.js` implement `initSlantedCaret()`. This replaces the native browser text cursor with a custom slanted version that matches the font's 5° italic angle.
+
+**How it works:**
+1. On init, `document.createElement('div')` creates a proxy element with `className = 'caret-proxy'`; it is `appendChild`'d to `document.body` (fixed-positioned, `display: none` by default).
+2. On `focus`, `keyup`, `mouseup`, and `input` events on the editable element, `positionFromSelection()` runs: it reads `window.getSelection().getRangeAt(0).getClientRects()[0]` to get the current cursor rect, sets `proxy.style.left/top` to those coordinates, sets `proxy.style.height` to `getComputedStyle(activeElement).lineHeight`, and adds `.is-active` to show the proxy.
+3. On `blur` and on `mousedown` outside a `[contenteditable]`, `.is-active` is removed.
+4. The native caret is hidden via `caret-color: transparent !important` on the editable element.
+
+**CSS:**
+```css
+.caret-proxy {
+  position: fixed;
+  display: none;
+  width: 2px;
+  background: var(--ui-accent);  /* or var(--color-main) in specimen */
+  transform: rotate(5deg);
+  transform-origin: top center;
+  pointer-events: none;
+  z-index: 9999;
+}
+.caret-proxy.is-active { display: block; }
+@keyframes caret-proxy-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+```
+
+Both `specimen.css` and `try-me.css` define this independently. Light mode variants are handled in each file.
+
+---
+
+## `has-fake-cursor` (try-me page only)
+
+Before the user first focuses the canvas, a simpler CSS-only cursor is shown via `.tryme-canvas.has-fake-cursor::after`. This renders a `|` character via CSS `content`, blinks with `step-end` animation, and is rotated 5°. It uses `--ui-accent` for color.
+
+On the first `focus` event (registered `{ once: true }` in `try-me.js`), JS removes `has-fake-cursor` permanently. From that point on the `.caret-proxy` takes over. This creates a clean "wake-up" transition from idle to active state.
+
+---
+
+## Hardcoded Animations (Fingers + Cacao)
+
+The fingers section (`.fingers-section`) and the cacao ceremony section (`.cacao-ceremony-section`) are fully **hardcoded in `index.html`** as static HTML with `<img>` tags and inline `<div>` structures. There are **no `fetch()` calls** for these in `specimen.js`. Animation logic reads the DOM directly — no async loading step. The only remaining `fetch()` in the entire codebase is in `research.js` for `assets/data/sources.json`.
 
 ---
 

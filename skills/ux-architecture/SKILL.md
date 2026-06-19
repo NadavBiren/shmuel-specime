@@ -15,15 +15,15 @@ Three separate HTML files. Each is a self-contained page with its own scroll con
 
 | Page | File | Role |
 |---|---|---|
-| Specimen | `site/index.html` | Font showcase, interactive |
-| Research | `site/research.html` | Editorial, historical |
-| Try Me | `site/try-me.html` | Full-screen font testing tool |
+| Specimen | `docs/index.html` | Font showcase, interactive |
+| Research | `docs/research.html` | Editorial, historical |
+| Try Me | `docs/try-me.html` | Full-screen font testing tool |
 
 ---
 
 ## Navigation
 
-A vertical sidebar sits at the right edge of every page. It is 3vw wide, full viewport height, fixed. Three sections (~33.33vh each), stacked top to bottom: **פונט**, **מחקר**, **נסו אותי**. The active page's item gets `--color-gold-dark` background; hover gets `--color-gold-light`. CSS lives in `base.css` (shared). HTML is duplicated across all three pages with `nav-active` on the current page's item. Body gets `padding-right: 3vw` from base.css to clear the sidebar.
+A vertical sidebar sits at the right edge of every page. It is **2.5vw wide**, full viewport height, fixed. Three sections (~33.33vh each), stacked top to bottom: **הפונט** / **המחקר** / **הטסטר**. The active page's item gets `color: var(--page-accent)` on a dark background. Hover shows a 15% tint of each section's own accent color (pink for הפונט, orange for המחקר, green for הטסטר). CSS lives in `base.css` (shared). HTML is duplicated across all three pages with `nav-active` on the current page's item. `body` gets `padding-right: 2.5vw` from `base.css` to clear the sidebar.
 
 Each page ends with an exit link leading to the next page in the sequence: Specimen → Research → Try Me.
 
@@ -31,52 +31,59 @@ Each page ends with an exit link leading to the next page in the sequence: Speci
 
 ## Specimen Page — Section Order
 
-File: `site/index.html`
+File: `docs/index.html`
 
-1. **Hero** — 12-layer CSS depth effect, word שמואל. Mouse X/Y drives perspective rotation; weight echoes across layers via history array.
-2. **Try Me** — full-viewport editable textarea with 4 sliders (size, weight, line-height, letter-spacing).
-3. **Weights** — 7 rows (300, 400, 500, 600, 700, 800, 900), each editable, auto-sized text, varied background colors per row.
-4. **Character Grid** — sticky inspector panel on the left (620px glyph display, metric lines, unicode data); 4 grids on the right (22 Hebrew letters, final forms, digits, punctuation). Cursor proximity scales weight and cell size (200px radius).
-5. **Display** — large-scale typographic composition (currently hidden).
-6. **Text** — paragraph setting at readable sizes (currently hidden).
-7. **Size Range** — 8 sizes from 500pt→32pt animated continuously; weight cycles 300→900 on a loop; play/pause button appears on scroll into section.
-8. **About** — font description text, green-sage background.
-9. **Exit** — link to Research Page.
+1. **Font Specimen** (`.specimen-outer`) — sticky stage showing שמואל/Shmuel in variable weight; floating "נסו אותי" panel with text input and print-to-canvas button.
+2. **Floating Weights** (`.section-floating-weights`) — 6 beverage icon masks (SVGs) + weight labels (mishkalim/Weights) with per-letter wave animation on the title. Hover on icon ↔ label creates cross-component scaling.
+3. **Cacao Ceremony** (`.cacao-ceremony-section`) — hardcoded HTML/CSS animation of cacao ceremony poster; weight of title text maps to scroll progress.
+4. **Character Grid** (`.section-character-grid`) — sticky inspector panel left (620px glyph, metric lines, unicode data); grids right: Hebrew alphabet, digits (+ ss01/ss02 alternates), punctuation, Latin. Cursor proximity (200px radius) scales weight and cell size.
+5. **Try Me** (`.section-try-me`) — mini textarea + 4 sliders (size, weight, line-height, letter-spacing) embedded within the specimen flow.
+6. **Fingers** (`.fingers-section`) — hardcoded soda-bottle animation; live text weight maps to scroll.
+7. **Display** (`.section-display`) — large-scale blockquote typographic composition.
+8. **Text** (`.section-text`) — paragraph specimen at readable size.
+9. **Sizes** (`.section-sizes`) — 8 sizes (500pt→32pt) animated; weight cycles on loop; play/pause via IntersectionObserver.
+10. **About** (`.section-about`) — font description.
+11. **Exit** (`.section-exit`) — link to Research Page.
+12. **Footer** (`.site-footer`) — 3-column info footer; `background-color: var(--page-accent)` (neon pink on index).
 
 ---
 
 ## Research Page — Section Order
 
-File: `site/research.html`
+File: `docs/research.html`
 
 Layout: nested sticky tab system. 5 staggered tabs at the top (30px height each, 20% width each, positioned RTL from right). Each section is ~200vh tall.
 
-1. **הכתב הבינוני** — historical context of Medium script, gold-dark background.
-2. **מחקר מקורות** — source research methodology + interactive viewer. 18 sources from `sources.json`. Left: image viewer with hover-based opacity crossfade between scan and digitized rendering. Right: 5×4 button grid + metadata display (source name, year, writer, place, style, available letters).
-3. **סקיצות** — the digitization process and first sketches, ink-warm background.
-4. **בדיקות ותיקונים** — testing and corrections methodology, green-sage background.
-5. **מאפיינים** — font capabilities and features, green-olive background.
+1. **הכתב הבינוני** — historical context of Medium script.
+2. **מחקר מקורות** — source research methodology + interactive viewer. 18 sources from `sources.json`. Left: image viewer with hover-based opacity crossfade between scan and digitized rendering. Right: 5×4 button grid + metadata display. Also contains the **inspiration showcase** (`<section class="inspiration-showcase">`): a full-bleed grid with background image (`scans_bg-font.jpg`), hover overlay (`#inspirationOverlay`), and auto-generated `#inspirationGrid` built by `inspiration-showcase.js`. Wired to `inspiration-showcase.css`. The `data-mode` attribute toggles display between `scans` and `fonts`.
+3. **סקיצות** — the digitization process and first sketches.
+4. **בדיקות ותיקונים** — testing and corrections methodology.
+5. **מאפיינים** — font capabilities and features.
 
-Exit link leads to Try-Me Page.
+Exit link leads to Try-Me Page. Footer at end: `background-color: var(--page-accent)` (neon orange on research).
 
 ---
 
 ## Try-Me Page
 
-File: `site/try-me.html`
+File: `docs/try-me.html`
 
-Full-screen contenteditable canvas (default: Hebrew historical passage). Padding: 6vh 4vw. Text color and background driven by state.
+Full-screen `contenteditable` canvas (`.tryme-canvas`). Default text: beverage name list in Hebrew. Padding: `6vh 4vw`. Text color and background driven by state object in JS. Font size default: 140px (`clamp`-based, fluid).
 
-Floating control panel: 320px wide, bottom-left, collapsible. Panel sections (top to bottom):
+**Canvas cursor behavior:** The canvas has `caret-color: transparent` — native cursor is hidden. Two-phase cursor system:
+1. Before first focus: `has-fake-cursor` class on `.tryme-canvas` renders a blinking `|` via CSS `::after`, rotated 5°.
+2. After first focus: `has-fake-cursor` is removed; `initSlantedCaret()` takes over with a positioned `.caret-proxy` div.
+
+Floating control panel: 320px wide, right side (inside `.tryme-sidebar`), collapsible. Panel sections (top to bottom):
 1. **Alignment** — RTL, Center, LTR buttons.
-2. **Weight** — dropdown (300–900 named steps + "custom") + conditionally revealed range slider + preview letter. Selection-aware: detects mixed weights, shows "mixed".
-3. **Typography** — 3 sliders: size (12–360px), letter-spacing (−0.1–0.3em), line-height (0.6–3). Each slider paired with a synced number input.
-4. **Colors** — 6 palette swatches (5 fixed, 1 random on load) + free color pickers for text and background.
-5. **Outline** — checkbox toggle + color picker + size slider (webkit-text-stroke).
-6. **Shadow** — checkbox toggle + color + X/Y/blur controls.
-7. **Features** — disabled placeholders for liga, ss01, ss02, hist (wired but not yet active).
-8. **Reset** — restores default text.
-9. **Custom CSS** — collapsed textarea; debounced injection into `<style id="tryme-custom-css">`.
+2. **Weight + Typography** — preset buttons (רגיל/בולד/בלאק at 500/700/900) + weight slider; size (50–400px), letter-spacing (−0.1–0.5em), line-height (0.7–2.5) sliders. Each slider paired with a synced number input and a reload-to-default icon.
+3. **Colors** — 6 palette swatches (filled by JS) + free color pickers for text and background.
+4. **Shadow** — checkbox toggle + color + X/Y/blur controls.
+5. **Weight Animation** — play/pause button for continuous 500→900→500 weight oscillation.
+6. **Features** — collapsible; disabled placeholders for liga, ss01, ss02, hist.
+7. **Custom CSS** — collapsible textarea; debounced injection into `<style id="tryme-custom-css">`.
+
+Footer at end: `background-color: var(--page-accent)` (neon green on try-me).
 
 ---
 

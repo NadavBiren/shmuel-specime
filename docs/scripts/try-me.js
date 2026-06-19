@@ -9,7 +9,7 @@
 /* ── DEFAULT TEXT ───────────────────────────────────────
    Canonical paragraph used on load and when reset is clicked.
 ─────────────────────────────────────────────────────── */
-const DEFAULT_TEXT = '';
+const DEFAULT_TEXT = 'חבית‭ ‬בירה‭ ‬\nמארז‭ ‬סודה\nבקבוק‭ ‬יין‭ ‬לבן‭ ‬\nבריזר‭ ‬אבטיח‭ ‬\nאמריקנו‭ ‬גדול\nמנת‭ ‬וייסקי‭ ‬\nאספרסו\nצייסר‬';
 
 
 /* ── PALETTES ───────────────────────────────────────────
@@ -33,7 +33,7 @@ const PALETTES = [
    not reflected here.
 ─────────────────────────────────────────────────────── */
 const state = {
-  fontSize:      120,
+  fontSize:      140,
   fontWeight:    900,
   letterSpacing: 0,
   lineHeight:    0.8,
@@ -757,7 +757,7 @@ function initSettingsReset() {
 ─────────────────────────────────────────────────────── */
 function initSliderReloads() {
   const SLIDER_DEFAULTS = {
-    'tp-size': { stateKey: 'fontSize',      value: 120,  range: sizeRange,    num: sizeNum },
+    'tp-size': { stateKey: 'fontSize',      value: 140,  range: sizeRange,    num: sizeNum },
     'tp-ls':   { stateKey: 'letterSpacing', value: 0,    range: lsRange,      num: lsNum   },
     'tp-lh':   { stateKey: 'lineHeight',    value: 0.8,  range: lhRange,      num: lhNum   },
     'tp-wght': { stateKey: 'fontWeight',    value: 900,  range: weightSlider, num: weightSliderOut,
@@ -787,9 +787,56 @@ function initSliderReloads() {
 }
 
 
+/* ── SLANTED CARET ──────────────────────────────────────
+   Positions a rotated proxy div over the native cursor on
+   the contenteditable canvas. Native caret is hidden via CSS.
+─────────────────────────────────────────────────────── */
+function initSlantedCaret() {
+  const proxy = document.createElement('div');
+  proxy.className = 'caret-proxy';
+  document.body.appendChild(proxy);
+
+  function positionFromSelection() {
+    const sel = window.getSelection();
+    if (!sel || !sel.rangeCount) { proxy.classList.remove('is-active'); return; }
+    const range = sel.getRangeAt(0).cloneRange();
+    range.collapse(true);
+    const rects = range.getClientRects();
+    if (!rects.length) { proxy.classList.remove('is-active'); return; }
+    const r = rects[0];
+    if (r.top < 0 || r.top > window.innerHeight) { proxy.classList.remove('is-active'); return; }
+    const lh = parseFloat(getComputedStyle(document.activeElement).lineHeight) || r.height || 40;
+    proxy.style.left   = r.left + 'px';
+    proxy.style.top    = r.top  + 'px';
+    proxy.style.height = lh     + 'px';
+    proxy.classList.add('is-active');
+  }
+
+  ['focus', 'keyup', 'mouseup', 'input'].forEach(ev =>
+    canvas.addEventListener(ev, positionFromSelection));
+  canvas.addEventListener('blur', () => proxy.classList.remove('is-active'));
+
+  document.addEventListener('mousedown', e => {
+    if (!e.target.closest('[contenteditable]')) proxy.classList.remove('is-active');
+  });
+
+  window.addEventListener('scroll', positionFromSelection, { passive: true });
+}
+
+
 /* ── INIT ───────────────────────────────────────────────
 ─────────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
+  // Populate canvas with default text
+  if (DEFAULT_TEXT) {
+    canvas.innerText = DEFAULT_TEXT;
+  }
+
+  // Remove fake cursor on focus — never returns until page reload
+  canvas.addEventListener('focus', () => {
+    canvas.classList.remove('has-fake-cursor');
+  }, { once: true });
+
   // Apply initial state to canvas and body
   applyGlobalStyles();
 
@@ -808,4 +855,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Start watching text selection
   initSelectionMonitor();
+
+  // Slanted proxy caret (replaces native browser caret)
+  initSlantedCaret();
 });

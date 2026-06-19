@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cacao Ceremony Animation</title>
+
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/cacao-ceremony-animation.css">
+</head>
+
+<body>
+  <main id="cacaoCeremonyAnimationMount"></main>
+
+  <script src="scripts/cacao-ceremony-animation.js"></script>
+  <script>
+    fetch('components/cacao-ceremony-animation.html')
+      .then(response => response.text())
+      .then(html => {
+        const mount = document.querySelector('#cacaoCeremonyAnimationMount');
+        if (!mount) return;
+
+        mount.innerHTML = html;
+
+        if (typeof initCacaoCeremonyAnimation === 'function') {
+          initCacaoCeremonyAnimation(mount);
+        }
+      });
+  </script>
+</body>
+</html>

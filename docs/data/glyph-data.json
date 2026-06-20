@@ -1,0 +1,1695 @@
+{
+  "categories": [
+    {
+      "id": "hebrew",
+      "label": "אותיות",
+      "containerId": "char-grid",
+      "direction": "rtl",
+      "glyphs": [
+        {
+          "glyphName": "alef-hb",
+          "display": "א",
+          "label": "אלף",
+          "unicode": "U+05D0",
+          "decimal": 1488
+        },
+        {
+          "glyphName": "bet-hb",
+          "display": "ב",
+          "label": "בית",
+          "unicode": "U+05D1",
+          "decimal": 1489
+        },
+        {
+          "glyphName": "gimel-hb",
+          "display": "ג",
+          "label": "גימל",
+          "unicode": "U+05D2",
+          "decimal": 1490
+        },
+        {
+          "glyphName": "dalet-hb",
+          "display": "ד",
+          "label": "דלת",
+          "unicode": "U+05D3",
+          "decimal": 1491
+        },
+        {
+          "glyphName": "he-hb",
+          "display": "ה",
+          "label": "הא",
+          "unicode": "U+05D4",
+          "decimal": 1492
+        },
+        {
+          "glyphName": "vav-hb",
+          "display": "ו",
+          "label": "וו",
+          "unicode": "U+05D5",
+          "decimal": 1493
+        },
+        {
+          "glyphName": "zayin-hb",
+          "display": "ז",
+          "label": "זיין",
+          "unicode": "U+05D6",
+          "decimal": 1494
+        },
+        {
+          "glyphName": "het-hb",
+          "display": "ח",
+          "label": "חית",
+          "unicode": "U+05D7",
+          "decimal": 1495
+        },
+        {
+          "glyphName": "tet-hb",
+          "display": "ט",
+          "label": "טית",
+          "unicode": "U+05D8",
+          "decimal": 1496
+        },
+        {
+          "glyphName": "yod-hb",
+          "display": "י",
+          "label": "יוד",
+          "unicode": "U+05D9",
+          "decimal": 1497
+        },
+        {
+          "glyphName": "kaf-hb",
+          "display": "כ",
+          "label": "כף",
+          "unicode": "U+05DB",
+          "decimal": 1499
+        },
+        {
+          "glyphName": "kaf-final-hb",
+          "display": "ך",
+          "label": "כף סופית",
+          "unicode": "U+05DA",
+          "decimal": 1498
+        },
+        {
+          "glyphName": "lamed-hb",
+          "display": "ל",
+          "label": "למד",
+          "unicode": "U+05DC",
+          "decimal": 1500
+        },
+        {
+          "glyphName": "mem-hb",
+          "display": "מ",
+          "label": "מם",
+          "unicode": "U+05DE",
+          "decimal": 1502
+        },
+        {
+          "glyphName": "mem-final-hb",
+          "display": "ם",
+          "label": "מם סופית",
+          "unicode": "U+05DD",
+          "decimal": 1501
+        },
+        {
+          "glyphName": "nun-hb",
+          "display": "נ",
+          "label": "נון",
+          "unicode": "U+05E0",
+          "decimal": 1504
+        },
+        {
+          "glyphName": "nun-final-hb",
+          "display": "ן",
+          "label": "נון סופית",
+          "unicode": "U+05DF",
+          "decimal": 1503
+        },
+        {
+          "glyphName": "samekh-hb",
+          "display": "ס",
+          "label": "סמך",
+          "unicode": "U+05E1",
+          "decimal": 1505
+        },
+        {
+          "glyphName": "ayin-hb",
+          "display": "ע",
+          "label": "עין",
+          "unicode": "U+05E2",
+          "decimal": 1506
+        },
+        {
+          "glyphName": "pe-hb",
+          "display": "פ",
+          "label": "פא",
+          "unicode": "U+05E4",
+          "decimal": 1508
+        },
+        {
+          "glyphName": "pe-final-hb",
+          "display": "ף",
+          "label": "פא סופית",
+          "unicode": "U+05E3",
+          "decimal": 1507
+        },
+        {
+          "glyphName": "tsadi-hb",
+          "display": "צ",
+          "label": "צדי",
+          "unicode": "U+05E6",
+          "decimal": 1510
+        },
+        {
+          "glyphName": "tsadi-final-hb",
+          "display": "ץ",
+          "label": "צדי סופית",
+          "unicode": "U+05E5",
+          "decimal": 1509
+        },
+        {
+          "glyphName": "qof-hb",
+          "display": "ק",
+          "label": "קוף",
+          "unicode": "U+05E7",
+          "decimal": 1511
+        },
+        {
+          "glyphName": "resh-hb",
+          "display": "ר",
+          "label": "ריש",
+          "unicode": "U+05E8",
+          "decimal": 1512
+        },
+        {
+          "glyphName": "shin-hb",
+          "display": "ש",
+          "label": "שין",
+          "unicode": "U+05E9",
+          "decimal": 1513
+        },
+        {
+          "glyphName": "tav-hb",
+          "display": "ת",
+          "label": "תו",
+          "unicode": "U+05EA",
+          "decimal": 1514
+        }
+      ]
+    },
+    {
+      "id": "numbers",
+      "label": "ספרות",
+      "containerId": "char-grid-numbers",
+      "glyphs": [
+        {
+          "glyphName": "zero",
+          "display": "0",
+          "label": "0",
+          "unicode": "U+0030",
+          "decimal": 48
+        },
+        {
+          "glyphName": "one",
+          "display": "1",
+          "label": "1",
+          "unicode": "U+0031",
+          "decimal": 49
+        },
+        {
+          "glyphName": "two",
+          "display": "2",
+          "label": "2",
+          "unicode": "U+0032",
+          "decimal": 50
+        },
+        {
+          "glyphName": "three",
+          "display": "3",
+          "label": "3",
+          "unicode": "U+0033",
+          "decimal": 51
+        },
+        {
+          "glyphName": "four",
+          "display": "4",
+          "label": "4",
+          "unicode": "U+0034",
+          "decimal": 52
+        },
+        {
+          "glyphName": "five",
+          "display": "5",
+          "label": "5",
+          "unicode": "U+0035",
+          "decimal": 53
+        },
+        {
+          "glyphName": "six",
+          "display": "6",
+          "label": "6",
+          "unicode": "U+0036",
+          "decimal": 54
+        },
+        {
+          "glyphName": "seven",
+          "display": "7",
+          "label": "7",
+          "unicode": "U+0037",
+          "decimal": 55
+        },
+        {
+          "glyphName": "eight",
+          "display": "8",
+          "label": "8",
+          "unicode": "U+0038",
+          "decimal": 56
+        },
+        {
+          "glyphName": "nine",
+          "display": "9",
+          "label": "9",
+          "unicode": "U+0039",
+          "decimal": 57
+        }
+      ]
+    },
+    {
+      "id": "latin",
+      "label": "לטינית",
+      "containerId": "char-grid-latin",
+      "direction": "ltr",
+      "glyphs": [
+        {
+          "glyphName": "a",
+          "display": "a",
+          "label": "a",
+          "unicode": "U+0061",
+          "decimal": 97
+        },
+        {
+          "glyphName": "b",
+          "display": "b",
+          "label": "b",
+          "unicode": "U+0062",
+          "decimal": 98
+        },
+        {
+          "glyphName": "c",
+          "display": "c",
+          "label": "c",
+          "unicode": "U+0063",
+          "decimal": 99
+        },
+        {
+          "glyphName": "d",
+          "display": "d",
+          "label": "d",
+          "unicode": "U+0064",
+          "decimal": 100
+        },
+        {
+          "glyphName": "e",
+          "display": "e",
+          "label": "e",
+          "unicode": "U+0065",
+          "decimal": 101
+        },
+        {
+          "glyphName": "f",
+          "display": "f",
+          "label": "f",
+          "unicode": "U+0066",
+          "decimal": 102
+        },
+        {
+          "glyphName": "g",
+          "display": "g",
+          "label": "g",
+          "unicode": "U+0067",
+          "decimal": 103
+        },
+        {
+          "glyphName": "h",
+          "display": "h",
+          "label": "h",
+          "unicode": "U+0068",
+          "decimal": 104
+        },
+        {
+          "glyphName": "i",
+          "display": "i",
+          "label": "i",
+          "unicode": "U+0069",
+          "decimal": 105
+        },
+        {
+          "glyphName": "j",
+          "display": "j",
+          "label": "j",
+          "unicode": "U+006A",
+          "decimal": 106
+        },
+        {
+          "glyphName": "k",
+          "display": "k",
+          "label": "k",
+          "unicode": "U+006B",
+          "decimal": 107
+        },
+        {
+          "glyphName": "l",
+          "display": "l",
+          "label": "l",
+          "unicode": "U+006C",
+          "decimal": 108
+        },
+        {
+          "glyphName": "m",
+          "display": "m",
+          "label": "m",
+          "unicode": "U+006D",
+          "decimal": 109
+        },
+        {
+          "glyphName": "n",
+          "display": "n",
+          "label": "n",
+          "unicode": "U+006E",
+          "decimal": 110
+        },
+        {
+          "glyphName": "o",
+          "display": "o",
+          "label": "o",
+          "unicode": "U+006F",
+          "decimal": 111
+        },
+        {
+          "glyphName": "p",
+          "display": "p",
+          "label": "p",
+          "unicode": "U+0070",
+          "decimal": 112
+        },
+        {
+          "glyphName": "q",
+          "display": "q",
+          "label": "q",
+          "unicode": "U+0071",
+          "decimal": 113
+        },
+        {
+          "glyphName": "r",
+          "display": "r",
+          "label": "r",
+          "unicode": "U+0072",
+          "decimal": 114
+        },
+        {
+          "glyphName": "s",
+          "display": "s",
+          "label": "s",
+          "unicode": "U+0073",
+          "decimal": 115
+        },
+        {
+          "glyphName": "t",
+          "display": "t",
+          "label": "t",
+          "unicode": "U+0074",
+          "decimal": 116
+        },
+        {
+          "glyphName": "u",
+          "display": "u",
+          "label": "u",
+          "unicode": "U+0075",
+          "decimal": 117
+        },
+        {
+          "glyphName": "v",
+          "display": "v",
+          "label": "v",
+          "unicode": "U+0076",
+          "decimal": 118
+        },
+        {
+          "glyphName": "w",
+          "display": "w",
+          "label": "w",
+          "unicode": "U+0077",
+          "decimal": 119
+        },
+        {
+          "glyphName": "x",
+          "display": "x",
+          "label": "x",
+          "unicode": "U+0078",
+          "decimal": 120
+        },
+        {
+          "glyphName": "y",
+          "display": "y",
+          "label": "y",
+          "unicode": "U+0079",
+          "decimal": 121
+        },
+        {
+          "glyphName": "z",
+          "display": "z",
+          "label": "z",
+          "unicode": "U+007A",
+          "decimal": 122
+        },
+        {
+          "glyphName": "A",
+          "display": "A",
+          "label": "A",
+          "unicode": "U+0041",
+          "decimal": 65
+        },
+        {
+          "glyphName": "B",
+          "display": "B",
+          "label": "B",
+          "unicode": "U+0042",
+          "decimal": 66
+        },
+        {
+          "glyphName": "C",
+          "display": "C",
+          "label": "C",
+          "unicode": "U+0043",
+          "decimal": 67
+        },
+        {
+          "glyphName": "D",
+          "display": "D",
+          "label": "D",
+          "unicode": "U+0044",
+          "decimal": 68
+        },
+        {
+          "glyphName": "E",
+          "display": "E",
+          "label": "E",
+          "unicode": "U+0045",
+          "decimal": 69
+        },
+        {
+          "glyphName": "F",
+          "display": "F",
+          "label": "F",
+          "unicode": "U+0046",
+          "decimal": 70
+        },
+        {
+          "glyphName": "G",
+          "display": "G",
+          "label": "G",
+          "unicode": "U+0047",
+          "decimal": 71
+        },
+        {
+          "glyphName": "H",
+          "display": "H",
+          "label": "H",
+          "unicode": "U+0048",
+          "decimal": 72
+        },
+        {
+          "glyphName": "I",
+          "display": "I",
+          "label": "I",
+          "unicode": "U+0049",
+          "decimal": 73
+        },
+        {
+          "glyphName": "J",
+          "display": "J",
+          "label": "J",
+          "unicode": "U+004A",
+          "decimal": 74
+        },
+        {
+          "glyphName": "K",
+          "display": "K",
+          "label": "K",
+          "unicode": "U+004B",
+          "decimal": 75
+        },
+        {
+          "glyphName": "L",
+          "display": "L",
+          "label": "L",
+          "unicode": "U+004C",
+          "decimal": 76
+        },
+        {
+          "glyphName": "M",
+          "display": "M",
+          "label": "M",
+          "unicode": "U+004D",
+          "decimal": 77
+        },
+        {
+          "glyphName": "N",
+          "display": "N",
+          "label": "N",
+          "unicode": "U+004E",
+          "decimal": 78
+        },
+        {
+          "glyphName": "O",
+          "display": "O",
+          "label": "O",
+          "unicode": "U+004F",
+          "decimal": 79
+        },
+        {
+          "glyphName": "P",
+          "display": "P",
+          "label": "P",
+          "unicode": "U+0050",
+          "decimal": 80
+        },
+        {
+          "glyphName": "Q",
+          "display": "Q",
+          "label": "Q",
+          "unicode": "U+0051",
+          "decimal": 81
+        },
+        {
+          "glyphName": "R",
+          "display": "R",
+          "label": "R",
+          "unicode": "U+0052",
+          "decimal": 82
+        },
+        {
+          "glyphName": "S",
+          "display": "S",
+          "label": "S",
+          "unicode": "U+0053",
+          "decimal": 83
+        },
+        {
+          "glyphName": "T",
+          "display": "T",
+          "label": "T",
+          "unicode": "U+0054",
+          "decimal": 84
+        },
+        {
+          "glyphName": "U",
+          "display": "U",
+          "label": "U",
+          "unicode": "U+0055",
+          "decimal": 85
+        },
+        {
+          "glyphName": "V",
+          "display": "V",
+          "label": "V",
+          "unicode": "U+0056",
+          "decimal": 86
+        },
+        {
+          "glyphName": "W",
+          "display": "W",
+          "label": "W",
+          "unicode": "U+0057",
+          "decimal": 87
+        },
+        {
+          "glyphName": "X",
+          "display": "X",
+          "label": "X",
+          "unicode": "U+0058",
+          "decimal": 88
+        },
+        {
+          "glyphName": "Y",
+          "display": "Y",
+          "label": "Y",
+          "unicode": "U+0059",
+          "decimal": 89
+        },
+        {
+          "glyphName": "Z",
+          "display": "Z",
+          "label": "Z",
+          "unicode": "U+005A",
+          "decimal": 90
+        }
+      ]
+    },
+    {
+      "id": "punctuation",
+      "label": "סימני פיסוק",
+      "containerId": "char-grid-marks",
+      "glyphs": [
+        {
+          "glyphName": "period",
+          "display": ".",
+          "label": "נקודה",
+          "unicode": "U+002E",
+          "decimal": 46
+        },
+        {
+          "glyphName": "comma",
+          "display": ",",
+          "label": "פסיק",
+          "unicode": "U+002C",
+          "decimal": 44
+        },
+        {
+          "glyphName": "colon",
+          "display": ":",
+          "label": "נקודותיים",
+          "unicode": "U+003A",
+          "decimal": 58
+        },
+        {
+          "glyphName": "semicolon",
+          "display": ";",
+          "label": "פסיק-עליון",
+          "unicode": "U+003B",
+          "decimal": 59
+        },
+        {
+          "glyphName": "ellipsis",
+          "display": "…",
+          "label": "שלוש נקודות",
+          "unicode": "U+2026",
+          "decimal": 8230
+        },
+        {
+          "glyphName": "exclam",
+          "display": "!",
+          "label": "קריאה",
+          "unicode": "U+0021",
+          "decimal": 33
+        },
+        {
+          "glyphName": "exclamdown",
+          "display": "¡",
+          "label": "קריאה הפוכה",
+          "unicode": "U+00A1",
+          "decimal": 161
+        },
+        {
+          "glyphName": "question",
+          "display": "?",
+          "label": "שאלה",
+          "unicode": "U+003F",
+          "decimal": 63
+        },
+        {
+          "glyphName": "questiondown",
+          "display": "¿",
+          "label": "שאלה הפוכה",
+          "unicode": "U+00BF",
+          "decimal": 191
+        },
+        {
+          "glyphName": "periodcentered",
+          "display": "·",
+          "label": "נקודה מרכזית",
+          "unicode": "U+00B7",
+          "decimal": 183
+        },
+        {
+          "glyphName": "bullet",
+          "display": "•",
+          "label": "תבליט",
+          "unicode": "U+2022",
+          "decimal": 8226
+        },
+        {
+          "glyphName": "asterisk",
+          "display": "*",
+          "label": "כוכבית",
+          "unicode": "U+002A",
+          "decimal": 42
+        },
+        {
+          "glyphName": "numbersign",
+          "display": "#",
+          "label": "סולמית",
+          "unicode": "U+0023",
+          "decimal": 35
+        },
+        {
+          "glyphName": "slash",
+          "display": "/",
+          "label": "לוכסן",
+          "unicode": "U+002F",
+          "decimal": 47
+        },
+        {
+          "glyphName": "backslash",
+          "display": "\\",
+          "label": "לוכסן הפוך",
+          "unicode": "U+005C",
+          "decimal": 92
+        },
+        {
+          "glyphName": "hyphen",
+          "display": "-",
+          "label": "מקף",
+          "unicode": "U+002D",
+          "decimal": 45
+        },
+        {
+          "glyphName": "endash",
+          "display": "–",
+          "label": "קו קצר",
+          "unicode": "U+2013",
+          "decimal": 8211
+        },
+        {
+          "glyphName": "emdash",
+          "display": "—",
+          "label": "קו מפריד",
+          "unicode": "U+2014",
+          "decimal": 8212
+        },
+        {
+          "glyphName": "underscore",
+          "display": "_",
+          "label": "קו תחתון",
+          "unicode": "U+005F",
+          "decimal": 95
+        },
+        {
+          "glyphName": "parenleft",
+          "display": "(",
+          "label": "סוגריים פתוח",
+          "unicode": "U+0028",
+          "decimal": 40
+        },
+        {
+          "glyphName": "parenright",
+          "display": ")",
+          "label": "סוגריים סגור",
+          "unicode": "U+0029",
+          "decimal": 41
+        },
+        {
+          "glyphName": "braceleft",
+          "display": "{",
+          "label": "סוגריים מסולסלים פתוח",
+          "unicode": "U+007B",
+          "decimal": 123
+        },
+        {
+          "glyphName": "braceright",
+          "display": "}",
+          "label": "סוגריים מסולסלים סגור",
+          "unicode": "U+007D",
+          "decimal": 125
+        },
+        {
+          "glyphName": "bracketleft",
+          "display": "[",
+          "label": "סוגריים מרובעים פתוח",
+          "unicode": "U+005B",
+          "decimal": 91
+        },
+        {
+          "glyphName": "bracketright",
+          "display": "]",
+          "label": "סוגריים מרובעים סגור",
+          "unicode": "U+005D",
+          "decimal": 93
+        },
+        {
+          "glyphName": "guillemetleft",
+          "display": "«",
+          "label": "מרכאות כפולות שמאל",
+          "unicode": "U+00AB",
+          "decimal": 171
+        },
+        {
+          "glyphName": "guillemetright",
+          "display": "»",
+          "label": "מרכאות כפולות ימין",
+          "unicode": "U+00BB",
+          "decimal": 187
+        },
+        {
+          "glyphName": "guilsinglleft",
+          "display": "‹",
+          "label": "מרכאה בודדת שמאל",
+          "unicode": "U+2039",
+          "decimal": 8249
+        },
+        {
+          "glyphName": "guilsinglright",
+          "display": "›",
+          "label": "מרכאה בודדת ימין",
+          "unicode": "U+203A",
+          "decimal": 8250
+        },
+        {
+          "glyphName": "quotedbl",
+          "display": "\"",
+          "label": "גרשיים",
+          "unicode": "U+0022",
+          "decimal": 34
+        },
+        {
+          "glyphName": "quotesingle",
+          "display": "'",
+          "label": "גרש",
+          "unicode": "U+0027",
+          "decimal": 39
+        },
+        {
+          "glyphName": "geresh-hb",
+          "display": "׳",
+          "label": "גרש עברי",
+          "unicode": "U+05F3",
+          "decimal": 1523,
+          "direction": "rtl"
+        },
+        {
+          "glyphName": "gereshayim-hb",
+          "display": "״",
+          "label": "גרשיים עבריים",
+          "unicode": "U+05F4",
+          "decimal": 1524,
+          "direction": "rtl"
+        },
+        {
+          "glyphName": "maqaf-hb",
+          "display": "־",
+          "label": "מקף עברי",
+          "unicode": "U+05BE",
+          "decimal": 1470,
+          "direction": "rtl"
+        }
+      ]
+    },
+    {
+      "id": "symbols",
+      "label": "סמלים",
+      "glyphs": [
+        {
+          "glyphName": "ampersand",
+          "display": "&",
+          "label": "אמפרסנד",
+          "unicode": "U+0026",
+          "decimal": 38
+        },
+        {
+          "glyphName": "numbersign",
+          "display": "#",
+          "label": "סולמית",
+          "unicode": "U+0023",
+          "decimal": 35
+        },
+        {
+          "glyphName": "at",
+          "display": "@",
+          "label": "כרוכית",
+          "unicode": "U+0040",
+          "decimal": 64
+        },
+        {
+          "glyphName": "sheqel",
+          "display": "₪",
+          "label": "שקל",
+          "unicode": "U+20AA",
+          "decimal": 8362
+        },
+        {
+          "glyphName": "cent",
+          "display": "¢",
+          "label": "סנט",
+          "unicode": "U+00A2",
+          "decimal": 162
+        },
+        {
+          "glyphName": "dollar",
+          "display": "$",
+          "label": "דולר",
+          "unicode": "U+0024",
+          "decimal": 36
+        },
+        {
+          "glyphName": "euro",
+          "display": "€",
+          "label": "אירו",
+          "unicode": "U+20AC",
+          "decimal": 8364
+        },
+        {
+          "glyphName": "baht",
+          "display": "฿",
+          "label": "באהט",
+          "unicode": "U+0E3F",
+          "decimal": 3647
+        },
+        {
+          "glyphName": "section",
+          "display": "§",
+          "label": "סעיף",
+          "unicode": "U+00A7",
+          "decimal": 167
+        },
+        {
+          "glyphName": "plus",
+          "display": "+",
+          "label": "פלוס",
+          "unicode": "U+002B",
+          "decimal": 43
+        },
+        {
+          "glyphName": "minus",
+          "display": "−",
+          "label": "מינוס",
+          "unicode": "U+2212",
+          "decimal": 8722
+        },
+        {
+          "glyphName": "equal",
+          "display": "=",
+          "label": "שווה",
+          "unicode": "U+003D",
+          "decimal": 61
+        },
+        {
+          "glyphName": "multiply",
+          "display": "×",
+          "label": "כפל",
+          "unicode": "U+00D7",
+          "decimal": 215
+        },
+        {
+          "glyphName": "divide",
+          "display": "÷",
+          "label": "חלוקה",
+          "unicode": "U+00F7",
+          "decimal": 247
+        },
+        {
+          "glyphName": "less",
+          "display": "<",
+          "label": "קטן מ",
+          "unicode": "U+003C",
+          "decimal": 60
+        },
+        {
+          "glyphName": "greater",
+          "display": ">",
+          "label": "גדול מ",
+          "unicode": "U+003E",
+          "decimal": 62
+        },
+        {
+          "glyphName": "plusminus",
+          "display": "±",
+          "label": "פלוס-מינוס",
+          "unicode": "U+00B1",
+          "decimal": 177
+        },
+        {
+          "glyphName": "approxequal",
+          "display": "≈",
+          "label": "בערך שווה",
+          "unicode": "U+2248",
+          "decimal": 8776
+        },
+        {
+          "glyphName": "asciitilde",
+          "display": "~",
+          "label": "טילדה",
+          "unicode": "U+007E",
+          "decimal": 126
+        },
+        {
+          "glyphName": "asciicircum",
+          "display": "^",
+          "label": "עוצמה",
+          "unicode": "U+005E",
+          "decimal": 94
+        },
+        {
+          "glyphName": "percent",
+          "display": "%",
+          "label": "אחוז",
+          "unicode": "U+0025",
+          "decimal": 37
+        },
+        {
+          "glyphName": "lozenge",
+          "display": "◊",
+          "label": "מעוין",
+          "unicode": "U+25CA",
+          "decimal": 9674
+        },
+        {
+          "glyphName": "ampersand.002",
+          "display": "&",
+          "label": "אמפרסנד חלופי",
+          "unicode": null,
+          "decimal": null
+        }
+      ]
+    },
+    {
+      "id": "arrows",
+      "label": "חצים",
+      "glyphs": [
+        {
+          "glyphName": "upArrow",
+          "display": "↑",
+          "label": "חץ למעלה",
+          "unicode": "U+2191",
+          "decimal": 8593
+        },
+        {
+          "glyphName": "northEastArrow",
+          "display": "↗",
+          "label": "חץ צפון-מזרח",
+          "unicode": "U+2197",
+          "decimal": 8599
+        },
+        {
+          "glyphName": "rightArrow",
+          "display": "→",
+          "label": "חץ לימין",
+          "unicode": "U+2192",
+          "decimal": 8594
+        },
+        {
+          "glyphName": "southEastArrow",
+          "display": "↘",
+          "label": "חץ דרום-מזרח",
+          "unicode": "U+2198",
+          "decimal": 8600
+        },
+        {
+          "glyphName": "downArrow",
+          "display": "↓",
+          "label": "חץ למטה",
+          "unicode": "U+2193",
+          "decimal": 8595
+        },
+        {
+          "glyphName": "southWestArrow",
+          "display": "↙",
+          "label": "חץ דרום-מערב",
+          "unicode": "U+2199",
+          "decimal": 8601
+        },
+        {
+          "glyphName": "leftArrow",
+          "display": "←",
+          "label": "חץ לשמאל",
+          "unicode": "U+2190",
+          "decimal": 8592
+        },
+        {
+          "glyphName": "northWestArrow",
+          "display": "↖",
+          "label": "חץ צפון-מערב",
+          "unicode": "U+2196",
+          "decimal": 8598
+        },
+        {
+          "glyphName": "leftRightArrow",
+          "display": "↔",
+          "label": "חץ דו-כיווני אופקי",
+          "unicode": "U+2194",
+          "decimal": 8596
+        },
+        {
+          "glyphName": "upDownArrow",
+          "display": "↕",
+          "label": "חץ דו-כיווני אנכי",
+          "unicode": "U+2195",
+          "decimal": 8597
+        }
+      ]
+    },
+    {
+      "id": "fractions",
+      "label": "שברים",
+      "glyphs": [
+        {
+          "glyphName": "onehalf",
+          "display": "½",
+          "label": "חצי",
+          "unicode": "U+00BD",
+          "decimal": 189
+        },
+        {
+          "glyphName": "onethird",
+          "display": "⅓",
+          "label": "שליש",
+          "unicode": "U+2153",
+          "decimal": 8531
+        },
+        {
+          "glyphName": "twothirds",
+          "display": "⅔",
+          "label": "שני שלישים",
+          "unicode": "U+2154",
+          "decimal": 8532
+        },
+        {
+          "glyphName": "onequarter",
+          "display": "¼",
+          "label": "רבע",
+          "unicode": "U+00BC",
+          "decimal": 188
+        },
+        {
+          "glyphName": "threequarters",
+          "display": "¾",
+          "label": "שלושה רבעים",
+          "unicode": "U+00BE",
+          "decimal": 190
+        },
+        {
+          "glyphName": "oneeighth",
+          "display": "⅛",
+          "label": "שמינית",
+          "unicode": "U+215B",
+          "decimal": 8539
+        },
+        {
+          "glyphName": "threeeighths",
+          "display": "⅜",
+          "label": "שלוש שמיניות",
+          "unicode": "U+215C",
+          "decimal": 8540
+        },
+        {
+          "glyphName": "fiveeighths",
+          "display": "⅝",
+          "label": "חמש שמיניות",
+          "unicode": "U+215D",
+          "decimal": 8541
+        },
+        {
+          "glyphName": "seveneighths",
+          "display": "⅞",
+          "label": "שבע שמיניות",
+          "unicode": "U+215E",
+          "decimal": 8542
+        }
+      ]
+    },
+    {
+      "id": "time",
+      "label": "שעות",
+      "featureTag": "dlig",
+      "glyphs": [
+        {
+          "glyphName": "colon_zero_zero",
+          "display": ":00",
+          "label": ":00",
+          "unicode": null,
+          "decimal": null
+        },
+        {
+          "glyphName": "colon_zero_five",
+          "display": ":05",
+          "label": ":05",
+          "unicode": null,
+          "decimal": null
+        },
+        {
+          "glyphName": "colon_one_zero",
+          "display": ":10",
+          "label": ":10",
+          "unicode": null,
+          "decimal": null
+        },
+        {
+          "glyphName": "colon_one_five",
+          "display": ":15",
+          "label": ":15",
+          "unicode": null,
+          "decimal": null
+        },
+        {
+          "glyphName": "colon_two_zero",
+          "display": ":20",
+          "label": ":20",
+          "unicode": null,
+          "decimal": null
+        },
+        {
+          "glyphName": "colon_two_five",
+          "display": ":25",
+          "label": ":25",
+          "unicode": null,
+          "decimal": null
+        },
+        {
+          "glyphName": "colon_three_zero",
+          "display": ":30",
+          "label": ":30",
+          "unicode": null,
+          "decimal": null
+        },
+        {
+          "glyphName": "colon_three_five",
+          "display": ":35",
+          "label": ":35",
+          "unicode": null,
+          "decimal": null
+        },
+        {
+          "glyphName": "colon_four_zero",
+          "display": ":40",
+          "label": ":40",
+          "unicode": null,
+          "decimal": null
+        },
+        {
+          "glyphName": "colon_four_five",
+          "display": ":45",
+          "label": ":45",
+          "unicode": null,
+          "decimal": null
+        },
+        {
+          "glyphName": "colon_five_zero",
+          "display": ":50",
+          "label": ":50",
+          "unicode": null,
+          "decimal": null
+        },
+        {
+          "glyphName": "colon_five_five",
+          "display": ":55",
+          "label": ":55",
+          "unicode": null,
+          "decimal": null
+        }
+      ],
+      "direction": "ltr"
+    },
+    {
+      "id": "pua",
+      "label": "אייקונים",
+      "glyphs": [
+        {
+          "glyphName": "newGlyph.002",
+          "display": "",
+          "label": "אייקון 1",
+          "unicode": "U+E000",
+          "decimal": 57344
+        },
+        {
+          "glyphName": "newGlyph.003",
+          "display": "",
+          "label": "אייקון 2",
+          "unicode": "U+E001",
+          "decimal": 57345
+        },
+        {
+          "glyphName": "newGlyph.004",
+          "display": "",
+          "label": "אייקון 3",
+          "unicode": "U+E002",
+          "decimal": 57346
+        },
+        {
+          "glyphName": "newGlyph.005",
+          "display": "",
+          "label": "אייקון 4",
+          "unicode": "U+E003",
+          "decimal": 57347
+        },
+        {
+          "glyphName": "newGlyph.006",
+          "display": "",
+          "label": "אייקון 5",
+          "unicode": "U+E004",
+          "decimal": 57348
+        },
+        {
+          "glyphName": "newGlyph.007",
+          "display": "",
+          "label": "אייקון 6",
+          "unicode": "U+E005",
+          "decimal": 57349
+        },
+        {
+          "glyphName": "newGlyph.008",
+          "display": "",
+          "label": "אייקון 7",
+          "unicode": "U+E006",
+          "decimal": 57350
+        },
+        {
+          "glyphName": "newGlyph.009",
+          "display": "",
+          "label": "אייקון 8",
+          "unicode": "U+E007",
+          "decimal": 57351
+        },
+        {
+          "glyphName": "newGlyph.010",
+          "display": "",
+          "label": "אייקון 9",
+          "unicode": "U+E008",
+          "decimal": 57352
+        },
+        {
+          "glyphName": "newGlyph.011",
+          "display": "",
+          "label": "אייקון 10",
+          "unicode": "U+E009",
+          "decimal": 57353
+        }
+      ]
+    },
+    {
+      "id": "alternates",
+      "label": "חלופות סגנוניות",
+      "containerId": "char-grid-alternates",
+      "type": "subgroups",
+      "subgroups": [
+        {
+          "id": "liga",
+          "label": "ליגטורות",
+          "featureTag": "liga",
+          "glyphs": [
+            {
+              "glyphName": "f_i",
+              "display": "fi",
+              "label": "fi — ליגטורה",
+              "unicode": null,
+              "decimal": null
+            },
+            {
+              "glyphName": "f_f",
+              "display": "ff",
+              "label": "ff — ליגטורה",
+              "unicode": null,
+              "decimal": null
+            },
+            {
+              "glyphName": "f_f_i",
+              "display": "ffi",
+              "label": "ffi — ליגטורה",
+              "unicode": null,
+              "decimal": null
+            },
+            {
+              "glyphName": "alef_lamed-hb",
+              "display": "אל",
+              "label": "ליגטורה אלף-למד",
+              "unicode": null,
+              "decimal": null,
+              "direction": "rtl",
+              "featureTag": "dlig"
+            }
+          ]
+        },
+        {
+          "id": "ss01",
+          "label": "ss01",
+          "featureTag": "ss01",
+          "glyphs": [
+            {
+              "glyphName": "zero.001",
+              "display": "0",
+              "label": "0 — ss01",
+              "unicode": "U+0030",
+              "decimal": 48
+            },
+            {
+              "glyphName": "one.001",
+              "display": "1",
+              "label": "1 — ss01",
+              "unicode": "U+0031",
+              "decimal": 49
+            },
+            {
+              "glyphName": "two.001",
+              "display": "2",
+              "label": "2 — ss01",
+              "unicode": "U+0032",
+              "decimal": 50
+            },
+            {
+              "glyphName": "three.001",
+              "display": "3",
+              "label": "3 — ss01",
+              "unicode": "U+0033",
+              "decimal": 51
+            },
+            {
+              "glyphName": "four.001",
+              "display": "4",
+              "label": "4 — ss01",
+              "unicode": "U+0034",
+              "decimal": 52
+            },
+            {
+              "glyphName": "five.001",
+              "display": "5",
+              "label": "5 — ss01",
+              "unicode": "U+0035",
+              "decimal": 53
+            },
+            {
+              "glyphName": "six.001",
+              "display": "6",
+              "label": "6 — ss01",
+              "unicode": "U+0036",
+              "decimal": 54
+            },
+            {
+              "glyphName": "seven.001",
+              "display": "7",
+              "label": "7 — ss01",
+              "unicode": "U+0037",
+              "decimal": 55
+            },
+            {
+              "glyphName": "eight.001",
+              "display": "8",
+              "label": "8 — ss01",
+              "unicode": "U+0038",
+              "decimal": 56
+            },
+            {
+              "glyphName": "nine.001",
+              "display": "9",
+              "label": "9 — ss01",
+              "unicode": "U+0039",
+              "decimal": 57
+            }
+          ]
+        },
+        {
+          "id": "ss02",
+          "label": "ss02",
+          "featureTag": "ss02",
+          "glyphs": [
+            {
+              "glyphName": "zero.002",
+              "display": "0",
+              "label": "0 — ss02",
+              "unicode": "U+0030",
+              "decimal": 48
+            },
+            {
+              "glyphName": "two.002",
+              "display": "2",
+              "label": "2 — ss02",
+              "unicode": "U+0032",
+              "decimal": 50
+            },
+            {
+              "glyphName": "three.002",
+              "display": "3",
+              "label": "3 — ss02",
+              "unicode": "U+0033",
+              "decimal": 51
+            },
+            {
+              "glyphName": "four.002",
+              "display": "4",
+              "label": "4 — ss02",
+              "unicode": "U+0034",
+              "decimal": 52
+            },
+            {
+              "glyphName": "five.002",
+              "display": "5",
+              "label": "5 — ss02",
+              "unicode": "U+0035",
+              "decimal": 53
+            },
+            {
+              "glyphName": "six.002",
+              "display": "6",
+              "label": "6 — ss02",
+              "unicode": "U+0036",
+              "decimal": 54
+            },
+            {
+              "glyphName": "nine.002",
+              "display": "9",
+              "label": "9 — ss02",
+              "unicode": "U+0039",
+              "decimal": 57
+            }
+          ]
+        },
+        {
+          "id": "ss03",
+          "label": "ss03",
+          "featureTag": "ss03",
+          "glyphs": [
+            {
+              "glyphName": "alef-hb.001",
+              "display": "א",
+              "label": "אלף — ss03",
+              "unicode": "U+05D0",
+              "decimal": 1488,
+              "direction": "rtl"
+            },
+            {
+              "glyphName": "tet-hb.001",
+              "display": "ט",
+              "label": "טית — ss03",
+              "unicode": "U+05D8",
+              "decimal": 1496,
+              "direction": "rtl"
+            },
+            {
+              "glyphName": "lamed-hb.001",
+              "display": "ל",
+              "label": "למד — ss03",
+              "unicode": "U+05DC",
+              "decimal": 1500,
+              "direction": "rtl"
+            },
+            {
+              "glyphName": "samekh-hb.001",
+              "display": "ס",
+              "label": "סמך — ss03",
+              "unicode": "U+05E1",
+              "decimal": 1505,
+              "direction": "rtl"
+            },
+            {
+              "glyphName": "qof-hb.001",
+              "display": "ק",
+              "label": "קוף — ss03",
+              "unicode": "U+05E7",
+              "decimal": 1511,
+              "direction": "rtl"
+            },
+            {
+              "glyphName": "Z.001",
+              "display": "Z",
+              "label": "Z — ss03",
+              "unicode": "U+005A",
+              "decimal": 90
+            },
+            {
+              "glyphName": "z.001",
+              "display": "z",
+              "label": "z — ss03",
+              "unicode": "U+007A",
+              "decimal": 122
+            },
+            {
+              "glyphName": "f_f.001",
+              "display": "ff",
+              "label": "ff — ss03",
+              "unicode": null,
+              "decimal": null
+            }
+          ]
+        },
+        {
+          "id": "ss04",
+          "label": "ss04",
+          "featureTag": "ss04",
+          "glyphs": [
+            {
+              "glyphName": "alefWide-hb",
+              "display": "א",
+              "label": "אלף רחב — ss04",
+              "unicode": "U+05D0",
+              "decimal": 1488,
+              "direction": "rtl"
+            },
+            {
+              "glyphName": "daletWide-hb",
+              "display": "ד",
+              "label": "דלת רחב — ss04",
+              "unicode": "U+05D3",
+              "decimal": 1491,
+              "direction": "rtl"
+            },
+            {
+              "glyphName": "heWide-hb",
+              "display": "ה",
+              "label": "הא רחב — ss04",
+              "unicode": "U+05D4",
+              "decimal": 1492,
+              "direction": "rtl"
+            },
+            {
+              "glyphName": "kafWide-hb",
+              "display": "כ",
+              "label": "כף רחב — ss04",
+              "unicode": "U+05DB",
+              "decimal": 1499,
+              "direction": "rtl"
+            },
+            {
+              "glyphName": "lamedWide-hb",
+              "display": "ל",
+              "label": "למד רחב — ss04",
+              "unicode": "U+05DC",
+              "decimal": 1500,
+              "direction": "rtl"
+            },
+            {
+              "glyphName": "memfinalWide-hb",
+              "display": "ם",
+              "label": "מם סופי רחב — ss04",
+              "unicode": "U+05DD",
+              "decimal": 1501,
+              "direction": "rtl"
+            },
+            {
+              "glyphName": "reshWide-hb",
+              "display": "ר",
+              "label": "ריש רחב — ss04",
+              "unicode": "U+05E8",
+              "decimal": 1512,
+              "direction": "rtl"
+            },
+            {
+              "glyphName": "tavWide-hb",
+              "display": "ת",
+              "label": "תו רחב — ss04",
+              "unicode": "U+05EA",
+              "decimal": 1514,
+              "direction": "rtl"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

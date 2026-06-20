@@ -109,7 +109,7 @@
   letter-spacing: 0.06em;
   color: var(--color-black);
   background: var(--color-lightgrey);
-  border: 1px solid var(--color-green);
+  border: 1px solid var(--color-fourth);
   border-radius: 0;
   padding: 10px 24px;
   cursor: pointer;
@@ -121,7 +121,7 @@
 
 [data-mode="scans"] .mode-btn[data-target="fonts"]:hover,
 [data-mode="fonts"] .mode-btn[data-target="scans"]:hover {
-  background: color-mix(in srgb, var(--color-green) 50%, transparent);
+  background: color-mix(in srgb, var(--color-fourth) 50%, transparent);
   opacity: 1;
 }
 
@@ -129,8 +129,8 @@
 
 [data-mode="scans"] .mode-btn[data-target="scans"],
 [data-mode="fonts"] .mode-btn[data-target="fonts"] {
-  background: var(--color-green);
-  border-color: var(--color-green);
+  background: var(--color-fourth);
+  border-color: var(--color-fourth);
   color: var(--color-black);
   opacity: 1;
 }

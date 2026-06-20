@@ -17,7 +17,7 @@ const DEFAULT_TEXT = 'חבית‭ ‬בירה‭ ‬\nמארז‭ ‬סודה\n�
    null values → generate a random harmonious pair.
 ─────────────────────────────────────────────────────── */
 const PALETTES = [
-  { label: 'ראשי',  textColor: '#39FF14', bgColor: '#0F0E0C'  },               // default: neon green on black
+  { label: 'ראשי',  textColor: '#94ff94', bgColor: '#0F0E0C'  },               // default: neon green on black
   { label: 'לבן',   textColor: '#0F0E0C', bgColor: '#d6d6d6'  },               // black on offwhite
   { label: 'מונו',  textColor: '#F2C4C8', bgColor: '#3D0C11'  },               // monochromatic: rose on deep burgundy
   { label: 'ניגוד', textColor: '#F5E642', bgColor: '#8B1A1A'  },               // high contrast: light yellow on dark red
@@ -37,7 +37,7 @@ const state = {
   fontWeight:    900,
   letterSpacing: 0,
   lineHeight:    0.8,
-  textColor:     '#39FF14',
+  textColor:     '#94ff94',
   bgColor:       '#0F0E0C',
   align:         'rtl',   // 'rtl' | 'center' | 'ltr'
 
@@ -109,7 +109,7 @@ function applyGlobalStyles() {
   canvas.style.letterSpacing         = state.letterSpacing + 'em';
   canvas.style.lineHeight            = state.lineHeight;
   canvas.style.color                 = state.textColor;
-  document.documentElement.style.setProperty('--ui-accent', state.textColor || '#39FF14');
+  document.documentElement.style.setProperty('--ui-accent', state.textColor || '#94ff94');
   document.body.style.backgroundColor = state.bgColor;
   applyLightMode(state.bgColor);
 
@@ -398,7 +398,7 @@ function applyColor(textColor, bgColor) {
   state.textColor = textColor;
   state.bgColor   = bgColor;
   canvas.style.color                   = textColor;
-  document.documentElement.style.setProperty('--ui-accent', textColor || '#39FF14');
+  document.documentElement.style.setProperty('--ui-accent', textColor || '#94ff94');
   document.body.style.backgroundColor = bgColor;
   applyLightMode(bgColor);
   textColorPicker.value = textColor;
@@ -454,14 +454,16 @@ function initColors() {
     paletteRow.appendChild(btn);
   });
 
-  // Mark first swatch active
+  // Mark first swatch active and sync picker inputs to initial state
   paletteRow.firstElementChild?.classList.add('is-active');
+  if (textColorPicker) textColorPicker.value = state.textColor;
+  if (textHexInput)    textHexInput.value    = state.textColor;
 
   // Free pickers
   textColorPicker.addEventListener('input', () => {
     state.textColor = textColorPicker.value;
     canvas.style.color = state.textColor;
-    document.documentElement.style.setProperty('--ui-accent', state.textColor || '#39FF14');
+    document.documentElement.style.setProperty('--ui-accent', state.textColor || '#94ff94');
     if (textHexInput) textHexInput.value = textColorPicker.value;
     document.querySelectorAll('.tp-palette-swatch').forEach(s =>
       s.classList.remove('is-active'));

@@ -14,10 +14,10 @@
 
 /* ── SECTION COLOUR PAIRS ──────────────────────────────────────
 ─────────────────────────────────────────────────────────────── */
-[data-idx="0"] { --rs-bg: var(--color-black); --rs-fg: var(--color-third);  }
-[data-idx="1"] { --rs-bg: var(--color-black); --rs-fg: var(--color-fourth); }
-[data-idx="2"] { --rs-bg: var(--color-black); --rs-fg: var(--color-main);   }
-[data-idx="3"] { --rs-bg: var(--color-black); --rs-fg: var(--color-second); }
+[data-idx="0"] { --rs-bg: var(--color-black); --rs-fg: var(--color-orange);  }
+[data-idx="1"] { --rs-bg: var(--color-black); --rs-fg: var(--color-green); }
+[data-idx="2"] { --rs-bg: var(--color-black); --rs-fg: var(--color-pink);   }
+[data-idx="3"] { --rs-bg: var(--color-black); --rs-fg: var(--color-yellow); }
 [data-idx="4"] { --rs-bg: var(--color-black); --rs-fg: var(--color-white);  }
 
 
@@ -61,7 +61,7 @@
   font-weight: 700;
   letter-spacing: 0.06em;
   color: var(--color-grey);
-  background: var(--color-ink-warm);
+  background: var(--color-black);
   transition: background 0.2s ease, color 0.2s ease;
 }
 
@@ -70,8 +70,8 @@
 }
 
 .sidebar-nav__item.nav-active {
-  background: var(--color-ink-deep);
-  color: var(--color-third);
+  background: var(--color-black);
+  color: var(--color-orange);
 }
 
 
@@ -131,10 +131,10 @@
   transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
 }
 
-.rs-tab-0 { margin-right: 0%;  background-color: var(--color-black); color: var(--color-third);  }
-.rs-tab-1 { margin-right: 20%; background-color: var(--color-black); color: var(--color-fourth); }
-.rs-tab-2 { margin-right: 40%; background-color: var(--color-black); color: var(--color-main);   }
-.rs-tab-3 { margin-right: 60%; background-color: var(--color-black); color: var(--color-second); }
+.rs-tab-0 { margin-right: 0%;  background-color: var(--color-black); color: var(--color-orange);  }
+.rs-tab-1 { margin-right: 20%; background-color: var(--color-black); color: var(--color-green); }
+.rs-tab-2 { margin-right: 40%; background-color: var(--color-black); color: var(--color-pink);   }
+.rs-tab-3 { margin-right: 60%; background-color: var(--color-black); color: var(--color-yellow); }
 .rs-tab-4 { margin-right: 80%; background-color: var(--color-black); color: var(--color-white);  }
 
 
@@ -426,10 +426,10 @@
 
 /* Active: transparent cyan highlight */
 .src-btn.is-active {
-  background-color: var(--color-fourth);
+  background-color: var(--color-green);
   color: var(--color-black);
   opacity: 1;
-  border-color: var(--color-fourth);
+  border-color: var(--color-green);
 }
 
 
@@ -448,7 +448,7 @@
   align-items: baseline;
   gap: 1rem;
   padding-block: 0.6rem;
-  border-bottom: 1px solid var(--color-border-dark);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-white) 8%, transparent);
   font-family: var(--font-secondary);
   font-size: 16px;
 }
@@ -572,7 +572,7 @@
   bottom: 0;
   width: 3px;
   left: 50%;
-  background-color: var(--color-fourth);
+  background-color: var(--color-green);
   pointer-events: none;
   transform: translateX(-50%);
   z-index: 2;
@@ -619,12 +619,12 @@
 }
 
 .section-exit .exit-link:hover .exit-word {
-  color: var(--color-fourth);
+  color: var(--color-green);
   font-variation-settings: 'wght' 700;
 }
 
 .section-exit .exit-link:hover .exit-sub {
-  color: var(--color-fourth);
+  color: var(--color-green);
 }
 
 
@@ -685,7 +685,7 @@
   transform: translateY(-50%);
   width: 44px;
   height: 44px;
-  background-color: var(--color-fourth);
+  background-color: var(--color-green);
   color: var(--rs-bg);
   border: 1px solid var(--rs-accent);
   border-radius: 50%;
@@ -756,7 +756,7 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: linear-gradient(90deg, var(--color-ink-warm) 50%, var(--color-third) 50%);
+  background: linear-gradient(90deg, var(--color-black) 50%, var(--color-orange) 50%);
   transform: rotate(45deg);
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 2;
@@ -768,11 +768,11 @@
 
 /* Light theme — shadow darkens, gradient flips to light split */
 body.light-theme .theme-toggle-btn::after {
-  background-color: var(--color-ink-warm);
+  background-color: var(--color-black);
 }
 
 body.light-theme .theme-toggle-btn::before {
-  background: linear-gradient(90deg, var(--color-white) 50%, var(--color-third) 50%);
+  background: linear-gradient(90deg, var(--color-white) 50%, var(--color-orange) 50%);
   transform: rotate(-45deg);
 }
 
@@ -784,7 +784,7 @@ body.light-theme .theme-toggle-btn:hover::before {
 /* ── LIGHT THEME OVERRIDES ───────────────────────────────────── */
 /* Solid equivalent of rgba(15,14,12,0.8) over #F0EFEA background */
 body.light-theme {
-  --color-light-structure: #393834;
+  --color-light-structure: var(--color-dark);
 }
 
 body.light-theme .top-grey-rail {
@@ -817,11 +817,11 @@ body.light-theme .rs-ms-grid-val {
 }
 
 body.light-theme .src-btn {
-  color: var(--color-ink-warm);
+  color: var(--color-black);
 }
 
 body.light-theme .src-btn.is-active {
-  background-color: var(--color-ink-warm);
+  background-color: var(--color-black);
   color: var(--color-white);
 }
 
@@ -854,7 +854,7 @@ body.light-theme .section-exit .exit-sub {
   font-size: 90px;
   font-weight: 700;
   font-variation-settings: 'wght' 700;
-  color: var(--color-third);
+  color: var(--color-orange);
   line-height: 0.6;
   margin-top: 70px;
   margin-bottom: 40px;
@@ -999,7 +999,7 @@ img {
   color: currentColor;
   opacity: 0.5;
   padding: 10px 0 10px 14px;
-  border-top: 1px solid var(--color-border-dark);
+  border-top: 1px solid color-mix(in srgb, var(--color-white) 8%, transparent);
   white-space: nowrap;
   text-align: right;
   align-self: start;
@@ -1012,7 +1012,7 @@ img {
   line-height: 1.5;
   color: currentColor;
   padding: 10px 14px 10px 0;       /* inline-start gap between divider and val */
-  border-top: 1px solid var(--color-border-dark);
+  border-top: 1px solid color-mix(in srgb, var(--color-white) 8%, transparent);
   border-inline-start: 1px solid currentColor;  /* vertical divider (left of key = RTL) */
   text-align: right;
   align-self: start;
@@ -1065,7 +1065,7 @@ body.light-theme .rs-ms-grid-val {
   direction: rtl;
   max-width: none;
   background-color: var(--rs-fg);
-  color: var(--color-pure-black);
+  color: var(--color-black);
   opacity: 0;
   visibility: hidden;
   clip-path: inset(100% 0 0 0);
@@ -1158,7 +1158,7 @@ body.light-theme .caption-hover__overlay {
 .comp-arrow {
   font-family: 'Shmuel', sans-serif;
   font-size: 5rem;
-  color: var(--color-third);
+  color: var(--color-orange);
   line-height: 1;
   font-style: normal;
   margin-top: -15px;

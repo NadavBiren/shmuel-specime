@@ -107,9 +107,9 @@
 
         <div class="ctrl-group">
           <label class="ctrl-label" for="size-range">גודל</label>
-          <input class="ctrl-range" id="size-range" type="range" min="50" max="400" step="1" value="120">
+          <input class="ctrl-range" id="size-range" type="range" min="50" max="400" step="1" value="130">
           <div class="slider-val-wrapper">
-            <input type="number" class="ctrl-out-input" id="size-out" min="50" max="400" step="1" value="120">
+            <input type="number" class="ctrl-out-input" id="size-out" min="50" max="400" step="1" value="130">
             <span class="slider-unit">px</span>
             <div class="slider-reload-icon" data-target="tp-size"></div>
           </div>
@@ -251,30 +251,57 @@
         </button>
 
         <div class="tp-collapse-body" id="tp-features-body">
-          <label class="tp-feature-row tp-feature-row--disabled">
-            <input type="checkbox" id="feat-liga" disabled>
-            <span class="tp-feat-name">חיבורי אותיות</span>
-            <span class="tp-feat-code" dir="ltr">liga</span>
-            <span class="tp-feat-soon">בקרוב</span>
-          </label>
-          <label class="tp-feature-row tp-feature-row--disabled">
-            <input type="checkbox" id="feat-ss01" disabled>
-            <span class="tp-feat-name">סט חלופי א</span>
-            <span class="tp-feat-code" dir="ltr">ss01</span>
-            <span class="tp-feat-soon">בקרוב</span>
-          </label>
-          <label class="tp-feature-row tp-feature-row--disabled">
-            <input type="checkbox" id="feat-ss02" disabled>
-            <span class="tp-feat-name">סט חלופי ב</span>
-            <span class="tp-feat-code" dir="ltr">ss02</span>
-            <span class="tp-feat-soon">בקרוב</span>
-          </label>
-          <label class="tp-feature-row tp-feature-row--disabled">
-            <input type="checkbox" id="feat-hist" disabled>
-            <span class="tp-feat-name">צורות היסטוריות</span>
-            <span class="tp-feat-code" dir="ltr">hist</span>
-            <span class="tp-feat-soon">בקרוב</span>
-          </label>
+          <div class="tp-features-grid">
+            <div class="tp-feat-item">
+              <input type="checkbox" class="tp-feat-cb" id="feat-ss04" value="ss04">
+              <label for="feat-ss04" class="tp-feat-label">
+                <span class="tp-feat-name">אותיות רחבות</span>
+                <span class="tp-feat-code" dir="ltr">ss04</span>
+              </label>
+            </div>
+            <div class="tp-feat-item">
+              <input type="checkbox" class="tp-feat-cb" id="feat-ss01" value="ss01">
+              <label for="feat-ss01" class="tp-feat-label">
+                <span class="tp-feat-name">מספרים אלטרנטיביים א׳</span>
+                <span class="tp-feat-code" dir="ltr">ss01</span>
+              </label>
+            </div>
+            <div class="tp-feat-item">
+              <input type="checkbox" class="tp-feat-cb" id="feat-ss02" value="ss02">
+              <label for="feat-ss02" class="tp-feat-label">
+                <span class="tp-feat-name">מספרים אלטרנטיביים ב׳</span>
+                <span class="tp-feat-code" dir="ltr">ss02</span>
+              </label>
+            </div>
+            <div class="tp-feat-item">
+              <input type="checkbox" class="tp-feat-cb" id="feat-ss03" value="ss03">
+              <label for="feat-ss03" class="tp-feat-label">
+                <span class="tp-feat-name">חלופות צורניות</span>
+                <span class="tp-feat-code" dir="ltr">ss03</span>
+              </label>
+            </div>
+            <div class="tp-feat-item">
+              <input type="checkbox" class="tp-feat-cb" id="feat-liga" value="liga" checked>
+              <label for="feat-liga" class="tp-feat-label">
+                <span class="tp-feat-name">ליגטורות סטנדרטיות</span>
+                <span class="tp-feat-code" dir="ltr">liga</span>
+              </label>
+            </div>
+            <div class="tp-feat-item">
+              <input type="checkbox" class="tp-feat-cb" id="feat-dlig" value="dlig" checked>
+              <label for="feat-dlig" class="tp-feat-label">
+                <span class="tp-feat-name">ליגטורות מיוחדות</span>
+                <span class="tp-feat-code" dir="ltr">dlig</span>
+              </label>
+            </div>
+            <div class="tp-feat-item">
+              <input type="checkbox" class="tp-feat-cb" id="feat-frac" value="frac">
+              <label for="feat-frac" class="tp-feat-label">
+                <span class="tp-feat-name">שברים</span>
+                <span class="tp-feat-code" dir="ltr">frac</span>
+              </label>
+            </div>
+          </div>
         </div>
       </div>
 

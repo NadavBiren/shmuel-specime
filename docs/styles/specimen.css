@@ -37,24 +37,6 @@
   transform: translateX(0);
 }
 
-/* ── Custom slanted caret (JS-driven) ───────────── */
-.caret-proxy {
-  position: fixed;
-  pointer-events: none;
-  z-index: 9999;
-  width: 2px;
-  background: var(--color-pink);
-  transform-origin: top center;
-  transform: rotate(5deg);
-  animation: caret-proxy-blink 1s step-end infinite;
-  display: none;
-}
-.caret-proxy.is-active { display: block; }
-@keyframes caret-proxy-blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
-}
-
 /* ── ① Hero ─────────────────────────────────────── */
 
 .hero-3d-wrapper {
@@ -636,7 +618,7 @@
   justify-content: space-between;
   align-items: center;
   margin-top: -13vh;
-  margin-left: -6vw;
+  margin-left: -6.3vw;
   margin-right: -6vw;
   padding: 0 6vw;
   margin-bottom: 8vh;
@@ -761,6 +743,7 @@
   line-height: 0.85;
   color: var(--color-pink);
   will-change: font-variation-settings;
+  font-feature-settings: "liga" 0, "dlig" 0;
 }
 
 .sp-var-title--he {
@@ -967,6 +950,7 @@
 .printed-item.shape-icon-3 {
   position: relative;
   top: -15%;
+  padding-top: 0.15em;
 }
 
 #section-try-me { display: none; }
@@ -1665,6 +1649,6 @@
   padding: 0 15px;
   width: 365px;
   font-family: 'Shmuel', serif;
-  font-size: clamp(1rem, 3.8vw, 2.5rem);
+font-size: clamp(1rem, 4.3vw, 5VW);
   will-change: font-variation-settings;
 }

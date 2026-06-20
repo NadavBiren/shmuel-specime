@@ -9,7 +9,7 @@
 /* ── DEFAULT TEXT ───────────────────────────────────────
    Canonical paragraph used on load and when reset is clicked.
 ─────────────────────────────────────────────────────── */
-const DEFAULT_TEXT = 'חבית‭ ‬בירה‭ ‬\nמארז‭ ‬סודה\nבקבוק‭ ‬יין‭ ‬לבן‭ ‬\nבריזר‭ ‬אבטיח‭ ‬\nאמריקנו‭ ‬גדול\nמנת‭ ‬וייסקי‭ ‬\nאספרסו\nצייסר‬';
+const DEFAULT_TEXT = 'חבית‭ ‬בירה? רק Punk Ipa 13%\n←←←מארז‭ ‬סודה 12 ליטר + 6 כוסות\nבקבוק‭ ‬יין‭ ‬לבן 12.3% Muscat\nמבצע Breezer ‭‬אבטיח בקניית ג׳ין‭ ‬\nאמריקנו קר {₪28} מים {₪9}\nמנת‭ ‬וייסקי Buffalo Trace 18\nחינם! אספרסו Arabica עם קרח\n¾צ׳ייסר ערק Noah 12 ב־18:25';
 
 
 /* ── PALETTES ───────────────────────────────────────────
@@ -33,7 +33,7 @@ const PALETTES = [
    not reflected here.
 ─────────────────────────────────────────────────────── */
 const state = {
-  fontSize:      140,
+  fontSize:      130,
   fontWeight:    900,
   letterSpacing: 0,
   lineHeight:    0.8,
@@ -759,7 +759,7 @@ function initSettingsReset() {
 ─────────────────────────────────────────────────────── */
 function initSliderReloads() {
   const SLIDER_DEFAULTS = {
-    'tp-size': { stateKey: 'fontSize',      value: 140,  range: sizeRange,    num: sizeNum },
+    'tp-size': { stateKey: 'fontSize',      value: 130,  range: sizeRange,    num: sizeNum },
     'tp-ls':   { stateKey: 'letterSpacing', value: 0,    range: lsRange,      num: lsNum   },
     'tp-lh':   { stateKey: 'lineHeight',    value: 0.8,  range: lhRange,      num: lhNum   },
     'tp-wght': { stateKey: 'fontWeight',    value: 900,  range: weightSlider, num: weightSliderOut,
@@ -798,7 +798,11 @@ function initSlantedCaret() {
   proxy.className = 'caret-proxy';
   document.body.appendChild(proxy);
 
+  let hasTyped = false;
+
   function positionFromSelection() {
+    if (hasTyped) return;
+    if (canvas.classList.contains('has-fake-cursor')) return;
     const sel = window.getSelection();
     if (!sel || !sel.rangeCount) { proxy.classList.remove('is-active'); return; }
     const range = sel.getRangeAt(0).cloneRange();
@@ -814,8 +818,14 @@ function initSlantedCaret() {
     proxy.classList.add('is-active');
   }
 
-  ['focus', 'keyup', 'mouseup', 'input'].forEach(ev =>
+  ['focus', 'mouseup'].forEach(ev =>
     canvas.addEventListener(ev, positionFromSelection));
+
+  canvas.addEventListener('keydown', () => {
+    hasTyped = true;
+    proxy.classList.remove('is-active');
+  }, { once: true });
+
   canvas.addEventListener('blur', () => proxy.classList.remove('is-active'));
 
   document.addEventListener('mousedown', e => {
@@ -823,6 +833,27 @@ function initSlantedCaret() {
   });
 
   window.addEventListener('scroll', positionFromSelection, { passive: true });
+}
+
+
+/* ── OPENTYPE FEATURES ──────────────────────────────────
+─────────────────────────────────────────────────────── */
+function initOpenTypeFeatures() {
+  const checkboxes = document.querySelectorAll('.tp-feat-cb');
+  const ligaCb     = document.getElementById('feat-liga');
+
+  function updateFeatures() {
+    const parts = [];
+    checkboxes.forEach(cb => {
+      if (cb.value === 'liga') return;
+      if (cb.checked) parts.push(`"${cb.value}" 1`);
+    });
+    if (!ligaCb.checked) parts.push('"liga" 0');
+    canvas.style.fontFeatureSettings = parts.length ? parts.join(', ') : 'normal';
+  }
+
+  checkboxes.forEach(cb => cb.addEventListener('change', updateFeatures));
+  updateFeatures();
 }
 
 
@@ -834,7 +865,7 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.innerText = DEFAULT_TEXT;
   }
 
-  // Remove fake cursor on focus — never returns until page reload
+  // Remove fake cursor on first click/focus — never returns until page reload
   canvas.addEventListener('focus', () => {
     canvas.classList.remove('has-fake-cursor');
   }, { once: true });
@@ -860,4 +891,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Slanted proxy caret (replaces native browser caret)
   initSlantedCaret();
+
+  // OpenType feature toggles
+  initOpenTypeFeatures();
 });

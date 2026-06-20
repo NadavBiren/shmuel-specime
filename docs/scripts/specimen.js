@@ -278,72 +278,6 @@ function initCharProximity() {
 
 // ── Try Me ───────────────────────────────────────────
 
-/**
- * Size slider → font-size on textarea
- * Weight slider → font-variation-settings on textarea
- * Textarea auto-grows as user types
- */
-function initTryMe() {
-  const textarea    = document.querySelector('.try-me-text');
-  const sizeRange   = document.getElementById('size-range');
-  const wghtRange   = document.getElementById('wght-range');
-  const sizeOut     = document.getElementById('size-out');
-  const wghtOut     = document.getElementById('wght-out');
-  const lhRange     = document.getElementById('lh-range');
-  const lsRange     = document.getElementById('ls-range');
-  const lhOut       = document.getElementById('lh-out');
-  const lsOut       = document.getElementById('ls-out');
-
-  if (!textarea || !sizeRange) return;
-
-  const frame = document.querySelector('.try-me-frame');
-
-  function autoHeight() {
-    textarea.style.height = '0';
-    textarea.style.height = textarea.scrollHeight + 'px';
-  }
-
-  function fitTextToSection() {
-    if (!frame) return;
-    let fs = parseFloat(textarea.style.fontSize) || 80;
-    while (frame.scrollHeight > frame.clientHeight && fs > 8) {
-      fs -= 2;
-      textarea.style.fontSize = fs + 'px';
-      autoHeight();
-      if (sizeOut) sizeOut.value = fs;
-    }
-  }
-
-  function apply() {
-    const size = sizeRange.value;
-    const wght = wghtRange?.value ?? 400;
-    const lh   = lhRange?.value ?? 1.00;
-    const ls   = lsRange?.value ?? 0;
-
-    textarea.style.fontSize            = size + 'px';
-    textarea.style.fontVariationSettings = `'wght' ${wght}`;
-    textarea.style.lineHeight          = lh;
-    textarea.style.letterSpacing       = ls + 'em';
-
-    if (sizeOut) sizeOut.value = size;
-    if (wghtOut) wghtOut.value = wght;
-    if (lhOut)   lhOut.value   = parseFloat(lh).toFixed(2);
-    if (lsOut)   lsOut.value   = parseFloat(ls).toFixed(3);
-
-    autoHeight();
-    fitTextToSection();
-  }
-
-  sizeRange.addEventListener('input', apply);
-  wghtRange?.addEventListener('input', apply);
-  lhRange?.addEventListener('input', apply);
-  lsRange?.addEventListener('input', apply);
-  textarea.addEventListener('input', () => { autoHeight(); fitTextToSection(); });
-
-  apply();
-  document.fonts.ready.then(apply);
-}
-
 // ── Scroll Weight ─────────────────────────────────────
 
 /**
@@ -400,83 +334,6 @@ function initNavScroll() {
 }
 
 
-// ── Slanted Caret (5°) ───────────────────────────────
-
-function initSlantedCaret() {
-  const proxy = document.createElement('div');
-  proxy.className = 'caret-proxy';
-  document.body.appendChild(proxy);
-
-  function positionFromSelection() {
-    const sel = window.getSelection();
-    if (!sel || !sel.rangeCount) { proxy.classList.remove('is-active'); return; }
-    const range = sel.getRangeAt(0).cloneRange();
-    range.collapse(true);
-    const rects = range.getClientRects();
-    if (!rects.length) { proxy.classList.remove('is-active'); return; }
-    const r = rects[0];
-    if (r.top < 0 || r.top > window.innerHeight) { proxy.classList.remove('is-active'); return; }
-    const lh = parseFloat(getComputedStyle(document.activeElement).lineHeight) || r.height || 40;
-    proxy.style.left   = r.left + 'px';
-    proxy.style.top    = r.top  + 'px';
-    proxy.style.height = lh     + 'px';
-    proxy.classList.add('is-active');
-  }
-
-  function positionFromTextarea(ta) {
-    const mirror = document.createElement('div');
-    const cs = getComputedStyle(ta);
-    ['font', 'fontSize', 'fontFamily', 'fontWeight', 'fontVariationSettings',
-     'letterSpacing', 'lineHeight', 'padding', 'border', 'width', 'whiteSpace',
-     'wordWrap', 'overflowWrap', 'direction', 'textAlign'].forEach(p => {
-      mirror.style[p] = cs[p];
-    });
-    mirror.style.position   = 'fixed';
-    mirror.style.visibility = 'hidden';
-    mirror.style.top        = '0';
-    mirror.style.left       = '-9999px';
-    mirror.style.height     = 'auto';
-    mirror.style.overflow   = 'hidden';
-    const before = document.createElement('span');
-    before.textContent = ta.value.slice(0, ta.selectionStart) || '​';
-    const cursor = document.createElement('span');
-    cursor.textContent = '​';
-    mirror.appendChild(before);
-    mirror.appendChild(cursor);
-    document.body.appendChild(mirror);
-    const taRect  = ta.getBoundingClientRect();
-    const curRect = cursor.getBoundingClientRect();
-    document.body.removeChild(mirror);
-    const lh = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.2;
-    proxy.style.left   = curRect.left + 'px';
-    proxy.style.top    = curRect.top  + 'px';
-    proxy.style.height = lh           + 'px';
-    proxy.classList.add('is-active');
-  }
-
-  document.querySelectorAll('[contenteditable]').forEach(el => {
-    el.style.caretColor = 'transparent';
-    ['focus', 'keyup', 'mouseup', 'input'].forEach(ev =>
-      el.addEventListener(ev, positionFromSelection));
-    el.addEventListener('blur', () => proxy.classList.remove('is-active'));
-  });
-
-  document.addEventListener('mousedown', e => {
-    if (!e.target.closest('[contenteditable]')) {
-      proxy.classList.remove('is-active');
-    }
-  });
-
-  window.addEventListener('scroll', positionFromSelection, { passive: true });
-
-  const ta = document.querySelector('.try-me-text');
-  if (ta) {
-    ta.style.caretColor = 'transparent';
-    ['focus', 'keyup', 'mouseup', 'input'].forEach(ev =>
-      ta.addEventListener(ev, () => positionFromTextarea(ta)));
-    ta.addEventListener('blur', () => proxy.classList.remove('is-active'));
-  }
-}
 
 
 // ── Hero Scroll Arrow ─────────────────────────────────
@@ -545,7 +402,9 @@ function initSpecimenPrint() {
   const SVG_SHAPES  = ['hero-icon-1', 'hero-icon-2', 'hero-icon-3', 'hero-icon-4', 'hero-icon-5'];
   const TEXT_POOL   = [
     "Espresso Blend מספר 4", "Barrel Aged מהדורה מיוחדת", "House Blend מקומי",
-    "Natural Wine תל אביב", "Cold Brew", "בירה Unfiltered מהחבית", "קפה של הבוקר"
+    "Natural Wine תל אביב", "Cold Brew", "בירה Unfiltered מהחבית", "קפה של הבוקר",
+    "קפה & מאפה", "#התחלנו #Red_Bull", "!Cheers", "Perfect Blend",
+    "½ שפירא מהחבית", "←צ׳ייסר על חשבון הבית", "מאצ׳ה קרה {18₪}"
   ];
   const WEIGHT_STEPS = [500, 600, 700, 800, 900];
 
@@ -556,27 +415,11 @@ function initSpecimenPrint() {
   // sticker's shape (horizontal / square / vertical mask).
   function formatStickerText(text, shape) {
     const words = text.split(' ');
-    if (words.length === 2) return words.join('\n');
-
-    let wordsPerBreak;
-    if (shape === 'hero-icon-3')      wordsPerBreak = 3; // Horizontal
-    else if (shape === 'hero-icon-2') wordsPerBreak = 2; // Square
-    else                              wordsPerBreak = Math.random() < 0.5 ? 1 : 2; // Vertical
-
-
-    const lines = [];
-    let current = [];
-
-    words.forEach((word) => {
-      current.push(word);
-      if (word.includes(',') || current.length >= wordsPerBreak) {
-        lines.push(current.join(' '));
-        current = [];
-      }
-    });
-    if (current.length) lines.push(current.join(' '));
-
-    return lines.join('\n');
+    const maxBreaks = shape === 'hero-icon-3' ? 1 : 4;
+    const breakAt = Math.min(maxBreaks, words.length - 1);
+    const broken = words.slice(0, breakAt + 1).join('\n');
+    const remainder = words.slice(breakAt + 1).join(' ');
+    return remainder ? broken + ' ' + remainder : broken;
   }
 
   // Character limit + countdown — counts against the actual value
@@ -606,10 +449,10 @@ function initSpecimenPrint() {
     // Adaptive font size + box width — both scale with text length so longer
     // phrases print larger and wrap across more lines instead of shrinking
     let size, widthEm;
-    if (len <= 8)       { size = Math.floor(Math.random() * 30) + 85; widthEm = 3.8; } // 85-114
-    else if (len <= 14) { size = Math.floor(Math.random() * 25) + 60; widthEm = 4.8; } // 60-84
-    else if (len <= 22) { size = Math.floor(Math.random() * 18) + 43; widthEm = 5.5; } // 43-60
-    else                { size = Math.floor(Math.random() * 15) + 32; widthEm = 6.5; } // 32-46
+    if (len <= 8)       { size = Math.floor(Math.random() * 20) + 100; widthEm = 3.2; } // 100-119
+    else if (len <= 14) { size = Math.floor(Math.random() * 20) + 75;  widthEm = 4.2; } // 75-94
+    else if (len <= 22) { size = Math.floor(Math.random() * 15) + 55;  widthEm = 5.0; } // 55-69
+    else                { size = Math.floor(Math.random() * 12) + 40;  widthEm = 5.8; } // 40-51
 
       // Random weight: one of 500,600,700,800,900
     const randomWeight = WEIGHT_STEPS[Math.floor(Math.random() * WEIGHT_STEPS.length)];
@@ -626,22 +469,23 @@ function initSpecimenPrint() {
     item.style.backgroundColor = bgColor;
     item.style.maskImage       = maskUrl;
     item.style.webkitMaskImage = maskUrl;
-    item.style.fontSize              = `clamp(${Math.round(size * 0.6)}px, ${size / 10}vw, ${size}px)`;
+    item.style.fontSize              = `clamp(50px, 6.3vw, ${(size * 1.5 / 10).toFixed(1)}vw)`;
     item.style.width                 = widthEm + 'em';
     item.style.fontVariationSettings = `'wght' ${randomWeight}`;
 
-    const itemWidthPx  = widthEm * size;
-    const itemHeightPx = size * 2;
+    // Compute actual rendered font-size to match the CSS clamp(50px, 6.3vw, Xvw)
+    const vw = window.innerWidth / 100;
+    const actualFontSize = Math.max(50, Math.min(6.3 * vw, (size * 1.5 / 10) * vw));
+    const actualWidthPx  = widthEm * actualFontSize;
+    const actualHeightPx = actualFontSize * 5; // 5 lines max at line-height 1
 
-    // Allow stickers to bleed slightly off the edges (negative padding)
-    const bleed = 40;
+    // Extra buffer to absorb rotation (±20deg can push corners well outside the box)
+    const rotBuffer = Math.round(actualWidthPx * 0.35);
 
-    // Calculate bounds allowing the stickers to exit the screen slightly on all sides
-    const minX = -bleed;
-    const maxX = window.innerWidth - itemWidthPx + bleed;
-
-    const minY = -bleed;
-    const maxY = window.innerHeight - itemHeightPx - 80;
+    const minX = 0;
+    const maxX = Math.max(0, window.innerWidth  - actualWidthPx  - rotBuffer);
+    const minY = 0;
+    const maxY = Math.max(0, window.innerHeight - actualHeightPx - rotBuffer);
 
     // Generate random coordinates within the new organic bounds
     const randomX = minX + Math.random() * (maxX - minX);
@@ -736,11 +580,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initSpecimenTitles();
   initSpecimenPrint();
   initCharProximity();
-  initTryMe();
   initScrollWeight();
   initHeaderWeightScroll();
   initNavScroll();
-  initSlantedCaret();
   initFloatingWeights();
   initFingersAnimation();
   initCacaoCeremonyAnimation();

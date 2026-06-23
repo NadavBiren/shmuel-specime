@@ -27,20 +27,20 @@ window.initHeroWebGL = function (mountContainer) {
     STROKE_WIDTH: 1.5,
 
     MAIN_RADIUS: 120,
-    MAIN_LERP:   0.1,
+    MAIN_LERP:   0.06,
 
     /* Echo circles:
        • lerp: base speed when far from target
        • proximitySpeed: acceleration boost as it closes in (0 = none, 1 = instant snap)
        • scaleMax: max scale multiplier when trailing far */
     ECHOES: [
-      { lerp: 0.05,  proximitySpeed: 0.2, scaleMax: 1.35 },
-      { lerp: 0.075, proximitySpeed: 0.4, scaleMax: 1.40 },
-      { lerp: 0.1,   proximitySpeed: 0.6, scaleMax: 1.5  },
+      { lerp: 0.025, proximitySpeed: 0.2, scaleMax: 1.35 },
+      { lerp: 0.04,  proximitySpeed: 0.4, scaleMax: 1.40 },
+      { lerp: 0.06,  proximitySpeed: 0.6, scaleMax: 1.5  },
     ],
 
     ECHO_DIST_MAX:   160,
-    ECHO_SCALE_LERP: 0.08,
+    ECHO_SCALE_LERP: 0.05,
 
     PATHS: {
       scan:         'assets/images/hero/texture1_scan.jpg',

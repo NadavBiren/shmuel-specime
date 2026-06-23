@@ -382,6 +382,27 @@ function initInfiniteCarousel() {
   }
   wrapper.addEventListener('pointerup', endDrag);
   wrapper.addEventListener('pointercancel', endDrag);
+
+  const durationMs = 60000;
+  const carouselNextBtn = wrapper.querySelector('.carousel-btn-next');
+  const carouselPrevBtn = wrapper.querySelector('.carousel-btn-prev');
+
+  if (carouselNextBtn) {
+    carouselNextBtn.addEventListener('click', () => {
+      const anim = track.getAnimations()[0];
+      if (!anim) return;
+      anim.currentTime = ((anim.currentTime + 5000) % durationMs + durationMs) % durationMs;
+    });
+    carouselNextBtn.addEventListener('pointerdown', (e) => e.stopPropagation());
+  }
+  if (carouselPrevBtn) {
+    carouselPrevBtn.addEventListener('click', () => {
+      const anim = track.getAnimations()[0];
+      if (!anim) return;
+      anim.currentTime = ((anim.currentTime - 5000) % durationMs + durationMs) % durationMs;
+    });
+    carouselPrevBtn.addEventListener('pointerdown', (e) => e.stopPropagation());
+  }
 }
 
 

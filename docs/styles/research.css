@@ -172,7 +172,8 @@
   padding-inline: 15px;
   box-sizing: border-box;
   min-height: auto;
-  padding-block: 13vh 10vh;
+  padding-block: 13vh 100px;
+  padding-bottom: 100px;
   display: flex;
   flex-direction: row;
   gap: clamp(3rem, 6vw, 8rem);
@@ -267,10 +268,15 @@
 /* ── SECTION TITLE ───────────────────────────────────────────── */
 .rs-section__title {
   font-family: var(--font-primary);
-  font-size: clamp(60px, 11vw, 220px);
+  font-size: clamp(60px, 8vw, 220px);
   font-variation-settings: 'wght' 900;
   line-height: 0.7;
   -webkit-font-smoothing: antialiased;
+}
+
+.layout-text .rs-section__title {
+  text-align: right;
+  margin-inline: 0;
 }
 
 
@@ -329,7 +335,7 @@
   padding-block: 25px;
   padding-inline: 100px;
   box-sizing: border-box;
-  margin: 0 auto;
+  margin: 40px auto;
 }
 
 .layout-media .rs-figure,
@@ -426,10 +432,10 @@
 
 /* Active: transparent cyan highlight */
 .src-btn.is-active {
-  background-color: var(--color-green);
+  background-color: var(--color-orange);
   color: var(--color-black);
   opacity: 1;
-  border-color: var(--color-green);
+  border-color: var(--color-orange);
 }
 
 
@@ -537,20 +543,6 @@
   opacity: var(--img-scan-opacity, 0.5);
 }
 
-.sources-viewer::after {
-  content: '← גרור להשוואה →';
-  position: absolute;
-  bottom: 1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: var(--font-secondary);
-  font-size: 16px;
-  letter-spacing: 0.06em;
-  color: color-mix(in srgb, var(--color-white) 25%, transparent);
-  opacity: 1;
-  pointer-events: none;
-}
-
 
 /* ── TEXT BLOCK — אחרי הוויואר ──────────────────────────────── */
 .rs-section__text-block {
@@ -572,7 +564,7 @@
   bottom: 0;
   width: 3px;
   left: 50%;
-  background-color: var(--color-green);
+  background-color: var(--color-orange);
   pointer-events: none;
   transform: translateX(-50%);
   z-index: 2;
@@ -685,7 +677,7 @@
   transform: translateY(-50%);
   width: 44px;
   height: 44px;
-  background-color: var(--color-green);
+  background-color: var(--color-orange);
   color: var(--rs-bg);
   border: 1px solid var(--rs-accent);
   border-radius: 50%;
@@ -866,11 +858,15 @@ body.light-theme .rs-section__subhead {
 }
 
 .rs-section__subhead-sub {
-  font-size: 50px;
+  font-size: 60px;
   font-weight: 500;
   font-variation-settings: 'wght' 500;
-  display: inline;
+  display: block;
+  margin-top: 60px;
 }
+
+.open-text-for-interaction { font-weight: bold; margin-bottom: 40px; margin-top: 40px; text-align: center; }
+.close-text-for-interaction { font-weight: bold; }
 
 
 img {
@@ -912,7 +908,7 @@ img {
   display: flex;
   flex-direction: row;       /* RTL: img-col (right/70%) | info-col (left/30%) */
   gap: 20px;
-  margin: 25px 0;
+  margin: 50px 0;
   align-items: flex-start;
 }
 
@@ -1097,6 +1093,7 @@ body.light-theme .caption-hover__overlay {
   height: 135vh;
   width: 100vw;
   margin-inline-start: calc(50% - 50vw);
+  margin-top: -25px;
 }
 
 .sticky-wrapper {
@@ -1116,7 +1113,7 @@ body.light-theme .caption-hover__overlay {
   flex-direction: row;
   gap: 8vw;
   align-items: center;
-  margin-top: -15px;
+  margin-top: 30px;
 }
 
 .comp-col {
@@ -1182,6 +1179,7 @@ body.light-theme .caption-hover__overlay {
 
 /* ── INFINITE CAROUSEL ───────────────────────────────────────── */
 .carousel-wrapper {
+  position: relative;
   width: 100vw;
   margin-right: -2.5vw;
   margin-block: 4rem;

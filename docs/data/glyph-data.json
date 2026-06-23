@@ -2,8 +2,8 @@
   "categories": [
     {
       "id": "hebrew",
-      "label": "אותיות",
-      "containerId": "char-grid",
+      "label": "אותיות — עברית",
+      "containerId": "char-grid-hebrew",
       "direction": "rtl",
       "glyphs": [
         {
@@ -276,7 +276,7 @@
     },
     {
       "id": "latin",
-      "label": "לטינית",
+      "label": "אותיות — לטינית",
       "containerId": "char-grid-latin",
       "direction": "ltr",
       "glyphs": [
@@ -895,8 +895,31 @@
       ]
     },
     {
+      "id": "niqud",
+      "label": "ניקוד",
+      "containerId": "char-grid-niqud",
+      "direction": "rtl",
+      "glyphs": [
+        { "glyphName": "shva",        "display": "אְ", "label": "שווא",        "unicode": "U+05B0", "decimal": 1456 },
+        { "glyphName": "hatafSegol",  "display": "אֱ", "label": "חטף סגול",    "unicode": "U+05B1", "decimal": 1457 },
+        { "glyphName": "hatafPatah",  "display": "אֲ", "label": "חטף פתח",     "unicode": "U+05B2", "decimal": 1458 },
+        { "glyphName": "hatafQamats", "display": "אֳ", "label": "חטף קמץ",     "unicode": "U+05B3", "decimal": 1459 },
+        { "glyphName": "hiriq",       "display": "אִ", "label": "חיריק",       "unicode": "U+05B4", "decimal": 1460 },
+        { "glyphName": "tsere",       "display": "אֵ", "label": "צרה",         "unicode": "U+05B5", "decimal": 1461 },
+        { "glyphName": "segol",       "display": "אֶ", "label": "סגול",        "unicode": "U+05B6", "decimal": 1462 },
+        { "glyphName": "patah",       "display": "אַ", "label": "פתח",         "unicode": "U+05B7", "decimal": 1463 },
+        { "glyphName": "qamats",      "display": "אָ", "label": "קמץ",         "unicode": "U+05B8", "decimal": 1464 },
+        { "glyphName": "holam",       "display": "אֹ", "label": "חולם",        "unicode": "U+05B9", "decimal": 1465 },
+        { "glyphName": "qubuts",      "display": "אֻ", "label": "קובוץ",       "unicode": "U+05BB", "decimal": 1467 },
+        { "glyphName": "dagesh",      "display": "אּ", "label": "דגש",         "unicode": "U+05BC", "decimal": 1468 },
+        { "glyphName": "shinDot",     "display": "שׁ", "label": "שין דגושה",   "unicode": "U+05C1", "decimal": 1473 },
+        { "glyphName": "sinDot",      "display": "שׂ", "label": "שין שמאלית",  "unicode": "U+05C2", "decimal": 1474 }
+      ]
+    },
+    {
       "id": "symbols",
       "label": "סמלים",
+      "containerId": "char-grid-symbols",
       "glyphs": [
         {
           "glyphName": "ampersand",
@@ -1064,6 +1087,7 @@
     {
       "id": "arrows",
       "label": "חצים",
+      "containerId": "char-grid-arrows",
       "glyphs": [
         {
           "glyphName": "upArrow",
@@ -1140,6 +1164,7 @@
     {
       "id": "fractions",
       "label": "שברים",
+      "containerId": "char-grid-fractions",
       "glyphs": [
         {
           "glyphName": "onehalf",
@@ -1209,6 +1234,7 @@
     {
       "id": "time",
       "label": "שעות",
+      "containerId": "char-grid-hours",
       "featureTag": "dlig",
       "glyphs": [
         {
@@ -1301,6 +1327,7 @@
     {
       "id": "pua",
       "label": "אייקונים",
+      "containerId": "char-grid-icons",
       "glyphs": [
         {
           "glyphName": "newGlyph.002",
@@ -1555,6 +1582,22 @@
           "label": "ss03",
           "featureTag": "ss03",
           "glyphs": [
+            {
+              "glyphName": "gimel-hb.001",
+              "display": "ג",
+              "label": "גימל — ss03",
+              "unicode": "U+05D2",
+              "decimal": 1490,
+              "direction": "rtl"
+            },
+            {
+              "glyphName": "lamed-hb.002",
+              "display": "ל",
+              "label": "למד — ss03 v2",
+              "unicode": "U+05DC",
+              "decimal": 1500,
+              "direction": "rtl"
+            },
             {
               "glyphName": "alef-hb.001",
               "display": "א",

@@ -8,7 +8,16 @@
 /* ── LAYOUT TOKENS ─────────────────────────────────────────────
 ─────────────────────────────────────────────────────────────── */
 :root {
-  --rs-tab-h:  15px;
+  --rs-tab-h:              15px;
+  --space-xs:              8px;
+  --space-sm:              16px;
+  --space-md:              32px;
+  --space-lg:              64px;
+  --space-xl:              128px;
+  --rs-section-pad-top:    13vh;
+  --rs-section-pad-bottom: 100px;
+  --rs-grid-gap:           2vw;
+  --rs-page-margin:        2.5vw;
 }
 
 
@@ -30,8 +39,30 @@
   background-color: var(--color-black);
   overflow-x: hidden;
   box-sizing: border-box;
-  padding-right: 2.5vw;
+  padding-inline: var(--rs-page-margin);
+  padding-right: calc(var(--rs-page-margin) + 1px);
   transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+
+/* ── FULL-BLEED ESCAPES ─────────────────────────────────────────
+   Hero and footer must cover the full viewport despite body padding-inline: 2.5vw.
+   width: 100vw covers the full viewport width.
+   transform: translateX(var(--rs-page-margin)) shifts the visual box rightward
+   so it aligns with the viewport edges — without touching the layout flow or
+   creating RTL scroll-position shifts. No negative margin-inline-end: that only
+   shifted the margin box left boundary, not the element's right content edge.
+─────────────────────────────────────────────────────────────── */
+#heroWebglMount {
+  width: 100vw !important;
+  max-width: none;
+  transform: translateX(var(--rs-page-margin));
+}
+
+.site-footer {
+  width: 100vw;
+  max-width: none;
+  transform: translateX(var(--rs-page-margin));
 }
 
 
@@ -47,6 +78,8 @@
   display: flex;
   flex-direction: column;
   gap: 0;
+  border-left: 1px solid var(--global-active-color, var(--color-grey));
+  transition: border-left-color 0.5s ease;
 }
 
 .sidebar-nav__item {
@@ -86,7 +119,12 @@
   z-index: 250;
   pointer-events: none;
   background-color: var(--color-black);
-  transition: background-color 0.5s ease;
+  opacity: 0;
+  transition: background-color 0.5s ease, opacity 0.4s ease;
+}
+
+.page-research.is-past-hero .top-grey-rail {
+  opacity: 1;
 }
 
 
@@ -103,39 +141,149 @@
 .rs-tab-bar {
   position: sticky;
   top: 0;
-  height: 30px;
+  min-height: 30px;
   width: 100%;
   z-index: 300;
   margin-top: -30px;
   pointer-events: none;
   background-color: transparent;
+  display: flex;
+  align-items: flex-start;
+  margin-right: -2px;
+  padding-right: 2px;
+}
+
+/* Full-bleed 1px bottom line: stays flush right (no sidebar overlap); extends left only. */
+.rs-tab-bar::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: calc(100% + 2.5vw);
+  height: 1px;
+  background-color: var(--global-active-color, var(--color-grey));
+  transition: background-color 0.5s ease, opacity 0.4s ease;
+  pointer-events: none;
+}
+
+/* Hide the tab-bar line completely while at the hero — only reveal once Tab 01 docks */
+body:not(.is-past-hero) .rs-tab-bar::after {
+  opacity: 0;
 }
 
 
-/* ── TABS — 20% wide, staggered right-to-left ──────────────────
+/* ── TABS — in-flow: colored fill + black text; docked: inverted ─
+   State 1 (in-flow):  90px, bg=tab-accent, text=black, name hidden
+   State 2 (is-stuck): 30px, bg=black,      text=tab-accent, name shown
 ─────────────────────────────────────────────────────────────── */
 .rs-tab {
-  height: 100%;
-  width: 20%;
-  border: 1px solid currentColor;
-  border-bottom: none;
+  height: 90px;
+  width: calc(100% / 6);
+  border: 1px solid var(--tab-accent);
   cursor: pointer;
   font-family: var(--font-secondary);
   font-size: 16px;
   font-weight: 500;
   text-align: right;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  gap: 0.4em;
   padding-right: 5px;
+  padding-top: 5px;
+  padding-bottom: 2px;
   pointer-events: auto;
-  transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+  color: var(--color-black);
+  background-color: var(--tab-accent);
+  overflow: hidden;
+  box-sizing: border-box;
+  will-change: height, background-color, color;
+  transition: height 0.5s ease, background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
 }
 
-.rs-tab-0 { margin-right: 0%;  background-color: var(--color-black); color: var(--color-orange);  }
-.rs-tab-1 { margin-right: 20%; background-color: var(--color-black); color: var(--color-green); }
-.rs-tab-2 { margin-right: 40%; background-color: var(--color-black); color: var(--color-pink);   }
-.rs-tab-3 { margin-right: 60%; background-color: var(--color-black); color: var(--color-yellow); }
-.rs-tab-4 { margin-right: 80%; background-color: var(--color-black); color: var(--color-white);  }
+/* 5 section tabs in cols 2–6; Tab 00 (col 1, rightmost) is the label overlay */
+.rs-tab-0 { --tab-accent: var(--color-orange); }
+.rs-tab-1 { --tab-accent: var(--color-green);  margin-right: calc(2 * 100% / 6); }
+.rs-tab-2 { --tab-accent: var(--color-pink);   margin-right: calc(3 * 100% / 6); }
+.rs-tab-3 { --tab-accent: var(--color-yellow); margin-right: calc(4 * 100% / 6); }
+.rs-tab-4 { --tab-accent: var(--color-white);  margin-right: calc(5 * 100% / 6); }
+
+/* ── TAB 00 — scroll-to-top tab, col 1 (rightmost) ────────────────────────────────────
+   In-flow flex item inside the RTL flex tab bar. No absolute positioning needed.
+   width: 1/6 matches the exact column width of Tabs 01–05.
+   Tab 0 has no margin-right so it naturally follows Tab 00 into column 2.
+   Fades in only when Tab 01 becomes is-stuck (JS toggles .is-visible).
+──────────────────────────────────────────────────────────────────────────────────────── */
+.rs-tab-bar .rs-tab.rs-tab-00 {
+  width: calc(100% / 6);
+  height: 30px;
+  background-color: var(--color-black);
+  color: var(--color-grey);
+  border-right: none;
+  border-top: none;
+  cursor: default;
+  align-self: flex-start;
+  will-change: opacity;
+  transition: opacity 0.4s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rs-tab-bar .rs-tab.rs-tab-00.is-visible {
+  opacity: 1;
+  pointer-events: auto !important;
+  cursor: pointer;
+}
+
+/* ── STUCK TAB — inverted colors, shrunk height ─────────────────── */
+.rs-tab.is-stuck {
+  height: 30px;
+  background-color: var(--color-black);
+  color: var(--tab-accent);
+}
+
+/* ── HERO STATE — all tabs docked while hero is fully visible ──── */
+body:not(.is-past-hero) .rs-tab {
+  height: 30px;
+  background-color: var(--color-black);
+  color: var(--tab-accent);
+}
+
+/* ── TAB HOVER — accent fill on black text (docked/hero state) ── */
+.rs-tab:hover {
+  background-color: var(--tab-accent);
+  color: var(--color-black);
+}
+
+/* ── ACTIVE TAB — section color bg, black text + border; overrides is-stuck ── */
+.rs-tab-bar .rs-tab.is-active {
+  background-color: var(--tab-accent);
+  color: var(--color-black);
+  border: 1px solid var(--color-black);
+}
+
+/* ── TAB CONTENT SPANS ───────────────────────────────────────────── */
+.rs-tab__num {
+  flex-shrink: 0;
+}
+
+.rs-tab__name {
+  opacity: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: opacity 0.3s ease 0.1s;
+}
+
+.rs-tab.is-stuck .rs-tab__name {
+  opacity: 1;
+}
+
+/* ── SENTINEL — anchor for sticky-detect IntersectionObserver ──── */
+.sticky-sentinel {
+  height: 1px;
+  visibility: hidden;
+  pointer-events: none;
+  margin-bottom: -1px;
+}
 
 
 /* ── SECTIONS ──────────────────────────────────────────────────
@@ -151,16 +299,6 @@
   transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-.rs-section::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 0px;
-  background-color: currentColor;
-  z-index: 2;
-  margin-top: -1px;
-}
 
 
 /* ── SECTION INNER ─────────────────────────────────────────────
@@ -181,13 +319,11 @@
 }
 
 
-/* ── HEADER BANNER — full-bleed coloured strip ──────────────── */
+/* ── HEADER BANNER — left-edge bleed only; right stays flush with content ── */
 .rs-section__hd {
-  flex: none;
-  min-width: 0;
-  margin-inline-start: 0;
-  width: 100%;
-  /* margin-top: var(--rs-tab-h); */
+  width: calc(100% + 2.5vw);
+  margin-right: 0;
+  margin-left: -2.5vw;
   background-color: var(--rs-fg);
   color: var(--rs-bg);
   padding: 6vh 3vw;
@@ -268,15 +404,16 @@
 /* ── SECTION TITLE ───────────────────────────────────────────── */
 .rs-section__title {
   font-family: var(--font-primary);
-  font-size: clamp(60px, 8vw, 220px);
+  font-size: clamp(60px, 10vw, 220px);
   font-variation-settings: 'wght' 900;
-  line-height: 0.7;
+  line-height: 0.75;
   -webkit-font-smoothing: antialiased;
 }
 
 .layout-text .rs-section__title {
   text-align: right;
   margin-inline: 0;
+  margin-bottom: 1.5rem;
 }
 
 
@@ -289,9 +426,10 @@
   letter-spacing: var(--tracking-mono, 0.01em);
   line-height: 1.5;
   color: var(--rs-fg);
-  max-width: 35em;
-  margin-bottom: 0.5em;
-  margin-inline: auto !important;
+  max-width: none;
+  width: 100%;
+  margin-bottom: 1.5em;
+  margin-inline: 0;
   text-align: right;
   transition: color 0.5s ease;
 }
@@ -304,21 +442,43 @@
 /* ── REDUCED MOTION ────────────────────────────────────────────
 ─────────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .rs-tab {
+  .rs-tab,
+  .rs-tab.is-active,
+  .rs-tab.is-stuck,
+  .rs-tab__name {
     transition: none !important;
   }
+}
+
+
+/* ── 6-COLUMN GRID UTILITY ──────────────────────────────────────── */
+.grid-container-6 {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--rs-grid-gap);
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
 }
 
 
 /* ── UNIFIED LAYOUT SYSTEM ─────────────────────────────────────── */
 .layout-text {
   width: 100%;
-  max-width: 60em !important;
-  margin-inline: auto;
+  max-width: none;
+  margin-inline: 0;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   padding-top: 6vh;
+  /* Default: simulate 4-of-6 central columns via padding */
+  padding-inline: calc(100% / 6);
+}
+
+/* Orphaned layout-texts (direct section children, not in grid) match grid-column: 2/5 */
+.rs-section > .layout-text {
+  padding-inline-start: calc(100% / 6);      /* 1 col right (inline-start in RTL) */
+  padding-inline-end: calc(2 * 100% / 6);    /* 2 cols left (inline-end in RTL)   */
 }
 
 .layout-text p,
@@ -326,16 +486,19 @@
 .layout-text h4,
 .layout-text blockquote {
   text-align: right;
-  margin-inline: auto;
+  max-width: none;
+  width: 100%;
+  margin-inline: 0;
 }
 
 .layout-media {
   width: 100%;
   max-width: none;
-  padding-block: 25px;
-  padding-inline: 100px;
+  padding-block: 0;
+  padding-inline: 0;
   box-sizing: border-box;
-  margin: 40px auto;
+  margin-block: 6rem;
+  margin-inline: 0;
 }
 
 .layout-media .rs-figure,
@@ -344,18 +507,50 @@
   width: 100%;
 }
 
-
-/* ── SPLIT INNER — single-column stacked layout ── */
-.rs-section__inner--split {
-  width: 100%;
-  margin-inline: 0;
-  padding-top: 0;
-  padding-inline: 0;
-  flex-direction: column;
-  gap: 0;
-  align-items: stretch;
-  margin-bottom: 0;
+.layout-media:has(.rs-ms-type) {
+  margin-block: 15px;
 }
+
+/* ── TRANSITION TEXT — bridge sentences between components ──── */
+.transition-text {
+  font-family: var(--font-secondary);
+  font-size: 14px;
+  color: color-mix(in srgb, currentColor 55%, transparent);
+  margin-block: var(--space-lg);
+  text-align: center;
+  letter-spacing: 0.03em;
+  padding-inline: var(--space-md);
+}
+
+/* ── BEINONI SPECTRUM BLOCK — definitional anchor ──────────── */
+.rs-beinoni-spectrum {
+}
+
+
+/* ── SPLIT INNER — strict 6-column grid, no column gap ── */
+.rs-section__inner--split {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0;
+  width: 100%;
+  padding-inline: 0;
+  padding-block: 0 var(--rs-section-pad-bottom);
+  box-sizing: border-box;
+  align-items: start;
+}
+
+/* ── GRID COLUMN ASSIGNMENTS — 6-column
+   Col 1 (RTL: rightmost) stays structurally empty.
+   Tabs occupy cols 2–6; text locks to cols 3–5; media spans cols 2–6.
+── */
+.rs-section__inner--split > .rs-section__hd             { grid-column: 1 / -1; }
+.rs-section__inner--split > .layout-text                { grid-column: 2 / 5; padding-inline: 0; padding-inline-start: 15px; padding-top: 2rem; }
+.rs-section__inner--split > .layout-media               { grid-column: 2 / -1; padding-inline: 0; padding-inline-start: 15px; }
+.rs-section__inner--split > .sketch-sequence-module     { grid-column: 2 / 6; padding-inline: 0; padding-inline-start: 15px; }
+.rs-section__inner--split > .rs-section__inner--sources  { grid-column: 1 / -1; }
+.rs-section__inner--split > .transition-text            { grid-column: 2 / 5; padding-inline-start: 15px; }
+.rs-section__inner--split > .rs-beinoni-spectrum        { grid-column: 2 / 5; padding-inline: 0; padding-inline-start: 15px; }
+.rs-section__inner--split > br                          { grid-column: 1 / -1; }
 
 
 /* ── SECTION 02 — SOURCES LAYOUT ───────────────────────────── */
@@ -365,9 +560,11 @@
 }
 
 .rs-section__inner--sources {
+  display: flex;
   flex-direction: row;
   min-height: auto;
   padding-block: 0;
+  padding-inline: 0;
   align-items: stretch;
   gap: 0;
 }
@@ -381,7 +578,7 @@
   flex-direction: row-reverse;
   align-items: stretch;
   gap: 0;
-  margin-bottom: 100px;
+  margin-bottom: 0;
 }
 
 
@@ -393,6 +590,7 @@
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
+  margin-right: 1.3vw;
 }
 
 
@@ -436,6 +634,7 @@
   color: var(--color-black);
   opacity: 1;
   border-color: var(--color-orange);
+  margin: 10px;
 }
 
 
@@ -444,8 +643,7 @@
   display: flex;
   flex-direction: column;
   gap: 0;
-  border-top: 1px solid currentColor;
-  border-bottom: 1px solid currentColor;
+  box-shadow: inset 0 1px 0 0 currentColor, inset 0 -1px 0 0 currentColor;
 }
 
 .src-meta-row {
@@ -466,6 +664,8 @@
 .src-meta-key {
   opacity: 0.45;
   flex-shrink: 0;
+      padding-right: 10px;
+
 }
 
 .src-meta-val {
@@ -478,8 +678,7 @@
 
 /* ── SOURCES LETTERS — character set image viewer ──────────── */
 .sources-letters {
-  border-top: 1px solid currentColor;
-  border-bottom: 1px solid currentColor;
+  box-shadow: inset 0 1px 0 0 currentColor, inset 0 -1px 0 0 currentColor;
   overflow: hidden;
   opacity: 0.85;
 }
@@ -499,9 +698,9 @@
   min-height: 60vh;
   position: relative;
   overflow: hidden;
-  border: 1px solid currentColor;
+  box-shadow: inset 0 0 0 1px currentColor;
   margin-inline-end: 0;
-  margin-left: 0;
+  margin-left: 30px;
 }
 
 .sources-viewer__track {
@@ -536,11 +735,11 @@
 }
 
 .source-slide__font {
-  opacity: var(--img-font-opacity, 0.5);
+  clip-path: inset(0 50% 0 0); /* default: left half visible */
 }
 
 .source-slide__scan {
-  opacity: var(--img-scan-opacity, 0.5);
+  clip-path: inset(0 0 0 50%); /* default: right half visible */
 }
 
 
@@ -629,7 +828,9 @@
   margin-bottom: 40px;
   margin-inline: auto;
   text-align: right;
-  line-height: 1.1;
+  line-height: 0.9;
+  padding: 0 80px;
+
 }
 
 .research-quote cite {
@@ -650,8 +851,8 @@
 .bottom-tabs-rail {
   position: fixed;
   bottom: 0;
-  right: 2.5vw;
-  width: calc(100% - 2.5vw);
+  right: var(--rs-page-margin);
+  width: calc(100% - 2 * var(--rs-page-margin)); /* match top tab-bar's 100% base */
   height: 30px;
   z-index: 400;
   pointer-events: none;
@@ -661,12 +862,43 @@
   position: absolute;
   top: 0;
   right: 0;
+  height: 30px;
+  background-color: var(--color-black);
+  color: var(--tab-accent);
+  align-items: flex-start;
+  padding-top: 5px;
   pointer-events: auto;
+  box-shadow: none;
+  border: 1px solid var(--tab-accent);
+}
+
+.bottom-tabs-rail .rs-tab .rs-tab__name {
+  opacity: 1;
+}
+
+.bottom-tabs-rail .rs-tab.is-active {
+  color: var(--tab-accent);
+  border-bottom: 1px solid var(--tab-accent);
+}
+
+.bottom-tabs-rail .rs-tab:hover {
+  color: var(--tab-accent);
 }
 
 .bottom-tabs-rail .rs-tab.is-hidden {
   visibility: hidden;
   opacity: 0;
+}
+
+/* ── TAB 05 FULL BLEED — extends to absolute left viewport edge ─────────── */
+.rs-tab-bar .rs-tab-4 {
+  width: calc(100% / 6 + 2.5vw);
+  margin-left: -2.5vw;
+  border-left: none;
+}
+
+.bottom-tabs-rail .rs-tab-4 {
+  width: calc(100% / 6 + var(--rs-page-margin));
 }
 
 
@@ -817,9 +1049,9 @@ body.light-theme .src-btn.is-active {
   color: var(--color-white);
 }
 
-body.light-theme .rs-tab-bar .rs-tab {
-  background-color: var(--color-lightgrey) !important;
-  color: var(--color-black) !important;
+body.light-theme .rs-tab-bar .rs-tab.is-stuck {
+  background-color: var(--color-white);
+  color: var(--tab-accent);
 }
 
 body.light-theme .rs-ms-type__grid,
@@ -848,8 +1080,7 @@ body.light-theme .section-exit .exit-sub {
   font-variation-settings: 'wght' 700;
   color: var(--color-orange);
   line-height: 0.6;
-  margin-top: 70px;
-  margin-bottom: 40px;
+  margin-top: 3rem;
   transition: color 0.5s ease;
 }
 
@@ -859,13 +1090,13 @@ body.light-theme .rs-section__subhead {
 
 .rs-section__subhead-sub {
   font-size: 60px;
-  font-weight: 500;
-  font-variation-settings: 'wght' 500;
+  font-weight: 700;
+  font-variation-settings: 'wght' 900;
   display: block;
-  margin-top: 60px;
+  margin-top: 3rem;
 }
 
-.open-text-for-interaction { font-weight: bold; margin-bottom: 40px; margin-top: 40px; text-align: center; }
+.open-text-for-interaction { font-weight: bold; margin-top: 20px; margin-bottom: 80px; text-align: center; }
 .close-text-for-interaction { font-weight: bold; }
 
 
@@ -906,22 +1137,24 @@ img {
 /* ── SECTION 01 — MANUSCRIPT TYPE BLOCKS ────────────────────── */
 .rs-ms-type {
   display: flex;
-  flex-direction: row;       /* RTL: img-col (right/70%) | info-col (left/30%) */
-  gap: 20px;
+  flex-direction: row;
+  gap: 0;
   margin: 50px 0;
   align-items: flex-start;
 }
 
-/* Right column — image (70%) */
+/* Right column — image (3 of 5 sub-columns = 60%) */
 .rs-ms-type__img-col {
-  flex: 0 0 70%;
+  flex: 0 0 60%;
   min-width: 0;
 }
 
-/* Left column — info (30%) */
+/* Left column — info (2 of 5 sub-columns = 40%) */
 .rs-ms-type__info-col {
-  flex: 0 0 calc(30% - 20px);
+  flex: 0 0 40%;
   min-width: 0;
+  padding-inline-start: 2rem;
+  box-sizing: border-box;
 }
 
 .rs-ms-figure {
@@ -1079,27 +1312,19 @@ body.light-theme .caption-hover__overlay {
   background-color: var(--color-lightgrey);
 }
 
-.img-wrapper .caption-hover__overlay {
-  width: 135%;
-  left: 50%;
-  right: auto;
-  transform: translateX(-50%);
-  bottom: -7%;
-}
-
 
 /* ─── Script Comparison Module ─────────────────────────────── */
 .scroll-container {
   height: 135vh;
-  width: 100vw;
-  margin-inline-start: calc(50% - 50vw);
-  margin-top: -25px;
+  width: calc(100% + 100% / 5);         /* 5 cols (layout-media) + 1 col = 6 cols (full working area) */
+  margin-inline-start: calc(-100% / 5); /* extend right edge into Col 00 */
+  margin-top: 0;
 }
 
 .sticky-wrapper {
   position: sticky;
   top: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -1132,17 +1357,17 @@ body.light-theme .caption-hover__overlay {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .img-wrapper img {
   position: absolute;
-  width: 135%;
-  height: 135%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
+  transform: none;
   transition: opacity 0.4s ease;
   mix-blend-mode: multiply;
 }
@@ -1180,9 +1405,10 @@ body.light-theme .caption-hover__overlay {
 /* ── INFINITE CAROUSEL ───────────────────────────────────────── */
 .carousel-wrapper {
   position: relative;
-  width: 100vw;
-  margin-right: -2.5vw;
-  margin-block: 4rem;
+  width: calc(100% + 2.5vw);
+  margin-right: 0;
+  margin-left: -2.5vw;
+  margin-block: 6rem;
   overflow: hidden;
   direction: ltr;
   cursor: grab;
@@ -1227,4 +1453,72 @@ body.light-theme .caption-hover__overlay {
 @keyframes scrollMarquee {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
+}
+
+
+/* ── Sketch Sequence Module ────────────────────────────────── */
+.sketch-sequence-module {
+  width: 100%;
+  user-select: none;
+  cursor: ew-resize;
+}
+
+.sketch-seq__img-wrapper {
+  position: relative;
+  width: 100%;
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.sketch-seq__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  z-index: 1;
+  transition: opacity 0.3s ease;
+}
+
+.sketch-seq__img.is-active {
+  opacity: 1;
+  z-index: 2;
+}
+
+.sketch-seq__controls {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sketch-seq__track {
+  position: relative;
+  width: calc(100% - 20px);
+  margin: 0 auto;
+  height: 2px;
+  background: color-mix(in srgb, var(--rs-fg) 20%, transparent);
+}
+
+.sketch-seq__thumb {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--rs-fg);
+}
+
+.sketch-seq__meta {
+  text-align: right;
+}
+
+#sketch-seq-label {
+  font-family: var(--font-secondary);
+  font-size: var(--size-meta-large);
+  color: var(--rs-fg);
 }

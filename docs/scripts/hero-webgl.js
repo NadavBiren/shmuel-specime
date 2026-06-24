@@ -34,9 +34,9 @@ window.initHeroWebGL = function (mountContainer) {
        • proximitySpeed: acceleration boost as it closes in (0 = none, 1 = instant snap)
        • scaleMax: max scale multiplier when trailing far */
     ECHOES: [
-      { lerp: 0.025, proximitySpeed: 0.2, scaleMax: 1.35 },
-      { lerp: 0.04,  proximitySpeed: 0.4, scaleMax: 1.40 },
-      { lerp: 0.06,  proximitySpeed: 0.6, scaleMax: 1.5  },
+      { lerp: 0.025, proximitySpeed: 0.2,  scaleMax: 1.35 }, // echo 1
+      { lerp: 0.012, proximitySpeed: 0.15, scaleMax: 1.25 }, // echo 2 (enabled)
+      // 3rd entry omitted — 4th circle disabled
     ],
 
     ECHO_DIST_MAX:   160,
@@ -50,6 +50,9 @@ window.initHeroWebGL = function (mountContainer) {
       vector:       'assets/images/hero/texture3_vector.jpg',
     },
   };
+
+  /* Two trailing echoes active — gives exactly 3 circles total (main + 2 echoes) */
+  const SHOW_TRAILING_ECHOES = true;
 
 
   /* ── ② IMAGE LOADING ─────────────────────────────────────────── */
@@ -209,23 +212,25 @@ window.initHeroWebGL = function (mountContainer) {
 
       const breathScale = 1.05 + 0.05 * Math.sin(ts * 0.00075);
 
-      for (let i = 0; i < echoes.length; i++) {
-        const target = i === 0 ? main : echoes[i - 1];
+      if (SHOW_TRAILING_ECHOES) {
+        for (let i = 0; i < echoes.length; i++) {
+          const target = i === 0 ? main : echoes[i - 1];
 
-        let lerpFactor = CONFIG.ECHOES[i].lerp;
+          let lerpFactor = CONFIG.ECHOES[i].lerp;
 
-        const distToTarget   = Math.hypot(target.x - echoes[i].x, target.y - echoes[i].y);
-        const proximityFactor = Math.min(1, distToTarget / CONFIG.ECHO_DIST_MAX);
-        const speedBoost     = CONFIG.ECHOES[i].proximitySpeed;
-        lerpFactor *= (1 - speedBoost) + (speedBoost * proximityFactor);
+          const distToTarget    = Math.hypot(target.x - echoes[i].x, target.y - echoes[i].y);
+          const proximityFactor = Math.min(1, distToTarget / CONFIG.ECHO_DIST_MAX);
+          const speedBoost      = CONFIG.ECHOES[i].proximitySpeed;
+          lerpFactor *= (1 - speedBoost) + (speedBoost * proximityFactor);
 
-        echoes[i].x = L(echoes[i].x, target.x, lerpFactor);
-        echoes[i].y = L(echoes[i].y, target.y, lerpFactor);
+          echoes[i].x = L(echoes[i].x, target.x, lerpFactor);
+          echoes[i].y = L(echoes[i].y, target.y, lerpFactor);
 
-        const distToMain  = Math.hypot(main.x - echoes[i].x, main.y - echoes[i].y);
-        const scaleFactor = Math.min(1, distToMain / CONFIG.ECHO_DIST_MAX);
-        const targetScale = breathScale + (CONFIG.ECHOES[i].scaleMax - breathScale) * scaleFactor;
-        echoes[i].scaleMult = L(echoes[i].scaleMult, targetScale, CONFIG.ECHO_SCALE_LERP);
+          const distToMain  = Math.hypot(main.x - echoes[i].x, main.y - echoes[i].y);
+          const scaleFactor = Math.min(1, distToMain / CONFIG.ECHO_DIST_MAX);
+          const targetScale = breathScale + (CONFIG.ECHOES[i].scaleMax - breathScale) * scaleFactor;
+          echoes[i].scaleMult = L(echoes[i].scaleMult, targetScale, CONFIG.ECHO_SCALE_LERP);
+        }
       }
 
       const cw = this.canvas.width  / this.dpr;
@@ -240,15 +245,17 @@ window.initHeroWebGL = function (mountContainer) {
       drawContain(ctx, scan, cw, ch);
       ctx.restore();
 
-      for (let i = echoes.length - 1; i >= 0; i--) {
-        drawCircleReveal(
-          ctx,
-          echoTextures[i],
-          echoes[i].x,
-          echoes[i].y,
-          CONFIG.MAIN_RADIUS * echoes[i].scaleMult,
-          cw, ch
-        );
+      if (SHOW_TRAILING_ECHOES) {
+        for (let i = echoes.length - 1; i >= 0; i--) {
+          drawCircleReveal(
+            ctx,
+            echoTextures[i],
+            echoes[i].x,
+            echoes[i].y,
+            CONFIG.MAIN_RADIUS * echoes[i].scaleMult,
+            cw, ch
+          );
+        }
       }
 
       drawCircleReveal(ctx, vector, main.x, main.y, CONFIG.MAIN_RADIUS, cw, ch);

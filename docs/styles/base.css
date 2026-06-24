@@ -48,7 +48,7 @@
   --color-black:  #151515;   /* off-black — body background          */
   --color-dark:   #3A3835;   /* dark grey — borders, dividers        */
   --color-grey:   #7A7875;   /* mid grey  — muted text, annotations  */
-  --color-lightgrey:   #c0c0c0;   /* soft paper grey — light theme bg       */
+  --color-lightgrey:   #F0EFEA;   /* warm paper grey — light theme bg       */
   --color-white:  #F5F2ED;   /* off-white — text on dark, light bg   */
 
   /* ── Typography ─────────────────────────────────────────
@@ -113,7 +113,7 @@ a {
 p {
   max-width: 30em;
   line-height: 1.62;
-  margin-bottom: 0.5em;
+  margin-bottom: 1.5em;
 }
 
 /* Accessibility utility */

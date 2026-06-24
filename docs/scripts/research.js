@@ -159,18 +159,25 @@ async function initSourcesSection() {
     });
   }
 
-  // mousemove → crossfade scan ↔ font + move separator line
-  // RTL: X=0 = קצה ימני, normalizedX=0 scan שולט, =1 font שולט
+  // mousemove → clip-path wipe: right half = scan, left half = font
+  // splitPct = percentage from left edge (0 = scan fills all, 100 = font fills all, 50 = equal split)
+  let splitPct = 50;
   let leaveRAF = null;
+
+  function applyClip(slide, pct) {
+    const scanEl = slide.querySelector('.source-slide__scan');
+    const fontEl = slide.querySelector('.source-slide__font');
+    if (scanEl) scanEl.style.clipPath = `inset(0 0 0 ${pct}%)`;
+    if (fontEl) fontEl.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+  }
 
   viewer.addEventListener('mousemove', e => {
     if (leaveRAF) { cancelAnimationFrame(leaveRAF); leaveRAF = null; }
     const rect = viewer.getBoundingClientRect();
-    const normalizedX = 1 - (e.clientX - rect.left) / rect.width;
+    splitPct = (e.clientX - rect.left) / rect.width * 100;
     const slide = getSlide(activeId);
     if (!slide) return;
-    slide.style.setProperty('--img-scan-opacity', 1 - normalizedX);
-    slide.style.setProperty('--img-font-opacity', normalizedX);
+    applyClip(slide, splitPct);
     if (line) line.style.left = (e.clientX - rect.left) + 'px';
   });
 
@@ -178,8 +185,7 @@ async function initSourcesSection() {
     const slide = getSlide(activeId);
     if (!slide) return;
     const rect = viewer.getBoundingClientRect();
-    const scanStart = parseFloat(slide.style.getPropertyValue('--img-scan-opacity') || '0.5');
-    const fontStart = parseFloat(slide.style.getPropertyValue('--img-font-opacity') || '0.5');
+    const startSplit = splitPct;
     const lineStartPx = line ? parseFloat(line.style.left) || rect.width / 2 : 0;
     const lineTargetPx = rect.width / 2;
     const duration = 300;
@@ -187,13 +193,16 @@ async function initSourcesSection() {
     function step(now) {
       const p = Math.min((now - t0) / duration, 1);
       const ease = p * (2 - p); // ease-out quad
-      slide.style.setProperty('--img-scan-opacity', scanStart + (0.5 - scanStart) * ease);
-      slide.style.setProperty('--img-font-opacity', fontStart + (0.5 - fontStart) * ease);
+      splitPct = startSplit + (50 - startSplit) * ease;
+      applyClip(slide, splitPct);
       if (line) line.style.left = (lineStartPx + (lineTargetPx - lineStartPx) * ease) + 'px';
       if (p < 1) { leaveRAF = requestAnimationFrame(step); }
       else {
-        slide.style.removeProperty('--img-scan-opacity');
-        slide.style.removeProperty('--img-font-opacity');
+        splitPct = 50;
+        const scanEl = slide.querySelector('.source-slide__scan');
+        const fontEl = slide.querySelector('.source-slide__font');
+        if (scanEl) scanEl.style.clipPath = '';
+        if (fontEl) fontEl.style.clipPath = '';
         if (line) line.style.left = '';
       }
     }
@@ -239,7 +248,7 @@ function initBottomAccordion() {
   bottomRail.className = 'bottom-tabs-rail';
   document.body.appendChild(bottomRail);
 
-  const originalTabs = document.querySelectorAll('.rs-tab-bar .rs-tab');
+  const originalTabs = document.querySelectorAll('.rs-tab-bar .rs-tab:not(.rs-tab-00)');
   const clones = [];
 
   originalTabs.forEach((tab, index) => {
@@ -406,16 +415,168 @@ function initInfiniteCarousel() {
 }
 
 
+/* ── SKETCH SEQUENCE ───────────────────────────────────────────
+   Mousemove over #sketch-sequence cycles through 13 font-version
+   images, updating the scrubber thumb and version label.
+─────────────────────────────────────────────────────────────── */
+function initSketchSequence() {
+  const module = document.getElementById('sketch-sequence');
+  if (!module) return;
+
+  const wrapper = module.querySelector('.sketch-seq__img-wrapper');
+  const thumb = document.getElementById('sketch-seq-thumb');
+  const label = document.getElementById('sketch-seq-label');
+  const BASE = 'assets/images/03-sketching/compering-ver/font-ver';
+  const TOTAL = 12;
+
+  const imgs = [];
+  for (let i = 1; i <= TOTAL; i++) {
+    const el = document.createElement('img');
+    el.src = `${BASE}${i}.jpg`;
+    el.alt = `סקיצה של הפונט — גירסה ${i}`;
+    el.className = 'sketch-seq__img';
+    if (i === 1) el.classList.add('is-active');
+    wrapper.appendChild(el);
+    imgs.push(el);
+  }
+
+  module.addEventListener('mousemove', (e) => {
+    const rect = module.getBoundingClientRect();
+    let normX = 1 - ((e.clientX - rect.left) / rect.width);
+    normX = Math.max(0, Math.min(1, normX));
+    const frameIndex = Math.floor(normX * 11.99);
+
+    imgs.forEach((img, i) => img.classList.toggle('is-active', i === frameIndex));
+    thumb.style.right = `${(frameIndex / 11) * 100}%`;
+
+    const versionText = frameIndex === 11 ? 'סופי' : 'v.0' + String(frameIndex + 1).padStart(2, '0');
+    label.innerHTML = `גירסה: <span dir="ltr">${versionText}</span>`;
+  });
+}
+
+
+/* ── STICKY TABS BREADCRUMB — single active tab tracks scroll ────
+   Observes .rs-section elements. As the user scrolls and a section
+   becomes the primary reading area (top 35% of viewport), its
+   corresponding .rs-tab gets .is-active; all others revert to grey.
+─────────────────────────────────────────────────────────────── */
+function initStickyTabsBreadcrumbs() {
+  const sections = Array.from(document.querySelectorAll('.rs-section'));
+  const tabs = document.querySelectorAll('.rs-tab-bar .rs-tab:not(.rs-tab-00)');
+  if (!sections.length || !tabs.length) return;
+
+  function setActiveTab(idx) {
+    document.querySelectorAll('.rs-tab').forEach(t => t.classList.remove('is-active'));
+    document.querySelectorAll(`.rs-tab-${idx}`).forEach(t => t.classList.add('is-active'));
+  }
+
+  const visibleSections = new Set();
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        visibleSections.add(entry.target);
+      } else {
+        visibleSections.delete(entry.target);
+      }
+    });
+
+    for (const section of sections) {
+      if (visibleSections.has(section)) {
+        setActiveTab(section.dataset.idx);
+        break;
+      }
+    }
+  }, {
+    rootMargin: '-30px 0px -80% 0px',
+    threshold: 0
+  });
+
+  sections.forEach(s => observer.observe(s));
+  if (sections.length) setActiveTab(sections[0].dataset.idx);
+}
+
+
+/* ── STICKY TAB SHRINK ─────────────────────────────────────────
+   Injects a zero-height sentinel before each .rs-tab-bar.
+   IntersectionObserver fires when sentinel exits the viewport top
+   (isIntersecting: false) → tab is docked → add .is-stuck.
+   Also maintains --global-active-color on body for border system.
+─────────────────────────────────────────────────────────────── */
+function initStickyTabShrink() {
+  const SECTION_COLORS = {
+    '0': 'var(--color-orange)',
+    '1': 'var(--color-green)',
+    '2': 'var(--color-pink)',
+    '3': 'var(--color-yellow)',
+    '4': 'var(--color-white)',
+  };
+
+  function updateGlobalActiveColor() {
+    const stuckTabs = Array.from(document.querySelectorAll('.rs-tab.is-stuck'));
+    let maxIdx = -1;
+    for (const tab of stuckTabs) {
+      for (let i = 0; i < 5; i++) {
+        if (tab.classList.contains(`rs-tab-${i}`)) maxIdx = Math.max(maxIdx, i);
+      }
+    }
+    const color = maxIdx >= 0 ? SECTION_COLORS[String(maxIdx)] : 'var(--color-grey)';
+    document.body.style.setProperty('--global-active-color', color);
+  }
+
+  const tab00 = document.getElementById('rs-tab-00');
+
+  document.querySelectorAll('.rs-layer').forEach(layer => {
+    const tabBar = layer.querySelector('.rs-tab-bar');
+    const tab    = layer.querySelector('.rs-tab:not(.rs-tab-00)');
+    if (!tabBar || !tab) return;
+
+    const sentinel = document.createElement('div');
+    sentinel.className = 'sticky-sentinel';
+    layer.insertBefore(sentinel, tabBar);
+
+    new IntersectionObserver(([entry]) => {
+      const isStuck = !entry.isIntersecting;
+      tab.classList.toggle('is-stuck', isStuck);
+      if (tab.classList.contains('rs-tab-0') && tab00) {
+        tab00.classList.toggle('is-visible', isStuck);
+      }
+      updateGlobalActiveColor();
+    }, { rootMargin: '0px', threshold: 0 }).observe(sentinel);
+  });
+}
+
+
 /* ── INIT ──────────────────────────────────────────────────────
 ─────────────────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   initScrollWeight();
   initHeaderWeightScroll();
+  initStickyTabsBreadcrumbs();
+  initStickyTabShrink();
+
+  const tab00 = document.getElementById('rs-tab-00');
+  if (tab00) {
+    tab00.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
   initSourcesSection();
   initBottomAccordion();
   initScriptComparisonScroll();
   initInfiniteCarousel();
+  initSketchSequence();
   /* initSourcesMagnet — removed: CSS scroll-snap handles this */
+
+  const heroEl = document.getElementById('heroWebglMount');
+  const updateRailVisibility = () => {
+    document.body.classList.toggle('is-past-hero',
+      heroEl ? window.scrollY >= heroEl.offsetHeight - 10 : false);
+  };
+  window.addEventListener('scroll', updateRailVisibility, { passive: true });
+  updateRailVisibility();
 
   const themeBtn = document.getElementById('theme-toggle-btn');
   if (themeBtn) {
@@ -423,7 +584,6 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.classList.toggle('light-theme');
     });
 
-    const heroEl = document.getElementById('heroWebglMount');
     const updateThemeBtnVisibility = () => {
       const pastHero = !heroEl || window.scrollY >= heroEl.offsetHeight - 10;
       themeBtn.classList.toggle('is-visible', pastHero);

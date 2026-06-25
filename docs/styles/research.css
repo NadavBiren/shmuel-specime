@@ -140,10 +140,10 @@
 .rs-tab-bar {
   position: sticky;
   top: 0;
-  min-height: 80px;
+  height: var(--tab-height, 80px);
   width: 100%;
   z-index: 300;
-  margin-top: -80px;
+  margin-top: calc(-1 * var(--tab-height, 80px));
   pointer-events: none;
   background-color: transparent;
   display: flex;
@@ -169,22 +169,36 @@
    top: 30px pins it to the exact bottom of the collapsed 30px row. */
 .rs-tab-bar.is-stuck::after {
   background-color: var(--global-active-color, var(--color-grey)) !important;
-  top: 30px !important;
+  top: var(--tab-height, 30px) !important;
   bottom: auto !important;
 }
 
+.rs-tab-bar:not(.is-stuck) {
+  border-bottom: none !important;
+}
+.rs-tab-bar:not(.is-stuck) .rs-tab {
+  border-bottom: none !important;
+}
+.rs-tab-bar:not(.is-stuck) .rs-tab::before {
+  border-bottom: none !important;
+}
 
-/* ── TABS — height-driven accordion ────────────────────────────
-   DEFAULT (scrolling):  80px, accent-filled when active
-   DOCKED (.rs-tab-bar.is-stuck): 30px, inverted when active
-   overflow:hidden clips ::before tail — transition is on height directly.
-   Layout contribution: tab-bar margin-top:-80px absorbs the 80px → 0px net
+
+/* ── TABS — scroll-linked height via --tab-height ───────────────
+   DEFAULT (scrolling):  80px, accent-filled
+   DOCKED (.rs-tab-bar.is-stuck): visual state only (colors, name, line)
+   Height is driven entirely by JS → --tab-height on the parent bar.
+   padding-top shrinks with --tab-shrink-progress so text stays visible.
+   Layout: bar margin-top = -var(--tab-height) keeps net flow contribution 0.
 ─────────────────────────────────────────────────────────────── */
 .rs-tab {
-  height: 80px;
+  height: var(--tab-height, 80px);
   width: calc(100% / 6);
   flex-shrink: 0;
-  border: 1px solid var(--tab-accent);
+  border-top: 1px solid var(--tab-accent);
+  border-left: 1px solid var(--tab-accent);
+  border-right: 1px solid var(--tab-accent);
+  border-bottom: none !important;
   cursor: pointer;
   font-family: var(--font-secondary);
   font-size: 16px;
@@ -194,7 +208,7 @@
   align-items: flex-start;
   justify-content: flex-start;
   gap: 0.4em;
-  padding: var(--space-sm) var(--space-sm) 0 0;
+  padding: calc((1 - var(--tab-shrink-progress, 0)) * var(--space-sm)) var(--space-sm) 0 0;
   pointer-events: auto;
   color: var(--color-grey);
   background-color: var(--color-black);
@@ -202,8 +216,8 @@
   position: relative;
   z-index: 1;
   box-sizing: border-box;
-  will-change: height, background-color, color;
-  transition: height 0.3s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s, color 0.3s;
+  will-change: background-color, color;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .rs-tab::after { display: none !important; }
@@ -220,13 +234,11 @@
   top: 100%;
   left: -1px;
   right: -1px;
-  height: 60px;
+  height: var(--tab-tail-height, 60px);
   background-color: var(--tab-accent);
   border-left:        1px solid var(--tab-accent);
   border-right:       1px solid var(--tab-accent);
-  border-bottom:      1px solid var(--color-black);
   box-sizing: border-box;
-  transition: height 0.35s cubic-bezier(0.25, 1, 0.5, 1);
   pointer-events: none;
 }
 
@@ -238,43 +250,43 @@
 .rs-tab-3 { --tab-accent: var(--color-yellow); margin-right: calc(4 * 100% / 6); }
 .rs-tab-4 { --tab-accent: var(--color-white);  margin-right: calc(5 * 100% / 6); }
 
-/* ── TAB 00 — scroll-to-top label, col 1 (rightmost) ──────────────────────────────────
-   position:absolute so it doesn't push rs-tab-0 off its column in the shared outermost bar.
-   Fades in once .page-research gets .is-past-hero (CSS, no JS class toggle required).
+/* ── TAB 00 — fixed overlay label, col 1 (rightmost) ───────────────────────────────────
+   Lives outside any .rs-tab-bar. Fixed so it occupies col-1 without affecting the layout
+   of any sticky bar. Fades in once .page-research gets .is-past-hero.
+   right + width mirror body padding so they align exactly with col-1 of the tab grid.
 ──────────────────────────────────────────────────────────────────────────────────────── */
-.rs-tab-bar .rs-tab.rs-tab-00 {
-  position: absolute;
-  right: 0;
-  width: calc(100% / 6);
+.rs-tab-00 {
+  position: fixed;
+  top: 0;
+  right: calc(var(--rs-page-margin) + 1px);
+  width: calc((100vw - 2 * var(--rs-page-margin) - 1px) / 6);
   height: 30px;
+  z-index: 350;
   background-color: var(--color-black);
   color: var(--color-grey);
-  border-right: none;
-  border-top: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 var(--space-sm);
+  font-family: var(--font-secondary);
+  font-size: 16px;
+  font-weight: 500;
+  box-sizing: border-box;
   cursor: default;
-  will-change: opacity;
-  transition: opacity 0.4s ease;
   opacity: 0;
   pointer-events: none;
+  transition: opacity 0.4s ease;
+    border-left: 1px solid var(--color-orange);
 }
 
-.page-research.is-past-hero .rs-tab-bar .rs-tab.rs-tab-00 {
+.page-research.is-past-hero .rs-tab-00 {
   opacity: 1;
   pointer-events: auto;
   cursor: pointer;
 }
 
-/* ── HERO STATE — force all tabs to docked (inverted) while hero is visible ──
-   Specificity includes .rs-tab-bar so it overrides .rs-tab-bar .rs-tab.is-active.
-─────────────────────────────────────────────────────────────────────────────── */
-body:not(.is-past-hero) .rs-tab-bar .rs-tab {
-  background-color: var(--color-black);
-  color: var(--tab-accent);
-}
-
-body:not(.is-past-hero) .rs-tab-bar .rs-tab::before {
-  height: 0;
-  border-bottom-width: 0;
+.rs-tab-00:hover {
+  color: var(--color-white);
 }
 
 /* ── TAB HOVER — accent fill ── */
@@ -283,32 +295,30 @@ body:not(.is-past-hero) .rs-tab-bar .rs-tab::before {
   color: var(--color-black);
 }
 
-/* ── ACTIVE TAB (SCROLLING) — filled accent, elevated above the global line ── */
-.rs-tab-bar .rs-tab.is-active {
+/* ── SCROLLING STATE (TALL, COLORED, NO NAME) — all section tabs in non-stuck bars ──
+   Bypasses .is-active dependency: color comes from physical scroll position, not JS class.
+─────────────────────────────────────────────────────────────────────────────────────── */
+.rs-tab-bar:not(.is-stuck) .rs-tab {
   background-color: var(--tab-accent) !important;
   color: var(--color-black) !important;
-  border: 1px solid var(--color-black);
+  border: none !important;
+}
+
+.rs-tab-bar:not(.is-stuck) .rs-tab .rs-tab__name {
+  display: none !important;
+}
+
+.rs-tab-bar:not(.is-stuck) .rs-tab::before {
+  content: "" !important;
+  display: block !important;
+}
+
+/* Elevate active tab above global line */
+.rs-tab-bar .rs-tab.is-active {
   z-index: 10;
 }
 
-/* ── ACTIVE TAB (NOT DOCKED) — force section color; overrides any cascade conflict ── */
-.rs-tab-bar:not(.is-stuck) .rs-tab.is-active {
-  background-color: var(--tab-accent) !important;
-  color: var(--color-black) !important;
-  border-color: var(--color-black) !important;
-}
-
-/* ── STUCK TAB — collapses tail for all non-active stuck tabs ── */
-.rs-tab-bar .rs-tab.is-stuck::before {
-  height: 0;
-  border-bottom-width: 0;
-}
-
-/* ── ACTIVE TAB TAIL — declared AFTER is-stuck so equal-specificity cascade wins ──
-   background-color: inherit pulls the accent fill from the parent .is-active bg.
-   z-index: -1 keeps the tail behind the ::after colored line (z-index: 5) while
-   the active tab (z-index: 10) masks the line for the full tab width above it.
-─────────────────────────────────────────────────────────────────────────────── */
+/* ── ACTIVE TAB TAIL — explicit positioning so tail bleeds past parent border ── */
 .rs-tab-bar .rs-tab.is-active::before {
   content: "";
   position: absolute;
@@ -316,36 +326,32 @@ body:not(.is-past-hero) .rs-tab-bar .rs-tab::before {
   left: 0;
   right: auto;
   width: 100%;
-  height: 60px;
+  height: var(--tab-tail-height, 60px) !important;
   background-color: var(--tab-accent);
   border-left: 1px solid var(--color-black);
   border-right: none;
-  border-bottom: 1px solid var(--color-black);
   z-index: -1;
-  transition: height 0.35s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* ── DOCKED — bar physically at top: all tabs shrink to 30px ── */
+/* ── DOCKED/STUCK STATE — visual only (colors, borders, name, line) ── */
 .rs-tab-bar.is-stuck .rs-tab {
-  height: 30px;
-}
-
-/* ── ACTIVE + DOCKED — minimalist inverted style ── */
-.rs-tab-bar.is-stuck .rs-tab.is-active {
+  align-items: center !important;
+  padding-top: 0 !important;
   background-color: var(--color-black) !important;
   color: var(--tab-accent) !important;
   border-color: var(--tab-accent) !important;
 }
-
-/* keep tail collapsed (::before hidden by overflow:hidden, but !important as insurance) */
-.rs-tab-bar.is-stuck .rs-tab.is-active::before {
-  height: 0 !important;
-  border-bottom-width: 0 !important;
+.rs-tab-bar.is-stuck .rs-tab .rs-tab__name {
+  display: inline-block !important;
+}
+.rs-tab-bar.is-stuck .rs-tab.is-active {
+  background-color: var(--tab-accent) !important;
+  color: var(--color-black) !important;
 }
 
-/* rs-tab-00 is a label overlay, not an accordion tab */
-.rs-tab-bar .rs-tab.rs-tab-00::before {
-  display: none;
+.rs-tab-bar.is-stuck .rs-tab:hover {
+  background-color: var(--tab-accent) !important;
+  color: var(--color-black) !important;
 }
 
 /* rs-tab-4 has border-left: none; tail must match */
@@ -363,10 +369,6 @@ body:not(.is-past-hero) .rs-tab-bar .rs-tab::before {
   white-space: nowrap;
 }
 
-/* Stuck (docked, 30px) state: only the number is visible; name is clipped */
-.rs-tab-bar.is-stuck .rs-tab .rs-tab__name {
-  display: none !important;
-}
 
 /* ── SENTINEL — anchor for sticky-detect IntersectionObserver ──── */
 .sticky-sentinel {
@@ -529,6 +531,8 @@ body:not(.is-past-hero) .rs-tab-bar .rs-tab::before {
   margin-bottom: 0;
 }
 
+.rs-section p { padding-right: 0 !important; margin-right: 0 !important; }
+
 
 /* ── REDUCED MOTION ────────────────────────────────────────────
 ─────────────────────────────────────────────────────────────── */
@@ -568,7 +572,7 @@ body:not(.is-past-hero) .rs-tab-bar .rs-tab::before {
 
 /* Orphaned layout-texts (direct section children, not in grid) match grid-column: 2/5 + 15px breathing room */
 .rs-section > .layout-text {
-  padding-inline-end: calc(2 * 100% / 6);        /* 2 cols left (inline-end in RTL)               */
+  padding-inline-end: calc(2 * 100% / 6);
 }
 
 .layout-text p,
@@ -647,10 +651,10 @@ body:not(.is-past-hero) .rs-tab-bar .rs-tab::before {
 .rs-section__inner--split > .rs-section__hd             { grid-column: 1 / -1; }
 .rs-section__inner--split > .layout-text                { grid-column: 2 / 5; padding-inline: 0; padding-top: 2rem; }
 .rs-section__inner--split > .layout-media               { grid-column: 2 / -1; padding-inline: 0; }
-.rs-section__inner--split > .sketch-sequence-module     { grid-column: 2 / 6; padding-inline: 0: 15px; }
-.rs-section__inner--split > .rs-section__inner--sources  { grid-column: 1 / -1; }
-.rs-section__inner--split > .transition-text            { grid-column: 2 / 5: 15px; }
-.rs-section__inner--split > .rs-beinoni-spectrum        { grid-column: 2 / 5; padding-inline: 0: 15px; }
+.rs-section__inner--split > .sketch-sequence-module     { grid-column: 2 / 6; padding-inline: 0 15px; }
+.rs-section__inner--split > .rs-section__inner--sources { grid-column: 1 / -1; }
+.rs-section__inner--split > .transition-text            { grid-column: 2 / 5; }
+.rs-section__inner--split > .rs-beinoni-spectrum        { grid-column: 2 / 5; padding-inline: 0 15px; }
 .rs-section__inner--split > br                          { grid-column: 1 / -1; }
 
 
@@ -692,7 +696,7 @@ body:not(.is-past-hero) .rs-tab-bar .rs-tab::before {
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
-  margin-right: 1.3vw;
+  margin: 0 0.65vw;
 }
 
 
@@ -922,21 +926,21 @@ body:not(.is-past-hero) .rs-tab-bar .rs-tab::before {
 
 
 .research-quote {
-  max-width: 16em;
-  font-size: 45px;
+  font-size: 50px;
+  padding-right: calc(100% / 6);
+  margin-inline: 0;
+  max-width: none;
+  text-align: right;
   font-weight: 500;
-  letter-spacing: 0.05em;
   margin-top: 30px;
   margin-bottom: 40px;
-  margin-inline: auto;
-  text-align: right;
   line-height: 0.9;
 }
 
 .research-quote cite {
   display: block;
-  direction: ltr;
   text-align: left;
+  direction: rtl !important;
   font-family: var(--font-secondary);
   font-size: 16px;
   font-style: normal;
@@ -944,6 +948,7 @@ body:not(.is-past-hero) .rs-tab-bar .rs-tab::before {
   margin-top: 15px;
   color: currentColor;
   opacity: 0.45;
+  padding-right: calc(100% / 12) !important;
 }
 
 
@@ -969,7 +974,10 @@ body:not(.is-past-hero) .rs-tab-bar .rs-tab::before {
   padding-top: 5px;
   pointer-events: auto;
   box-shadow: none;
-  border: 1px solid var(--tab-accent);
+  border-top: 1px solid var(--tab-accent);
+  border-left: 1px solid var(--tab-accent);
+  border-right: 1px solid var(--tab-accent);
+  border-bottom: none !important;
   margin-right: 0;
 }
 
@@ -984,7 +992,7 @@ body:not(.is-past-hero) .rs-tab-bar .rs-tab::before {
 .bottom-tabs-rail .rs-tab:hover {
   background-color: var(--tab-accent);
   color: var(--color-black);
-  border-color: var(--color-black);
+  border-color: var(--tab-accent);
 }
 
 .bottom-tabs-rail .rs-tab.is-hidden {
@@ -1005,6 +1013,7 @@ body:not(.is-past-hero) .rs-tab-bar .rs-tab::before {
 }
 
 /* ── BOTTOM RAIL — each tab's right edge aligns with its column in the top bar ── */
+.bottom-tabs-rail .rs-tab-0 { right: calc(1 * 100% / 6); }
 .bottom-tabs-rail .rs-tab-1 { right: calc(2 * 100% / 6); }
 .bottom-tabs-rail .rs-tab-2 { right: calc(3 * 100% / 6); }
 .bottom-tabs-rail .rs-tab-3 { right: calc(4 * 100% / 6); }
@@ -1201,7 +1210,7 @@ body.light-theme .rs-section__subhead {
   font-weight: 700;
   font-variation-settings: 'wght' 900;
   display: block;
-  margin-top: 3rem;
+  margin-top: 5rem;
 }
 
 .open-text-for-interaction { font-weight: bold; margin-top: 20px; margin-bottom: 80px; text-align: right; }
@@ -1348,7 +1357,8 @@ img {
   font-size: 16px;
   line-height: 1.5;
   color: currentColor;
-  padding: 10px 14px 10px 0;       /* inline-start gap between divider and val */
+  padding: 10px 14px 10px 0;
+  padding-left: 30px !important;
   border-top: 1px solid color-mix(in srgb, var(--color-white) 8%, transparent);
   border-inline-start: 1px solid currentColor;  /* vertical divider (left of key = RTL) */
   text-align: right;
@@ -1446,41 +1456,43 @@ body.light-theme .caption-hover__overlay {
   flex-direction: row;
   gap: 8vw;
   align-items: center;
-  margin-top: 30px;
 }
 
 .comp-col {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3.5rem;
+  gap: 2.5rem;
   z-index: 0;
 }
 
 .img-wrapper {
   position: relative;
-  width: 18vw;
-  max-width: 300px;
-  aspect-ratio: 1 / 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 25vw;
+  max-width: 400px;
+  height: auto;
   overflow: hidden;
 }
 
-.img-wrapper img {
-  position: absolute;
+.img-wrapper .img-default {
+  position: relative;
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: contain;
-  top: 0;
-  left: 0;
-  transform: none;
+  height: auto;
   transition: opacity 0.4s ease;
   mix-blend-mode: multiply;
 }
 
-.img-hover { opacity: 0; }
+.img-wrapper .img-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  mix-blend-mode: multiply;
+}
 
 .img-wrapper:hover .img-default { opacity: 0; }
 .img-wrapper:hover .img-hover   { opacity: 1; }

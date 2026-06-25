@@ -248,12 +248,10 @@ function initBottomAccordion() {
   bottomRail.className = 'bottom-tabs-rail';
   document.body.appendChild(bottomRail);
 
-  const originalTabs = document.querySelectorAll('.rs-tab-bar .rs-tab:not(.rs-tab-00)');
+  const originalTabs = document.querySelectorAll('.rs-tab-bar .rs-tab');
   const clones = [];
 
   originalTabs.forEach((tab, index) => {
-    if (index === 0) return; // skip rs-tab-0 (section 0 visible right after hero)
-
     const clone = tab.cloneNode(true);
     clone.onclick = tab.onclick;
     bottomRail.appendChild(clone);
@@ -394,26 +392,20 @@ function initInfiniteCarousel() {
   wrapper.addEventListener('pointerup', endDrag);
   wrapper.addEventListener('pointercancel', endDrag);
 
-  const durationMs = 60000;
   const carouselNextBtn = wrapper.querySelector('.carousel-btn-next');
   const carouselPrevBtn = wrapper.querySelector('.carousel-btn-prev');
 
-  if (carouselNextBtn) {
-    carouselNextBtn.addEventListener('click', () => {
-      const anim = track.getAnimations()[0];
-      if (!anim) return;
-      anim.currentTime = ((anim.currentTime + 5000) % durationMs + durationMs) % durationMs;
-    });
-    carouselNextBtn.addEventListener('pointerdown', (e) => e.stopPropagation());
+  function bindFastForward(btn, rate) {
+    if (!btn) return;
+    const speedUp   = () => { const anim = track.getAnimations()[0]; if (anim) anim.playbackRate = rate; };
+    const normalSpeed = () => { const anim = track.getAnimations()[0]; if (anim) anim.playbackRate = 1; };
+    btn.addEventListener('pointerdown', (e) => { e.stopPropagation(); speedUp(); });
+    btn.addEventListener('pointerup',    normalSpeed);
+    btn.addEventListener('pointerleave', normalSpeed);
   }
-  if (carouselPrevBtn) {
-    carouselPrevBtn.addEventListener('click', () => {
-      const anim = track.getAnimations()[0];
-      if (!anim) return;
-      anim.currentTime = ((anim.currentTime - 5000) % durationMs + durationMs) % durationMs;
-    });
-    carouselPrevBtn.addEventListener('pointerdown', (e) => e.stopPropagation());
-  }
+
+  bindFastForward(carouselNextBtn,  2.25);
+  bindFastForward(carouselPrevBtn, -2.25);
 }
 
 
@@ -474,14 +466,13 @@ function initSketchSequence() {
 ─────────────────────────────────────────────────────────────── */
 function initStickyTabsBreadcrumbs() {
   const sections = Array.from(document.querySelectorAll('.rs-section'));
-  const tabs = document.querySelectorAll('.rs-tab-bar .rs-tab:not(.rs-tab-00)');
+  const tabs = document.querySelectorAll('.rs-tab-bar .rs-tab');
   if (!sections.length || !tabs.length) return;
 
   function setActiveTab(idx) {
     document.querySelectorAll('.rs-tab').forEach(t => t.classList.remove('is-active'));
     document.querySelectorAll(`.rs-tab-${idx}`).forEach(t => {
       t.classList.add('is-active');
-      t.classList.add('is-stuck'); // accumulates — never removed; height controlled by is-stuck
     });
     if (window._setGlobalActiveColor) window._setGlobalActiveColor(Number(idx));
   }
@@ -539,16 +530,24 @@ function initStickyTabShrink() {
 }
 
 
-/* ── STICKY BAR DETECTION — physical-stickiness → is-stuck on .rs-tab-bar ─────
-   Each .rs-tab-bar gets a 1px invisible sentinel inserted before it.
-   IntersectionObserver fires when the sentinel exits/enters the viewport top.
-   When the sentinel is above the viewport (top < 0), the bar is physically docked;
-   is-stuck is added to the BAR (not the tab) so .rs-tab-bar.is-stuck collapses
-   the active tab's tail without interfering with the tab-level is-stuck used for
-   the global ::after line detection.
-─────────────────────────────────────────────────────────────────────────────── */
-function initStickyBarDetection() {
-  document.querySelectorAll('.rs-tab-bar').forEach(bar => {
+/* ── STICKY BARS — one sentinel per bar, shared by stuck-detection and scroll-linked shrink ──
+   Sentinel position (not bar.getBoundingClientRect, which is clamped by sticky) drives:
+     • is-stuck class  → .rs-tab-bar.is-stuck for visual state (colors, names, global line)
+     • --tab-height    → actual tab/bar height, 80px → 30px over the 60px before sticking
+     • --tab-shrink-progress → 0..1, used by CSS calc() for padding-top interpolation
+     • --tab-tail-height     → 60px → 0px over the same 60px window
+   bar margin-top: calc(-1 * var(--tab-height)) keeps net layout contribution 0 at all heights.
+─────────────────────────────────────────────────────────────────────────────────────────── */
+function initStickyBars() {
+  const EXPANDED    = 80;  // px — default tab height
+  const COLLAPSED   = 30;  // px — docked tab height
+  const SHRINK_ZONE = 60;  // px — distance from top:0 where shrink starts
+
+  const bars = Array.from(document.querySelectorAll('.rs-tab-bar'));
+  if (!bars.length) return;
+
+  // Create exactly one sentinel per bar; reuse it for both stuck-detection and height.
+  const entries = bars.map(bar => {
     const sentinel = document.createElement('div');
     sentinel.className = 'sticky-sentinel';
     bar.parentElement.insertBefore(sentinel, bar);
@@ -557,7 +556,30 @@ function initStickyBarDetection() {
       const isStuck = !entry.isIntersecting && entry.boundingClientRect.top < 0;
       bar.classList.toggle('is-stuck', isStuck);
     }, { threshold: [0] }).observe(sentinel);
+
+    return { bar, sentinel };
   });
+
+  function update() {
+    entries.forEach(({ bar, sentinel }) => {
+      const top      = sentinel.getBoundingClientRect().top;
+      const progress = Math.max(0, Math.min(1, 1 - top / SHRINK_ZONE));
+      const height   = Math.round(EXPANDED - progress * (EXPANDED - COLLAPSED));
+      const tail     = Math.max(0, Math.min(SHRINK_ZONE, top));
+
+      bar.style.setProperty('--tab-height',          `${height}px`);
+      bar.style.setProperty('--tab-shrink-progress',  progress.toFixed(3));
+      bar.style.setProperty('--tab-tail-height',     `${tail}px`);
+    });
+  }
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { update(); ticking = false; });
+  }, { passive: true });
+  update();
 }
 
 
@@ -568,7 +590,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeaderWeightScroll();
   initStickyTabShrink();       // must run first — exposes _setGlobalActiveColor
   initStickyTabsBreadcrumbs(); // uses _setGlobalActiveColor on each setActiveTab call
-  initStickyBarDetection();    // physical-sticky detection → is-stuck on .rs-tab-bar
+  initStickyBars();            // one sentinel per bar: stuck detection + scroll-linked height
 
   const tab00 = document.getElementById('rs-tab-00');
   if (tab00) {
@@ -606,4 +628,5 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', updateThemeBtnVisibility, { passive: true });
     updateThemeBtnVisibility();
   }
+
 });

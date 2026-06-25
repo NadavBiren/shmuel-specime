@@ -8,7 +8,6 @@
 /* ── LAYOUT TOKENS ─────────────────────────────────────────────
 ─────────────────────────────────────────────────────────────── */
 :root {
-  --rs-tab-h:              15px;
   --space-xs:              8px;
   --space-sm:              16px;
   --space-md:              32px;
@@ -79,7 +78,7 @@
   flex-direction: column;
   gap: 0;
   border-left: 1px solid var(--global-active-color, var(--color-grey));
-  transition: border-left-color 0.5s ease;
+  transition: border-color 0.4s ease, background-color 0.4s ease;
 }
 
 .sidebar-nav__item {
@@ -120,7 +119,7 @@
   pointer-events: none;
   background-color: var(--color-black);
   opacity: 0;
-  transition: background-color 0.5s ease, opacity 0.4s ease;
+  transition: opacity 0.4s ease, background-color 0.4s ease;
 }
 
 .page-research.is-past-hero .top-grey-rail {
@@ -149,36 +148,38 @@
   background-color: transparent;
   display: flex;
   align-items: flex-start;
-  margin-right: -2px;
-  padding-right: 2px;
+  margin-bottom: 0;
 }
 
-/* Full-bleed 1px bottom line: stays flush right (no sidebar overlap); extends left only. */
+/* Global 1px bottom line spanning all 6 columns; right: -2px fuses with sidebar border-left. */
 .rs-tab-bar::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
-  right: 0;
-  width: calc(100% + 2.5vw);
+  left: 0;
+  right: -2px;
   height: 1px;
-  background-color: var(--global-active-color, var(--color-grey));
-  transition: background-color 0.5s ease, opacity 0.4s ease;
-  pointer-events: none;
+  background-color: transparent;
+  z-index: -1;
+  transition: background-color 0.4s ease;
 }
 
-/* Hide the tab-bar line completely while at the hero — only reveal once Tab 01 docks */
-body:not(.is-past-hero) .rs-tab-bar::after {
-  opacity: 0;
+/* Line activates only once a tab has docked — i.e. any tab within this bar carries is-stuck */
+.rs-tab-bar:has(.rs-tab.is-stuck)::after {
+  background-color: var(--global-active-color, var(--color-grey)) !important;
 }
 
 
-/* ── TABS — in-flow: colored fill + black text; docked: inverted ─
-   State 1 (in-flow):  90px, bg=tab-accent, text=black, name hidden
-   State 2 (is-stuck): 30px, bg=black,      text=tab-accent, name shown
+/* ── TABS — structural: always 30px; visual accordion via ::before ─
+   State 1 (in-flow, DEFAULT): 30px tab + 60px ::before tail = 90px visual
+   State 2 (is-active, scrolling): tail stays at 60px — section is active but tab not yet docked
+   State 3 (is-active + is-stuck, docked): tail squishes to 0 — tab is physically at top
+   Layout contribution: tab-bar margin-top:-30px absorbs the 30px → always 0px net
 ─────────────────────────────────────────────────────────────── */
 .rs-tab {
-  height: 90px;
+  height: 30px;
   width: calc(100% / 6);
+  flex-shrink: 0;
   border: 1px solid var(--tab-accent);
   cursor: pointer;
   font-family: var(--font-secondary);
@@ -192,28 +193,54 @@ body:not(.is-past-hero) .rs-tab-bar::after {
   padding-top: 5px;
   padding-bottom: 2px;
   pointer-events: auto;
-  color: var(--color-black);
-  background-color: var(--tab-accent);
-  overflow: hidden;
+  color: var(--color-grey);
+  background-color: var(--color-black);
+  overflow: visible;
+  position: relative;
   box-sizing: border-box;
-  will-change: height, background-color, color;
-  transition: height 0.5s ease, background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+  will-change: background-color, color;
+  transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
 }
 
-/* 5 section tabs in cols 2–6; Tab 00 (col 1, rightmost) is the label overlay */
-.rs-tab-0 { --tab-accent: var(--color-orange); }
+.rs-tab::after { display: none !important; }
+
+/* ── TAB VISUAL TAIL — out-of-flow accordion extension ─────────
+   Default: 60px tail visible (in-flow / approaching state = TALL).
+   Collapses to 0 when the section is active (tab docked at top = SQUISHED).
+   position: absolute keeps it out of layout flow → no layout shift.
+   left/right: -1px compensates for the parent tab's 1px border edge.
+─────────────────────────────────────────────────────────────── */
+.rs-tab::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: -1px;
+  right: -1px;
+  height: 60px;
+  background-color: var(--tab-accent);
+  border-left:        1px solid var(--tab-accent);
+  border-right:       1px solid var(--tab-accent);
+  border-bottom:      1px solid var(--tab-accent);
+  box-sizing: border-box;
+  transition: height 0.25s ease, border-bottom-width 0.25s ease;
+  pointer-events: none;
+}
+
+/* Each tab lives in its own per-section .rs-tab-bar; margin-right pushes it to its grid column.
+   Tab 00 is position:absolute in col 1 (rightmost); section tabs occupy cols 2–6 via margin-right. */
+.rs-tab-0 { --tab-accent: var(--color-orange); margin-right: calc(1 * 100% / 6); }
 .rs-tab-1 { --tab-accent: var(--color-green);  margin-right: calc(2 * 100% / 6); }
 .rs-tab-2 { --tab-accent: var(--color-pink);   margin-right: calc(3 * 100% / 6); }
 .rs-tab-3 { --tab-accent: var(--color-yellow); margin-right: calc(4 * 100% / 6); }
 .rs-tab-4 { --tab-accent: var(--color-white);  margin-right: calc(5 * 100% / 6); }
 
-/* ── TAB 00 — scroll-to-top tab, col 1 (rightmost) ────────────────────────────────────
-   In-flow flex item inside the RTL flex tab bar. No absolute positioning needed.
-   width: 1/6 matches the exact column width of Tabs 01–05.
-   Tab 0 has no margin-right so it naturally follows Tab 00 into column 2.
-   Fades in only when Tab 01 becomes is-stuck (JS toggles .is-visible).
+/* ── TAB 00 — scroll-to-top label, col 1 (rightmost) ──────────────────────────────────
+   position:absolute so it doesn't push rs-tab-0 off its column in the shared outermost bar.
+   Fades in once .page-research gets .is-past-hero (CSS, no JS class toggle required).
 ──────────────────────────────────────────────────────────────────────────────────────── */
 .rs-tab-bar .rs-tab.rs-tab-00 {
+  position: absolute;
+  right: 0;
   width: calc(100% / 6);
   height: 30px;
   background-color: var(--color-black);
@@ -221,44 +248,68 @@ body:not(.is-past-hero) .rs-tab-bar::after {
   border-right: none;
   border-top: none;
   cursor: default;
-  align-self: flex-start;
   will-change: opacity;
   transition: opacity 0.4s ease;
   opacity: 0;
   pointer-events: none;
 }
 
-.rs-tab-bar .rs-tab.rs-tab-00.is-visible {
+.page-research.is-past-hero .rs-tab-bar .rs-tab.rs-tab-00 {
   opacity: 1;
-  pointer-events: auto !important;
+  pointer-events: auto;
   cursor: pointer;
 }
 
-/* ── STUCK TAB — inverted colors, shrunk height ─────────────────── */
-.rs-tab.is-stuck {
-  height: 30px;
+/* ── HERO STATE — force all tabs to docked (inverted) while hero is visible ──
+   Specificity includes .rs-tab-bar so it overrides .rs-tab-bar .rs-tab.is-active.
+─────────────────────────────────────────────────────────────────────────────── */
+body:not(.is-past-hero) .rs-tab-bar .rs-tab {
   background-color: var(--color-black);
   color: var(--tab-accent);
 }
 
-/* ── HERO STATE — all tabs docked while hero is fully visible ──── */
-body:not(.is-past-hero) .rs-tab {
-  height: 30px;
-  background-color: var(--color-black);
-  color: var(--tab-accent);
+body:not(.is-past-hero) .rs-tab-bar .rs-tab::before {
+  height: 0;
+  border-bottom-width: 0;
 }
 
-/* ── TAB HOVER — accent fill on black text (docked/hero state) ── */
+/* ── TAB HOVER — accent fill ── */
 .rs-tab:hover {
   background-color: var(--tab-accent);
   color: var(--color-black);
 }
 
-/* ── ACTIVE TAB — section color bg, black text + border; overrides is-stuck ── */
+/* ── ACTIVE TAB (SCROLLING) — filled accent + tail visible at full 60px ── */
 .rs-tab-bar .rs-tab.is-active {
   background-color: var(--tab-accent);
   color: var(--color-black);
-  border: 1px solid var(--color-black);
+}
+
+.rs-tab-bar .rs-tab.is-active::before {
+  height: 60px;
+  border-bottom-width: 1px;
+}
+
+/* ── STUCK TAB — collapses tail for all stuck tabs ── */
+.rs-tab-bar .rs-tab.is-stuck::before {
+  height: 0;
+  border-bottom-width: 0;
+}
+
+/* ── ACTIVE + STUCK (DOCKED) — squish: tail retracts to 0 ── */
+.rs-tab-bar .rs-tab.is-active.is-stuck::before {
+  height: 0;
+  border-bottom-width: 0;
+}
+
+/* rs-tab-00 is a label overlay, not an accordion tab */
+.rs-tab-bar .rs-tab.rs-tab-00::before {
+  display: none;
+}
+
+/* rs-tab-4 has border-left: none; tail must match */
+.rs-tab-bar .rs-tab-4::before {
+  border-left: none;
 }
 
 /* ── TAB CONTENT SPANS ───────────────────────────────────────────── */
@@ -267,14 +318,11 @@ body:not(.is-past-hero) .rs-tab {
 }
 
 .rs-tab__name {
-  opacity: 0;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
   overflow: hidden;
   white-space: nowrap;
-  transition: opacity 0.3s ease 0.1s;
-}
-
-.rs-tab.is-stuck .rs-tab__name {
-  opacity: 1;
 }
 
 /* ── SENTINEL — anchor for sticky-detect IntersectionObserver ──── */
@@ -443,8 +491,8 @@ body:not(.is-past-hero) .rs-tab {
 ─────────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .rs-tab,
+  .rs-tab::before,
   .rs-tab.is-active,
-  .rs-tab.is-stuck,
   .rs-tab__name {
     transition: none !important;
   }
@@ -475,13 +523,14 @@ body:not(.is-past-hero) .rs-tab {
   padding-inline: calc(100% / 6);
 }
 
-/* Orphaned layout-texts (direct section children, not in grid) match grid-column: 2/5 */
+/* Orphaned layout-texts (direct section children, not in grid) match grid-column: 2/5 + 15px breathing room */
 .rs-section > .layout-text {
-  padding-inline-start: calc(100% / 6);      /* 1 col right (inline-start in RTL) */
-  padding-inline-end: calc(2 * 100% / 6);    /* 2 cols left (inline-end in RTL)   */
+  padding-inline-start: calc(100% / 6 + 15px);  /* 1 col right + 15px, matching split-grid items */
+  padding-inline-end: calc(2 * 100% / 6);        /* 2 cols left (inline-end in RTL)               */
 }
 
 .layout-text p,
+.layout-text h2,
 .layout-text h3,
 .layout-text h4,
 .layout-text blockquote {
@@ -489,6 +538,8 @@ body:not(.is-past-hero) .rs-tab {
   max-width: none;
   width: 100%;
   margin-inline: 0;
+  margin-left: 0;
+  padding-left: 0;
 }
 
 .layout-media {
@@ -523,8 +574,10 @@ body:not(.is-past-hero) .rs-tab {
 }
 
 /* ── BEINONI SPECTRUM BLOCK — definitional anchor ──────────── */
-.rs-beinoni-spectrum {
-}
+/* display: contents removed — it vaporised the element's box and made
+   grid-column: 2/5 a dead rule, causing the child <p> to auto-place
+   at full width. Inherits display:flex from .layout-text.
+   Grid placement is handled by .rs-section__inner--split > .rs-beinoni-spectrum below. */
 
 
 /* ── SPLIT INNER — strict 6-column grid, no column gap ── */
@@ -544,12 +597,12 @@ body:not(.is-past-hero) .rs-tab {
    Tabs occupy cols 2–6; text locks to cols 3–5; media spans cols 2–6.
 ── */
 .rs-section__inner--split > .rs-section__hd             { grid-column: 1 / -1; }
-.rs-section__inner--split > .layout-text                { grid-column: 2 / 5; padding-inline: 0; padding-inline-start: 15px; padding-top: 2rem; }
-.rs-section__inner--split > .layout-media               { grid-column: 2 / -1; padding-inline: 0; padding-inline-start: 15px; }
-.rs-section__inner--split > .sketch-sequence-module     { grid-column: 2 / 6; padding-inline: 0; padding-inline-start: 15px; }
+.rs-section__inner--split > .layout-text                { grid-column: 2 / 5; padding-inline: 0; padding-top: 2rem; }
+.rs-section__inner--split > .layout-media               { grid-column: 2 / -1; padding-inline: 0; }
+.rs-section__inner--split > .sketch-sequence-module     { grid-column: 2 / 6; padding-inline: 0: 15px; }
 .rs-section__inner--split > .rs-section__inner--sources  { grid-column: 1 / -1; }
-.rs-section__inner--split > .transition-text            { grid-column: 2 / 5; padding-inline-start: 15px; }
-.rs-section__inner--split > .rs-beinoni-spectrum        { grid-column: 2 / 5; padding-inline: 0; padding-inline-start: 15px; }
+.rs-section__inner--split > .transition-text            { grid-column: 2 / 5: 15px; }
+.rs-section__inner--split > .rs-beinoni-spectrum        { grid-column: 2 / 5; padding-inline: 0: 15px; }
 .rs-section__inner--split > br                          { grid-column: 1 / -1; }
 
 
@@ -821,7 +874,7 @@ body:not(.is-past-hero) .rs-tab {
 
 .research-quote {
   max-width: 16em;
-  font-size: 40px;
+  font-size: 45px;
   font-weight: 500;
   letter-spacing: 0.05em;
   margin-top: 30px;
@@ -829,8 +882,6 @@ body:not(.is-past-hero) .rs-tab {
   margin-inline: auto;
   text-align: right;
   line-height: 0.9;
-  padding: 0 80px;
-
 }
 
 .research-quote cite {
@@ -870,6 +921,7 @@ body:not(.is-past-hero) .rs-tab {
   pointer-events: auto;
   box-shadow: none;
   border: 1px solid var(--tab-accent);
+  margin-right: 0;
 }
 
 .bottom-tabs-rail .rs-tab .rs-tab__name {
@@ -878,16 +930,22 @@ body:not(.is-past-hero) .rs-tab {
 
 .bottom-tabs-rail .rs-tab.is-active {
   color: var(--tab-accent);
-  border-bottom: 1px solid var(--tab-accent);
 }
 
 .bottom-tabs-rail .rs-tab:hover {
-  color: var(--tab-accent);
+  background-color: var(--tab-accent);
+  color: var(--color-black);
+  border-color: var(--color-black);
 }
 
 .bottom-tabs-rail .rs-tab.is-hidden {
   visibility: hidden;
   opacity: 0;
+}
+
+/* Rail tabs are fixed-position overlays — no accordion tail */
+.bottom-tabs-rail .rs-tab::before {
+  display: none;
 }
 
 /* ── TAB 05 FULL BLEED — extends to absolute left viewport edge ─────────── */
@@ -897,9 +955,11 @@ body:not(.is-past-hero) .rs-tab {
   border-left: none;
 }
 
-.bottom-tabs-rail .rs-tab-4 {
-  width: calc(100% / 6 + var(--rs-page-margin));
-}
+/* ── BOTTOM RAIL — each tab's right edge aligns with its column in the top bar ── */
+.bottom-tabs-rail .rs-tab-1 { right: calc(2 * 100% / 6); }
+.bottom-tabs-rail .rs-tab-2 { right: calc(3 * 100% / 6); }
+.bottom-tabs-rail .rs-tab-3 { right: calc(4 * 100% / 6); }
+.bottom-tabs-rail .rs-tab-4 { right: calc(5 * 100% / 6); width: calc(100% / 6 + var(--rs-page-margin)); }
 
 
 /* ── SOURCES VIEWER NAVIGATION ARROWS ────────────────────── */
@@ -1049,11 +1109,6 @@ body.light-theme .src-btn.is-active {
   color: var(--color-white);
 }
 
-body.light-theme .rs-tab-bar .rs-tab.is-stuck {
-  background-color: var(--color-white);
-  color: var(--tab-accent);
-}
-
 body.light-theme .rs-ms-type__grid,
 body.light-theme .rs-ms-grid-key,
 body.light-theme .rs-ms-grid-val {
@@ -1081,6 +1136,10 @@ body.light-theme .section-exit .exit-sub {
   color: var(--color-orange);
   line-height: 0.6;
   margin-top: 3rem;
+  margin-left: 0;
+  padding-left: 0;
+  width: 100%;
+  text-align: right;
   transition: color 0.5s ease;
 }
 
@@ -1096,7 +1155,7 @@ body.light-theme .rs-section__subhead {
   margin-top: 3rem;
 }
 
-.open-text-for-interaction { font-weight: bold; margin-top: 20px; margin-bottom: 80px; text-align: center; }
+.open-text-for-interaction { font-weight: bold; margin-top: 20px; margin-bottom: 80px; text-align: right; }
 .close-text-for-interaction { font-weight: bold; }
 
 
@@ -1464,25 +1523,36 @@ body.light-theme .caption-hover__overlay {
 }
 
 .sketch-seq__img-wrapper {
-  position: relative;
   width: 100%;
-  display: block;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
+  display: grid;
 }
 
 .sketch-seq__img {
-  position: absolute;
-  inset: 0;
+  grid-column: 1;
+  grid-row: 1;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  display: block;
+  object-fit: contain;
   opacity: 0;
   z-index: 1;
-  transition: opacity 0.3s ease;
+  /* No transition here — only the incoming image fades in; outgoing snaps instantly */
+}
+
+/* Permanent solid backdrop: always visible at bottom of stack, prevents black-flash on transparent PNGs */
+.sketch-seq__img:first-child {
+  opacity: 1 !important;
+  z-index: 0;
 }
 
 .sketch-seq__img.is-active {
+  opacity: 1;
+  z-index: 3;
+  transition: opacity 0.2s ease;
+}
+
+/* Leaving image stays visible as backdrop while incoming fades in — prevents dip to black */
+.sketch-seq__img.is-prev {
   opacity: 1;
   z-index: 2;
 }

@@ -252,28 +252,30 @@ function initBottomAccordion() {
   const clones = [];
 
   originalTabs.forEach((tab, index) => {
-    if (index === 0) return;
+    if (index === 0) return; // skip rs-tab-0 (section 0 visible right after hero)
 
     const clone = tab.cloneNode(true);
     clone.onclick = tab.onclick;
     bottomRail.appendChild(clone);
 
-    clones.push({
-      cloneEl: clone,
-      parentBar: tab.closest('.rs-tab-bar')
-    });
+    // Flat layout: track the section the tab represents, not the shared tab bar
+    const idxMatch = Array.from(tab.classList).find(c => /^rs-tab-\d+$/.test(c));
+    const sectionIdx = idxMatch ? idxMatch.replace('rs-tab-', '') : null;
+    const section = sectionIdx != null
+      ? document.querySelector(`.rs-section[data-idx="${sectionIdx}"]`)
+      : null;
+
+    clones.push({ cloneEl: clone, section });
   });
 
   function updateBottomTabs() {
     const viewportBottom = window.innerHeight;
 
     clones.forEach(item => {
-      const rect = item.parentBar.getBoundingClientRect();
-      if (rect.top <= viewportBottom - 30) {
-        item.cloneEl.classList.add('is-hidden');
-      } else {
-        item.cloneEl.classList.remove('is-hidden');
-      }
+      if (!item.section) return;
+      const rect = item.section.getBoundingClientRect();
+      // Hide bottom clone once its section enters (or passes) the viewport
+      item.cloneEl.classList.toggle('is-hidden', rect.top <= viewportBottom);
     });
   }
 
@@ -440,13 +442,23 @@ function initSketchSequence() {
     imgs.push(el);
   }
 
+  let prevIndex = 0;
+
   module.addEventListener('mousemove', (e) => {
     const rect = module.getBoundingClientRect();
     let normX = 1 - ((e.clientX - rect.left) / rect.width);
     normX = Math.max(0, Math.min(1, normX));
     const frameIndex = Math.floor(normX * 11.99);
 
-    imgs.forEach((img, i) => img.classList.toggle('is-active', i === frameIndex));
+    if (frameIndex === prevIndex) return;
+
+    imgs.forEach((img, i) => {
+      img.classList.remove('is-active', 'is-prev');
+      if (i === frameIndex) img.classList.add('is-active');
+      else if (i === prevIndex) img.classList.add('is-prev');
+    });
+
+    prevIndex = frameIndex;
     thumb.style.right = `${(frameIndex / 11) * 100}%`;
 
     const versionText = frameIndex === 11 ? 'סופי' : 'v.0' + String(frameIndex + 1).padStart(2, '0');
@@ -467,7 +479,11 @@ function initStickyTabsBreadcrumbs() {
 
   function setActiveTab(idx) {
     document.querySelectorAll('.rs-tab').forEach(t => t.classList.remove('is-active'));
-    document.querySelectorAll(`.rs-tab-${idx}`).forEach(t => t.classList.add('is-active'));
+    document.querySelectorAll(`.rs-tab-${idx}`).forEach(t => {
+      t.classList.add('is-active');
+      t.classList.add('is-stuck'); // accumulates — never removed; height controlled by is-stuck
+    });
+    if (window._setGlobalActiveColor) window._setGlobalActiveColor(Number(idx));
   }
 
   const visibleSections = new Set();
@@ -497,11 +513,11 @@ function initStickyTabsBreadcrumbs() {
 }
 
 
-/* ── STICKY TAB SHRINK ─────────────────────────────────────────
-   Injects a zero-height sentinel before each .rs-tab-bar.
-   IntersectionObserver fires when sentinel exits the viewport top
-   (isIntersecting: false) → tab is docked → add .is-stuck.
-   Also maintains --global-active-color on body for border system.
+/* ── STICKY TAB COLOR ──────────────────────────────────────────
+   Flat layout: all 6 tabs live in one .rs-tab-bar.
+   No per-tab sentinels needed — breadcrumbs set the active tab.
+   Only responsibility: expose _setGlobalActiveColor for the
+   breadcrumbs function to call and set --global-active-color.
 ─────────────────────────────────────────────────────────────── */
 function initStickyTabShrink() {
   const SECTION_COLORS = {
@@ -512,38 +528,14 @@ function initStickyTabShrink() {
     '4': 'var(--color-white)',
   };
 
-  function updateGlobalActiveColor() {
-    const stuckTabs = Array.from(document.querySelectorAll('.rs-tab.is-stuck'));
-    let maxIdx = -1;
-    for (const tab of stuckTabs) {
-      for (let i = 0; i < 5; i++) {
-        if (tab.classList.contains(`rs-tab-${i}`)) maxIdx = Math.max(maxIdx, i);
-      }
-    }
-    const color = maxIdx >= 0 ? SECTION_COLORS[String(maxIdx)] : 'var(--color-grey)';
+  window._setGlobalActiveColor = function(idx) {
+    const color = (idx >= 0 && SECTION_COLORS[String(idx)])
+      ? SECTION_COLORS[String(idx)]
+      : 'var(--color-grey)';
     document.body.style.setProperty('--global-active-color', color);
-  }
+  };
 
-  const tab00 = document.getElementById('rs-tab-00');
-
-  document.querySelectorAll('.rs-layer').forEach(layer => {
-    const tabBar = layer.querySelector('.rs-tab-bar');
-    const tab    = layer.querySelector('.rs-tab:not(.rs-tab-00)');
-    if (!tabBar || !tab) return;
-
-    const sentinel = document.createElement('div');
-    sentinel.className = 'sticky-sentinel';
-    layer.insertBefore(sentinel, tabBar);
-
-    new IntersectionObserver(([entry]) => {
-      const isStuck = !entry.isIntersecting;
-      tab.classList.toggle('is-stuck', isStuck);
-      if (tab.classList.contains('rs-tab-0') && tab00) {
-        tab00.classList.toggle('is-visible', isStuck);
-      }
-      updateGlobalActiveColor();
-    }, { rootMargin: '0px', threshold: 0 }).observe(sentinel);
-  });
+  window._setGlobalActiveColor(-1); // grey until first section fires
 }
 
 
@@ -552,8 +544,8 @@ function initStickyTabShrink() {
 document.addEventListener('DOMContentLoaded', () => {
   initScrollWeight();
   initHeaderWeightScroll();
-  initStickyTabsBreadcrumbs();
-  initStickyTabShrink();
+  initStickyTabShrink();       // must run first — exposes _setGlobalActiveColor
+  initStickyTabsBreadcrumbs(); // uses _setGlobalActiveColor on each setActiveTab call
 
   const tab00 = document.getElementById('rs-tab-00');
   if (tab00) {

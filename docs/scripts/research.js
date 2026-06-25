@@ -539,6 +539,28 @@ function initStickyTabShrink() {
 }
 
 
+/* ── STICKY BAR DETECTION — physical-stickiness → is-stuck on .rs-tab-bar ─────
+   Each .rs-tab-bar gets a 1px invisible sentinel inserted before it.
+   IntersectionObserver fires when the sentinel exits/enters the viewport top.
+   When the sentinel is above the viewport (top < 0), the bar is physically docked;
+   is-stuck is added to the BAR (not the tab) so .rs-tab-bar.is-stuck collapses
+   the active tab's tail without interfering with the tab-level is-stuck used for
+   the global ::after line detection.
+─────────────────────────────────────────────────────────────────────────────── */
+function initStickyBarDetection() {
+  document.querySelectorAll('.rs-tab-bar').forEach(bar => {
+    const sentinel = document.createElement('div');
+    sentinel.className = 'sticky-sentinel';
+    bar.parentElement.insertBefore(sentinel, bar);
+
+    new IntersectionObserver(([entry]) => {
+      const isStuck = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+      bar.classList.toggle('is-stuck', isStuck);
+    }, { threshold: [0] }).observe(sentinel);
+  });
+}
+
+
 /* ── INIT ──────────────────────────────────────────────────────
 ─────────────────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
@@ -546,6 +568,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeaderWeightScroll();
   initStickyTabShrink();       // must run first — exposes _setGlobalActiveColor
   initStickyTabsBreadcrumbs(); // uses _setGlobalActiveColor on each setActiveTab call
+  initStickyBarDetection();    // physical-sticky detection → is-stuck on .rs-tab-bar
 
   const tab00 = document.getElementById('rs-tab-00');
   if (tab00) {

@@ -140,10 +140,10 @@
 .rs-tab-bar {
   position: sticky;
   top: 0;
-  min-height: 30px;
+  min-height: 80px;
   width: 100%;
   z-index: 300;
-  margin-top: -30px;
+  margin-top: -80px;
   pointer-events: none;
   background-color: transparent;
   display: flex;
@@ -151,33 +151,37 @@
   margin-bottom: 0;
 }
 
-/* Global 1px bottom line spanning all 6 columns; right: -2px fuses with sidebar border-left. */
+/* Global 1px bottom line spanning all 6 columns + left page-margin bleed; right: -2px fuses with sidebar border-left.
+   z-index: 5 sits on top of inactive tabs (z-index: 1) but below the active tab (z-index: 10), which masks it. */
 .rs-tab-bar::after {
   content: "";
   position: absolute;
   bottom: 0;
-  left: 0;
+  left: -2.5vw;
   right: -2px;
   height: 1px;
-  background-color: transparent;
-  z-index: -1;
+  background-color: transparent !important;
+  z-index: 5;
   transition: background-color 0.4s ease;
 }
 
-/* Line activates only once a tab has docked — i.e. any tab within this bar carries is-stuck */
-.rs-tab-bar:has(.rs-tab.is-stuck)::after {
+/* Line activates only when the bar itself is physically docked at the top viewport;
+   top: 30px pins it to the exact bottom of the collapsed 30px row. */
+.rs-tab-bar.is-stuck::after {
   background-color: var(--global-active-color, var(--color-grey)) !important;
+  top: 30px !important;
+  bottom: auto !important;
 }
 
 
-/* ── TABS — structural: always 30px; visual accordion via ::before ─
-   State 1 (in-flow, DEFAULT): 30px tab + 60px ::before tail = 90px visual
-   State 2 (is-active, scrolling): tail stays at 60px — section is active but tab not yet docked
-   State 3 (is-active + is-stuck, docked): tail squishes to 0 — tab is physically at top
-   Layout contribution: tab-bar margin-top:-30px absorbs the 30px → always 0px net
+/* ── TABS — height-driven accordion ────────────────────────────
+   DEFAULT (scrolling):  80px, accent-filled when active
+   DOCKED (.rs-tab-bar.is-stuck): 30px, inverted when active
+   overflow:hidden clips ::before tail — transition is on height directly.
+   Layout contribution: tab-bar margin-top:-80px absorbs the 80px → 0px net
 ─────────────────────────────────────────────────────────────── */
 .rs-tab {
-  height: 30px;
+  height: 80px;
   width: calc(100% / 6);
   flex-shrink: 0;
   border: 1px solid var(--tab-accent);
@@ -188,18 +192,18 @@
   text-align: right;
   display: flex;
   align-items: flex-start;
+  justify-content: flex-start;
   gap: 0.4em;
-  padding-right: 5px;
-  padding-top: 5px;
-  padding-bottom: 2px;
+  padding: var(--space-sm) var(--space-sm) 0 0;
   pointer-events: auto;
   color: var(--color-grey);
   background-color: var(--color-black);
-  overflow: visible;
+  overflow: hidden;
   position: relative;
+  z-index: 1;
   box-sizing: border-box;
-  will-change: background-color, color;
-  transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+  will-change: height, background-color, color;
+  transition: height 0.3s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s, color 0.3s;
 }
 
 .rs-tab::after { display: none !important; }
@@ -220,9 +224,9 @@
   background-color: var(--tab-accent);
   border-left:        1px solid var(--tab-accent);
   border-right:       1px solid var(--tab-accent);
-  border-bottom:      1px solid var(--tab-accent);
+  border-bottom:      1px solid var(--color-black);
   box-sizing: border-box;
-  transition: height 0.25s ease, border-bottom-width 0.25s ease;
+  transition: height 0.35s cubic-bezier(0.25, 1, 0.5, 1);
   pointer-events: none;
 }
 
@@ -279,27 +283,64 @@ body:not(.is-past-hero) .rs-tab-bar .rs-tab::before {
   color: var(--color-black);
 }
 
-/* ── ACTIVE TAB (SCROLLING) — filled accent + tail visible at full 60px ── */
+/* ── ACTIVE TAB (SCROLLING) — filled accent, elevated above the global line ── */
 .rs-tab-bar .rs-tab.is-active {
-  background-color: var(--tab-accent);
-  color: var(--color-black);
+  background-color: var(--tab-accent) !important;
+  color: var(--color-black) !important;
+  border: 1px solid var(--color-black);
+  z-index: 10;
 }
 
-.rs-tab-bar .rs-tab.is-active::before {
-  height: 60px;
-  border-bottom-width: 1px;
+/* ── ACTIVE TAB (NOT DOCKED) — force section color; overrides any cascade conflict ── */
+.rs-tab-bar:not(.is-stuck) .rs-tab.is-active {
+  background-color: var(--tab-accent) !important;
+  color: var(--color-black) !important;
+  border-color: var(--color-black) !important;
 }
 
-/* ── STUCK TAB — collapses tail for all stuck tabs ── */
+/* ── STUCK TAB — collapses tail for all non-active stuck tabs ── */
 .rs-tab-bar .rs-tab.is-stuck::before {
   height: 0;
   border-bottom-width: 0;
 }
 
-/* ── ACTIVE + STUCK (DOCKED) — squish: tail retracts to 0 ── */
-.rs-tab-bar .rs-tab.is-active.is-stuck::before {
-  height: 0;
-  border-bottom-width: 0;
+/* ── ACTIVE TAB TAIL — declared AFTER is-stuck so equal-specificity cascade wins ──
+   background-color: inherit pulls the accent fill from the parent .is-active bg.
+   z-index: -1 keeps the tail behind the ::after colored line (z-index: 5) while
+   the active tab (z-index: 10) masks the line for the full tab width above it.
+─────────────────────────────────────────────────────────────────────────────── */
+.rs-tab-bar .rs-tab.is-active::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: auto;
+  width: 100%;
+  height: 60px;
+  background-color: var(--tab-accent);
+  border-left: 1px solid var(--color-black);
+  border-right: none;
+  border-bottom: 1px solid var(--color-black);
+  z-index: -1;
+  transition: height 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* ── DOCKED — bar physically at top: all tabs shrink to 30px ── */
+.rs-tab-bar.is-stuck .rs-tab {
+  height: 30px;
+}
+
+/* ── ACTIVE + DOCKED — minimalist inverted style ── */
+.rs-tab-bar.is-stuck .rs-tab.is-active {
+  background-color: var(--color-black) !important;
+  color: var(--tab-accent) !important;
+  border-color: var(--tab-accent) !important;
+}
+
+/* keep tail collapsed (::before hidden by overflow:hidden, but !important as insurance) */
+.rs-tab-bar.is-stuck .rs-tab.is-active::before {
+  height: 0 !important;
+  border-bottom-width: 0 !important;
 }
 
 /* rs-tab-00 is a label overlay, not an accordion tab */
@@ -318,11 +359,13 @@ body:not(.is-past-hero) .rs-tab-bar .rs-tab::before {
 }
 
 .rs-tab__name {
-  opacity: 1 !important;
-  visibility: visible !important;
-  display: block !important;
   overflow: hidden;
   white-space: nowrap;
+}
+
+/* Stuck (docked, 30px) state: only the number is visible; name is clipped */
+.rs-tab-bar.is-stuck .rs-tab .rs-tab__name {
+  display: none !important;
 }
 
 /* ── SENTINEL — anchor for sticky-detect IntersectionObserver ──── */
@@ -525,7 +568,6 @@ body:not(.is-past-hero) .rs-tab-bar .rs-tab::before {
 
 /* Orphaned layout-texts (direct section children, not in grid) match grid-column: 2/5 + 15px breathing room */
 .rs-section > .layout-text {
-  padding-inline-start: calc(100% / 6 + 15px);  /* 1 col right + 15px, matching split-grid items */
   padding-inline-end: calc(2 * 100% / 6);        /* 2 cols left (inline-end in RTL)               */
 }
 
@@ -540,6 +582,12 @@ body:not(.is-past-hero) .rs-tab-bar .rs-tab::before {
   margin-inline: 0;
   margin-left: 0;
   padding-left: 0;
+}
+
+/* Section 02: snap paragraphs flush to grid column after carousel */
+.rs-section__inner--split > .layout-text p {
+  margin-right: 0 !important;
+  padding-right: 0 !important;
 }
 
 .layout-media {
@@ -639,7 +687,8 @@ body:not(.is-past-hero) .rs-tab-bar .rs-tab::before {
 .sources-aside {
   flex: 0 0 30vw;
   min-width: 0;
-  padding-inline-end: 2rem;
+  padding-left: 20px;
+  padding-right: 20px;
   display: flex;
   flex-direction: column;
   gap: 2.5rem;

@@ -404,8 +404,8 @@ function initInfiniteCarousel() {
     btn.addEventListener('pointerleave', normalSpeed);
   }
 
-  bindFastForward(carouselNextBtn,  2.25);
-  bindFastForward(carouselPrevBtn, -2.25);
+  bindFastForward(carouselNextBtn, -2.25);
+  bindFastForward(carouselPrevBtn,  2.25);
 }
 
 

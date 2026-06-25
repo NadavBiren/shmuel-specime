@@ -630,3 +630,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+
+
+/* ── PAGE LOADER ────────────────────────────────────────────────
+   Uses 'load' (not DOMContentLoaded) so all images and heavy
+   assets finish before the loader disappears.
+─────────────────────────────────────────────────────────────── */
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const loader = document.getElementById('page-loader');
+    if (loader) {
+      loader.classList.add('is-hidden');
+    }
+  }, 750);
+});

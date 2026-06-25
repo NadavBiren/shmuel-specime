@@ -696,6 +696,7 @@
   padding-inline: 0;
   align-items: stretch;
   gap: 0;
+  margin-block: 10vh !important;
 }
 
 
@@ -1420,6 +1421,16 @@ body.light-theme .rs-figure__caption,
 body.light-theme .rs-ms-grid-key,
 body.light-theme .rs-ms-grid-val {
   color: var(--color-black);
+}
+
+/* Target the FIRST block (follows a layout-text) */
+.layout-text + .layout-media:has(.rs-ms-type) {
+  margin-top: 10vh !important;
+}
+
+/* Target the LAST block (is followed by a layout-text) */
+.layout-media:has(.rs-ms-type):has(+ .layout-text) {
+  margin-bottom: 10vh !important;
 }
 
 

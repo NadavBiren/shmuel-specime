@@ -284,3 +284,66 @@ p {
     gap: 2.5rem;
   }
 }
+
+/* ── PAGE LOADER ─────────────────────────────────────────────── */
+.page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: var(--color-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.page-loader.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 90vw;
+  max-width: 90vh;
+  aspect-ratio: 1;
+  gap: 0.2rem;
+}
+
+.loader-he {
+  display: block;
+  width: 100%;
+  color: var(--color-white);
+  text-align: right;
+  font-family: var(--font-primary);
+}
+
+.loader-en {
+  display: block;
+  width: 100%;
+  color: var(--color-pink);
+  text-align: left;
+  direction: ltr;
+  font-family: var(--font-primary);
+}
+
+.loader-large {
+  font-size: 8.5vw;
+  line-height: 0.87 !important;
+  animation: weightPulse 1.2s infinite alternate ease-in-out;
+}
+
+.loader-small {
+  font-size: 70px !important;
+  line-height: 0.87 !important;
+  font-variation-settings: 'wght' 600;
+  font-weight: 600;
+}
+
+@keyframes weightPulse {
+  0% { font-variation-settings: 'wght' 500; font-weight: 500; }
+  100% { font-variation-settings: 'wght' 900; font-weight: 900; }
+}

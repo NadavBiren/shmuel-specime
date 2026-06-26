@@ -341,9 +341,75 @@ p {
   line-height: 0.87 !important;
   font-variation-settings: 'wght' 600;
   font-weight: 600;
+  animation: weightPulse 2.4s infinite alternate ease-in-out;
 }
 
 @keyframes weightPulse {
   0% { font-variation-settings: 'wght' 500; font-weight: 500; }
   100% { font-variation-settings: 'wght' 900; font-weight: 900; }
+}
+
+/* ── MOBILE BLOCKER ────────────────────────────────────────────── */
+.mobile-blocker {
+  display: none; /* Hidden on desktop */
+  position: fixed;
+  inset: 0;
+  z-index: 10000; /* Above everything */
+  background-color: var(--color-black);
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 85vw;
+  gap: 0.5rem;
+}
+
+.mobile-row {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.mobile-he {
+  display: block;
+  width: 100%;
+  color: var(--color-white);
+  text-align: right;
+  font-family: var(--font-primary);
+}
+
+.mobile-en {
+  display: block;
+  width: 100%;
+  color: var(--color-pink);
+  text-align: left;
+  direction: ltr;
+  font-family: var(--font-primary);
+}
+
+.mobile-large {
+  font-size: clamp(100px, 40vw, 180px) !important;
+  line-height: 0.8 !important;
+  animation: weightPulse 1.2s infinite alternate ease-in-out;
+}
+
+.mobile-small {
+  font-size: clamp(22px, 10vw, 70px) !important;
+  line-height: 0.88 !important;
+  font-variation-settings: 'wght' 500;
+  font-weight: 500;
+}
+
+/* Activate only on tablets and below */
+@media (max-width: 1430px) {
+  .mobile-blocker {
+    display: flex;
+  }
+  body {
+    overflow: hidden !important; /* Prevent scrolling in the background */
+  }
 }

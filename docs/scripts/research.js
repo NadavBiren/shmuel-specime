@@ -637,10 +637,8 @@ document.addEventListener('DOMContentLoaded', () => {
    assets finish before the loader disappears.
 ─────────────────────────────────────────────────────────────── */
 window.addEventListener('load', () => {
-  setTimeout(() => {
-    const loader = document.getElementById('page-loader');
-    if (loader) {
-      loader.classList.add('is-hidden');
-    }
-  }, 750);
+  const loader = document.getElementById('page-loader');
+  if (loader) {
+    loader.classList.add('is-hidden');
+  }
 });

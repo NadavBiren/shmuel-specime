@@ -401,8 +401,8 @@ function initSpecimenPrint() {
   const NEON_COLORS = ['var(--color-pink)', 'var(--color-yellow)', 'var(--color-orange)', 'var(--color-green)', 'var(--color-white)'];
   const SVG_SHAPES  = ['hero-icon-1', 'hero-icon-2', 'hero-icon-3', 'hero-icon-4', 'hero-icon-5'];
   const TEXT_POOL   = [
-    "Espresso Blend מספר 4", "Barrel Aged מהדורה מיוחדת", "House Blend מקומי",
-    "Natural Wine תל אביב", "Cold Brew", "בירה Unfiltered מהחבית", "קפה של הבוקר",
+    "Espresso House Blend 8№", "Barrel Aged מהדורה מיוחדת", "House Blend מקומי",
+    "Natural Wine תל־אביב", "Cold Brew", "בירה Unfiltered מהחבית", "קפה של הבוקר",
     "קפה & מאפה", "#התחלנו #Red_Bull", "!Cheers", "Perfect Blend",
     "½ שפירא מהחבית", "←צ׳ייסר על חשבון הבית", "מאצ׳ה קרה {18₪}"
   ];
@@ -410,16 +410,25 @@ function initSpecimenPrint() {
 
   let printCount = 0;
 
+  const CUSTOM_BREAKS = {
+    "½ שפירא מהחבית":        "½ שפירא\nמהחבית",
+    "←צ׳ייסר על חשבון הבית": "←צ׳ייסר\nעל חשבון\nהבית",
+    "מאצ׳ה קרה {18₪}":       "מאצ׳ה קרה\n{18₪}"
+  };
+
   // Break sticker text into lines so it grows vertically instead of
   // overflowing horizontally — line-break frequency depends on the
   // sticker's shape (horizontal / square / vertical mask).
   function formatStickerText(text, shape) {
+    if (CUSTOM_BREAKS[text]) {
+      return CUSTOM_BREAKS[text];
+    }
     const words = text.split(' ');
     const maxBreaks = shape === 'hero-icon-3' ? 1 : 4;
     const breakAt = Math.min(maxBreaks, words.length - 1);
     const broken = words.slice(0, breakAt + 1).join('\n');
     const remainder = words.slice(breakAt + 1).join(' ');
-    return remainder ? broken + ' ' + remainder : broken;
+    return remainder ? broken + '\n' + remainder : broken;
   }
 
   // Character limit + countdown — counts against the actual value
@@ -445,16 +454,37 @@ function initSpecimenPrint() {
     const maskUrl  = `url('assets/images/svg/hero-svg/${svgShape}.svg')`;
 
     const len = text.length;
+    const formattedText = formatStickerText(text, svgShape);
 
-    // Adaptive font size + box width — both scale with text length so longer
-    // phrases print larger and wrap across more lines instead of shrinking
-    let size, widthEm;
-    if (len <= 8)       { size = Math.floor(Math.random() * 20) + 100; widthEm = 3.2; } // 100-119
-    else if (len <= 14) { size = Math.floor(Math.random() * 20) + 75;  widthEm = 4.2; } // 75-94
-    else if (len <= 22) { size = Math.floor(Math.random() * 15) + 55;  widthEm = 5.0; } // 55-69
-    else                { size = Math.floor(Math.random() * 12) + 40;  widthEm = 5.8; } // 40-51
+    // Find the longest word across all lines — used to scale font-size down so
+    // it fits within the compact target width without any mid-word break.
+    const CHAR_WIDTH_FACTOR = 0.62; // Hebrew wght 700 ≈ 0.62em per character
+    const MAX_BOX_PX        = 270;  // hard ceiling on sticker width
+    const PADDING_PX        = 22;   // approximate px of horizontal padding at typical sizes
 
-      // Random weight: one of 500,600,700,800,900
+    const fmtLines    = formattedText.split('\n');
+    const longestWord = fmtLines
+      .flatMap(l => l.split(/\s+/))
+      .reduce((a, b) => (a.length > b.length ? a : b), '');
+    const longestLine = fmtLines.reduce((a, b) => (a.length > b.length ? a : b), '');
+
+    // Base font size (px) — descends with text length
+    let baseFontSize;
+    if (len <= 8)       baseFontSize = Math.floor(Math.random() * 17) + 72;
+    else if (len <= 14) baseFontSize = Math.floor(Math.random() * 15) + 56;
+    else if (len <= 22) baseFontSize = Math.floor(Math.random() * 15) + 42;
+    else                baseFontSize = Math.floor(Math.random() * 13) + 32;
+
+    // Scale down if the longest word would overflow the target box
+    const availPx          = MAX_BOX_PX - PADDING_PX * 2;
+    const estimatedWordPx  = longestWord.length * CHAR_WIDTH_FACTOR * baseFontSize;
+    let fontSize = baseFontSize;
+    if (estimatedWordPx > availPx) {
+      fontSize = Math.floor(availPx / (longestWord.length * CHAR_WIDTH_FACTOR));
+    }
+    fontSize = Math.max(28, Math.min(fontSize, 92));
+
+    // Random weight: one of 500,600,700,800,900
     const randomWeight = WEIGHT_STEPS[Math.floor(Math.random() * WEIGHT_STEPS.length)];
 
     // Random rotation -20 to +20 degrees
@@ -465,22 +495,22 @@ function initSpecimenPrint() {
     if (svgShape === 'hero-icon-3') {
       item.classList.add('shape-icon-3');
     }
-    item.textContent = formatStickerText(text, svgShape);
-    item.style.backgroundColor = bgColor;
-    item.style.maskImage       = maskUrl;
-    item.style.webkitMaskImage = maskUrl;
-    item.style.fontSize              = `clamp(50px, 6.3vw, ${(size * 1.5 / 10).toFixed(1)}vw)`;
-    item.style.width                 = widthEm + 'em';
+    item.textContent = formattedText;
+    item.style.backgroundColor       = bgColor;
+    item.style.maskImage             = maskUrl;
+    item.style.webkitMaskImage       = maskUrl;
+    item.style.fontSize              = fontSize + 'px';
+    item.style.width                 = 'fit-content';
+    item.style.maxWidth              = MAX_BOX_PX + 'px';
     item.style.fontVariationSettings = `'wght' ${randomWeight}`;
 
-    // Compute actual rendered font-size to match the CSS clamp(50px, 6.3vw, Xvw)
-    const vw = window.innerWidth / 100;
-    const actualFontSize = Math.max(50, Math.min(6.3 * vw, (size * 1.5 / 10) * vw));
-    const actualWidthPx  = widthEm * actualFontSize;
-    const actualHeightPx = actualFontSize * 5; // 5 lines max at line-height 1
+    // Positioning: use actual px values (no clamp mismatch)
+    const actualWidthPx   = Math.min(MAX_BOX_PX, longestLine.length * CHAR_WIDTH_FACTOR * fontSize + PADDING_PX * 2);
+    const lineCount       = fmtLines.length;
+    const actualHeightPx  = fontSize * 0.8 * lineCount + PADDING_PX * 2;
 
-    // Extra buffer to absorb rotation (±20deg can push corners well outside the box)
-    const rotBuffer = Math.round(actualWidthPx * 0.35);
+    // Extra buffer to absorb rotation (±20deg can push corners outside the box)
+    const rotBuffer = Math.round(Math.max(actualWidthPx, actualHeightPx) * 0.35);
 
     const minX = 0;
     const maxX = Math.max(0, window.innerWidth  - actualWidthPx  - rotBuffer);

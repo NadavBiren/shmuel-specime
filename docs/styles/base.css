@@ -37,7 +37,8 @@
   --color-pink:   #ed3d66;   /* Eugenia Red   — primary interaction    */
   --color-yellow: #ffe600;   /* Apricot Yellow — secondary accent       */
   --color-orange: #ff7340;   /* Apricot Orange — third accent           */
-  --color-green:  #00cf91;   /* Peacock Blue  — fourth accent          */
+  --color-green:  #87c540;   /* night green  — fourth accent         bu: 00cf91, 00CF67 */
+
 
   /* ── Core palette (backup) ─────────────────────────────── */
   /*  --color-main:   #FF1493;   /* neon pink   — primary interaction    */
@@ -237,7 +238,10 @@ p {
 }
 
 .site-footer__title {
-  display: block;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: baseline !important;
+  width: 100% !important;
   font-family: var(--font-primary);
   font-variation-settings: 'wght' 900;
   font-weight: 900;
@@ -247,7 +251,14 @@ p {
   color: var(--color-black);
 }
 
-.site-footer__title,
+.footer-title-he {
+  text-align: right;
+}
+
+.footer-title-en {
+  text-align: left;
+}
+
 .site-footer__col p,
 .site-footer__col span,
 .site-footer__col a {

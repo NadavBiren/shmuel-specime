@@ -591,7 +591,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initStickyTabShrink();       // must run first — exposes _setGlobalActiveColor
   initStickyTabsBreadcrumbs(); // uses _setGlobalActiveColor on each setActiveTab call
   initStickyBars();            // one sentinel per bar: stuck detection + scroll-linked height
-
+  initSketchSequence();
+  initFeaturesGridWeight();
   const tab00 = document.getElementById('rs-tab-00');
   if (tab00) {
     tab00.addEventListener('click', (e) => {
@@ -642,3 +643,44 @@ window.addEventListener('load', () => {
     loader.classList.add('is-hidden');
   }
 });
+
+
+/* ── FEATURES GRID — VARIABLE WEIGHT TRACKING (Cell: Black Weight Clogging) ──
+   Mousemove over .fg-cell--clogging maps clientX within the cell's own
+   bounding box to font-variation-settings 'wght'. This is physical
+   screen-space left/right (matches the rest of research.js, e.g. the
+   sources-viewer splitPct calc) — NOT logical RTL inline-start/end:
+   right edge of the cell = wght 500, left edge = wght 900.
+─────────────────────────────────────────────────────────────── */
+function initFeaturesGridWeight() {
+  const cell = document.getElementById('fg-clogging');
+  if (!cell) return;
+
+  const letters = cell.querySelectorAll('.fg-clog-letter');
+  const MIN_WGHT = 500;
+  const MAX_WGHT = 900;
+  let raf = null;
+
+  function setWeight(wght) {
+    letters.forEach(el => {
+      el.style.fontVariationSettings = `'wght' ${Math.round(wght)}`;
+    });
+  }
+
+  cell.addEventListener('mousemove', (e) => {
+    if (raf) cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => {
+      const rect = cell.getBoundingClientRect();
+      const normX = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      // normX: 0 at the cell's left edge, 1 at its right edge.
+      const wght = MAX_WGHT - normX * (MAX_WGHT - MIN_WGHT);
+      cell.classList.remove('is-settling');
+      setWeight(wght);
+    });
+  });
+
+  cell.addEventListener('mouseleave', () => {
+    cell.classList.add('is-settling');
+    setWeight(700);
+  });
+}

@@ -18,6 +18,10 @@ function buildCell(glyph, categoryFeatureTag, categoryDirection) {
   const span = document.createElement('span');
   span.className = 'char-cell';
   if (ft) span.classList.add(`char-cell--${ft}`);
+  if (glyph.display.length > 1) {
+    span.classList.add('char-cell--multi');
+    span.dataset.displayLen = glyph.display.length;
+  }
   span.textContent = glyph.display;
   span.dataset.glyphName = glyph.glyphName;
   span.setAttribute('aria-hidden', 'true');

@@ -1501,7 +1501,7 @@ body.light-theme .caption-hover__overlay {
   width: 100%;
   justify-content: space-between;
   box-sizing: border-box;
-  padding-inline: 1.9vw;
+  padding-inline: 1.9 vw;
 }
 
 .comp-col {
@@ -1699,4 +1699,44 @@ body.light-theme .caption-hover__overlay {
   font-family: var(--font-secondary);
   font-size: var(--size-meta-large);
   color: var(--rs-fg);
+}
+
+
+/* ── FEATURES GRID — STRUCTURAL (Section 05) ─────────────────────
+   6-col × 3-row grid where 1 row = 1 column-width square.
+   Achieved with invisible 0-width / padding-bottom:100% sizers,
+   since % in grid-auto-rows resolves against container HEIGHT
+   (indefinite here) — padding-% resolves against the grid AREA's
+   width instead, which is exactly what we need.
+─────────────────────────────────────────────────────────────── */
+.features-grid-section {
+  --fg-pad: clamp(10px, 1.1vw, 20px);
+  grid-column: 1 / -1;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(3, auto);
+  gap: var(--rs-grid-gap);
+}
+
+.fg-row-sizer {
+  grid-column: 1;
+  width: 0;
+  padding-bottom: 100%; /* = the width of one column track */
+  visibility: hidden;
+  pointer-events: none;
+}
+.fg-row-sizer--a { grid-row: 1; }
+.fg-row-sizer--b { grid-row: 2; }
+.fg-row-sizer--c { grid-row: 3; }
+
+.fg-cell {
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: var(--fg-pad);
+  border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

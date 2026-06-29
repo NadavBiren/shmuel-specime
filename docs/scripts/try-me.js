@@ -9,7 +9,7 @@
 /* ── DEFAULT TEXT ───────────────────────────────────────
    Canonical paragraph used on load and when reset is clicked.
 ─────────────────────────────────────────────────────── */
-const DEFAULT_TEXT = 'חבית‭ ‬בירה? רק Punk Ipa 13% ←←←מארז‭ ‬סודה 12 ליטר + 6 כוסות בקבוק‭ ‬יין‭ ‬לבן 12.3% Muscat מבצע Breezer ‭‬אבטיח בקניית ג׳ין‭ ‬ אמריקנו קר {₪28} מים {₪9} מנת‭ ‬וייסקי Buffalo Trace 18 חינם! אספרסו Arabica עם קרח ¾צ׳ייסר ערק Noah 12 ב־18:25';
+const DEFAULT_TEXT = '←←← חבית‭ ‬בירה? Punk IPA 13% מארז‭ ‬סודה 12 ליטר + 6 כוסות & ארגז של יין‭ ‬כתום 12.3% Midbar הפוך על מים {₪28} • מים (₪9)    § וויסקי Glenfiddich 21 בחנויות אספרסו כפול מפולי Arabica →→ חֲלִיטַת תֵּה Wissotzky החל מ־2€ ¾ מצ׳ייסר של Noah №12 ב־18:25';
 
 
 /* ── PALETTES ───────────────────────────────────────────
@@ -17,7 +17,7 @@ const DEFAULT_TEXT = 'חבית‭ ‬בירה? רק Punk Ipa 13% ←←←מאר
    null values → generate a random harmonious pair.
 ─────────────────────────────────────────────────────── */
 const PALETTES = [
-  { label: 'ראשי',  textColor: '#94ff94', bgColor: '#0F0E0C'  },               // default: neon green on black
+  { label: 'ראשי',  textColor: null, bgColor: '#0F0E0C', useGreen: true },      // default: --color-green on black
   { label: 'לבן',   textColor: '#0F0E0C', bgColor: '#d6d6d6'  },               // black on offwhite
   { label: 'מונו',  textColor: '#F2C4C8', bgColor: '#3D0C11'  },               // monochromatic: rose on deep burgundy
   { label: 'ניגוד', textColor: '#F5E642', bgColor: '#8B1A1A'  },               // high contrast: light yellow on dark red
@@ -37,7 +37,7 @@ const state = {
   fontWeight:    900,
   letterSpacing: 0,
   lineHeight:    0.8,
-  textColor:     '#94ff94',
+  textColor:     '#87c540',
   bgColor:       '#0F0E0C',
   align:         'rtl',   // 'rtl' | 'center' | 'ltr'
 
@@ -109,7 +109,7 @@ function applyGlobalStyles() {
   canvas.style.letterSpacing         = state.letterSpacing + 'em';
   canvas.style.lineHeight            = state.lineHeight;
   canvas.style.color                 = state.textColor;
-  document.documentElement.style.setProperty('--ui-accent', state.textColor || '#94ff94');
+  document.documentElement.style.setProperty('--ui-accent', state.textColor || '#87c540');
   document.body.style.backgroundColor = state.bgColor;
   applyLightMode(state.bgColor);
 
@@ -398,7 +398,7 @@ function applyColor(textColor, bgColor) {
   state.textColor = textColor;
   state.bgColor   = bgColor;
   canvas.style.color                   = textColor;
-  document.documentElement.style.setProperty('--ui-accent', textColor || '#94ff94');
+  document.documentElement.style.setProperty('--ui-accent', textColor || '#87c540');
   document.body.style.backgroundColor = bgColor;
   applyLightMode(bgColor);
   textColorPicker.value = textColor;
@@ -463,7 +463,7 @@ function initColors() {
   textColorPicker.addEventListener('input', () => {
     state.textColor = textColorPicker.value;
     canvas.style.color = state.textColor;
-    document.documentElement.style.setProperty('--ui-accent', state.textColor || '#94ff94');
+    document.documentElement.style.setProperty('--ui-accent', state.textColor || '#87c540');
     if (textHexInput) textHexInput.value = textColorPicker.value;
     document.querySelectorAll('.tp-palette-swatch').forEach(s =>
       s.classList.remove('is-active'));
@@ -844,22 +844,41 @@ function initOpenTypeFeatures() {
 
   function updateFeatures() {
     const parts = [];
+    // Always declare liga explicitly so it is never overridden by browser UA defaults
+    parts.push(ligaCb.checked ? '"liga" 1' : '"liga" 0');
     checkboxes.forEach(cb => {
       if (cb.value === 'liga') return;
       if (cb.checked) parts.push(`"${cb.value}" 1`);
     });
-    if (!ligaCb.checked) parts.push('"liga" 0');
-    canvas.style.fontFeatureSettings = parts.length ? parts.join(', ') : 'normal';
+    canvas.style.fontFeatureSettings = parts.join(', ');
+  }
+
+  function resetFeatures() {
+    checkboxes.forEach(cb => {
+      cb.checked = cb.value === 'liga'; // only liga on by default
+    });
+    updateFeatures();
   }
 
   checkboxes.forEach(cb => cb.addEventListener('change', updateFeatures));
   updateFeatures();
+
+  // Expose reset so initSettingsReset can call it
+  return { reset: resetFeatures };
 }
 
 
 /* ── INIT ───────────────────────────────────────────────
 ─────────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
+  // Resolve --color-green from CSS and apply to green palette + initial state
+  const cssGreen = getComputedStyle(document.documentElement).getPropertyValue('--color-green').trim();
+  if (cssGreen) {
+    const greenPalette = PALETTES.find(p => p.useGreen);
+    if (greenPalette) greenPalette.textColor = cssGreen;
+    state.textColor = cssGreen;
+  }
+
   // Populate canvas with default text
   if (DEFAULT_TEXT) {
     canvas.innerText = DEFAULT_TEXT;
@@ -892,6 +911,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Slanted proxy caret (replaces native browser caret)
   initSlantedCaret();
 
-  // OpenType feature toggles
-  initOpenTypeFeatures();
+  // OpenType feature toggles — store handle for reset integration
+  const featureControls = initOpenTypeFeatures();
+
+  // Hook feature reset into the settings reset button if it exists
+  const resetBtn = document.getElementById('tryme-reset-btn');
+  if (resetBtn && featureControls) {
+    resetBtn.addEventListener('click', featureControls.reset);
+  }
 });

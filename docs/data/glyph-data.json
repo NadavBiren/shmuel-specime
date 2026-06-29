@@ -1076,7 +1076,7 @@
           "decimal": 9674
         },
         {
-          "glyphName": "ampersand.002",
+          "glyphName": "ampersand.001",
           "display": "&",
           "label": "אמפרסנד חלופי",
           "unicode": null,
@@ -1235,7 +1235,7 @@
       "id": "time",
       "label": "שעות",
       "containerId": "char-grid-hours",
-      "featureTag": "dlig",
+      "featureTag": "liga",
       "glyphs": [
         {
           "glyphName": "colon_zero_zero",
@@ -1409,327 +1409,191 @@
       "subgroups": [
         {
           "id": "liga",
-          "label": "ליגטורות",
+          "label": "ליגטורות והחלפות אוטומטיות",
           "featureTag": "liga",
           "glyphs": [
-            {
-              "glyphName": "f_i",
-              "display": "fi",
-              "label": "fi — ליגטורה",
-              "unicode": null,
-              "decimal": null
-            },
-            {
-              "glyphName": "f_f",
-              "display": "ff",
-              "label": "ff — ליגטורה",
-              "unicode": null,
-              "decimal": null
-            },
-            {
-              "glyphName": "f_f_i",
-              "display": "ffi",
-              "label": "ffi — ליגטורה",
-              "unicode": null,
-              "decimal": null
-            },
-            {
-              "glyphName": "alef_lamed-hb",
-              "display": "אל",
-              "label": "ליגטורה אלף-למד",
-              "unicode": null,
-              "decimal": null,
-              "direction": "rtl",
-              "featureTag": "dlig"
-            }
+            { "glyphName": "f_i", "display": "fi", "label": "fi — ליגטורה", "unicode": null, "decimal": null },
+            { "glyphName": "f_f", "display": "ff", "label": "ff — ליגטורה", "unicode": null, "decimal": null },
+            { "glyphName": "f_f_i", "display": "ffi", "label": "ffi — ליגטורה", "unicode": null, "decimal": null },
+            { "glyphName": "uni05D105D9.swsh1", "display": "בי", "label": "בי — יוד זנב", "direction": "rtl", "unicode": null, "decimal": null },
+            { "glyphName": "uni05D105D905D9.swsh2", "display": "ביי", "label": "ביי — יוד זנב כפול", "direction": "rtl", "unicode": null, "decimal": null },
+            { "glyphName": "uni05DC05D9.swsh1", "display": "לי", "label": "לי — יוד זנב", "direction": "rtl", "unicode": null, "decimal": null },
+            { "glyphName": "uni05DC05D905D9.swsh2", "display": "ליי", "label": "ליי — יוד זנב כפול", "direction": "rtl", "unicode": null, "decimal": null },
+            { "glyphName": "uni05DC.swsh1", "display": "ל+", "label": "ל+ — זנב פלוס", "direction": "rtl", "unicode": null, "decimal": null },
+            { "glyphName": "uni05DC.swsh2", "display": "ל++", "label": "ל++ — זנב פלוס כפול", "direction": "rtl", "unicode": null, "decimal": null },
+            { "glyphName": "uni05DC.swsh3", "display": "ל+++", "label": "ל+++ — זנב פלוס משולש", "direction": "rtl", "unicode": null, "decimal": null },
+            { "glyphName": "uni05D2.swsh1", "display": "ג+", "label": "ג+ — זנב פלוס", "direction": "rtl", "unicode": null, "decimal": null },
+            { "glyphName": "uni05D2.swsh2", "display": "ג++", "label": "ג++ — זנב פלוס כפול", "direction": "rtl", "unicode": null, "decimal": null },
+            { "glyphName": "uni05D2.swsh3", "display": "ג+++", "label": "ג+++ — זנב פלוס משולש", "direction": "rtl", "unicode": null, "decimal": null },
+            { "glyphName": "uni05D2.swsh1", "display": "ג׳", "label": "ג׳ — גרש", "direction": "rtl", "unicode": null, "decimal": null },
+            { "glyphName": "uni05D2.swsh1", "display": "ג״", "label": "ג״ — גרשיים", "direction": "rtl", "unicode": null, "decimal": null },
+            { "glyphName": "uni05D2.swsh1", "display": "ג'", "label": "ג' — גרש לטיני", "direction": "rtl", "unicode": null, "decimal": null },
+            { "glyphName": "uni05D2.swsh1", "display": "ג\"", "label": "ג\" — גרשיים לטיניים", "direction": "rtl", "unicode": null, "decimal": null },
+            { "glyphName": "nunheb001", "display": "נג", "label": "נג — נון הקשרית", "direction": "rtl", "unicode": null, "decimal": null },
+            { "glyphName": "uni2116", "display": "No", "label": "No — מספר", "unicode": "U+2116", "decimal": 8470 },
+            { "glyphName": "ampersand", "display": "and", "label": "and — אמפרסנד", "unicode": "U+0026", "decimal": 38 },
+            { "glyphName": "trademark", "display": " tm ", "label": "tm — סימן מסחרי", "unicode": "U+2122", "decimal": 8482 },
+            { "glyphName": "uni20AA", "display": " ש״ח ", "label": "ש״ח — שקל", "direction": "rtl", "unicode": "U+20AA", "decimal": 8362 },
+            { "glyphName": "dollar", "display": "dollar", "label": "dollar — דולר", "unicode": "U+0024", "decimal": 36 },
+            { "glyphName": "Euro", "display": "euro", "label": "euro — אירו", "unicode": "U+20AC", "decimal": 8364 },
+            { "glyphName": "cent", "display": "cent", "label": "cent — סנט", "unicode": "U+00A2", "decimal": 162 },
+            { "glyphName": "uni0E3F", "display": "baht", "label": "baht — באהט", "unicode": "U+0E3F", "decimal": 3647 },
+            { "glyphName": "uni20AA", "display": "sheqel", "label": "sheqel — שקל", "unicode": "U+20AA", "decimal": 8362 },
+            { "glyphName": "colon_zero_zero", "display": ":00", "label": ":00 — שעון", "unicode": null, "decimal": null },
+            { "glyphName": "colon_zero_five", "display": ":05", "label": ":05 — שעון", "unicode": null, "decimal": null },
+            { "glyphName": "colon_three_zero", "display": ":30", "label": ":30 — שעון", "unicode": null, "decimal": null },
+            { "glyphName": "colon_five_five", "display": ":55", "label": ":55 — שעון", "unicode": null, "decimal": null }
           ]
         },
         {
           "id": "ss01",
-          "label": "ss01",
+          "label": "אותיות רחבות ומספרים חלופיים א׳",
           "featureTag": "ss01",
           "glyphs": [
-            {
-              "glyphName": "zero.001",
-              "display": "0",
-              "label": "0 — ss01",
-              "unicode": "U+0030",
-              "decimal": 48
-            },
-            {
-              "glyphName": "one.001",
-              "display": "1",
-              "label": "1 — ss01",
-              "unicode": "U+0031",
-              "decimal": 49
-            },
-            {
-              "glyphName": "two.001",
-              "display": "2",
-              "label": "2 — ss01",
-              "unicode": "U+0032",
-              "decimal": 50
-            },
-            {
-              "glyphName": "three.001",
-              "display": "3",
-              "label": "3 — ss01",
-              "unicode": "U+0033",
-              "decimal": 51
-            },
-            {
-              "glyphName": "four.001",
-              "display": "4",
-              "label": "4 — ss01",
-              "unicode": "U+0034",
-              "decimal": 52
-            },
-            {
-              "glyphName": "five.001",
-              "display": "5",
-              "label": "5 — ss01",
-              "unicode": "U+0035",
-              "decimal": 53
-            },
-            {
-              "glyphName": "six.001",
-              "display": "6",
-              "label": "6 — ss01",
-              "unicode": "U+0036",
-              "decimal": 54
-            },
-            {
-              "glyphName": "seven.001",
-              "display": "7",
-              "label": "7 — ss01",
-              "unicode": "U+0037",
-              "decimal": 55
-            },
-            {
-              "glyphName": "eight.001",
-              "display": "8",
-              "label": "8 — ss01",
-              "unicode": "U+0038",
-              "decimal": 56
-            },
-            {
-              "glyphName": "nine.001",
-              "display": "9",
-              "label": "9 — ss01",
-              "unicode": "U+0039",
-              "decimal": 57
-            }
+            { "glyphName": "uniFB21", "display": "א", "label": "אלף רחב", "unicode": "U+05D0", "decimal": 1488, "direction": "rtl" },
+            { "glyphName": "uniFB22", "display": "ד", "label": "דלת רחב", "unicode": "U+05D3", "decimal": 1491, "direction": "rtl" },
+            { "glyphName": "uniFB23", "display": "ה", "label": "הא רחב", "unicode": "U+05D4", "decimal": 1492, "direction": "rtl" },
+            { "glyphName": "hetWidehb", "display": "ח", "label": "חית רחב", "unicode": "U+05D7", "decimal": 1495, "direction": "rtl" },
+            { "glyphName": "uniFB24", "display": "כ", "label": "כף רחב", "unicode": "U+05DB", "decimal": 1499, "direction": "rtl" },
+            { "glyphName": "uniFB25", "display": "ל", "label": "למד רחב", "unicode": "U+05DC", "decimal": 1500, "direction": "rtl" },
+            { "glyphName": "uniFB26", "display": "ם", "label": "מם סופי רחב", "unicode": "U+05DD", "decimal": 1501, "direction": "rtl" },
+            { "glyphName": "uniFB27", "display": "ר", "label": "ריש רחב", "unicode": "U+05E8", "decimal": 1512, "direction": "rtl" },
+            { "glyphName": "uniFB28", "display": "ת", "label": "תו רחב", "unicode": "U+05EA", "decimal": 1514, "direction": "rtl" },
+            { "glyphName": "zero.001", "display": "0", "label": "0 — ss01", "unicode": "U+0030", "decimal": 48 },
+            { "glyphName": "one.001", "display": "1", "label": "1 — ss01", "unicode": "U+0031", "decimal": 49 },
+            { "glyphName": "two.001", "display": "2", "label": "2 — ss01", "unicode": "U+0032", "decimal": 50 },
+            { "glyphName": "three.001", "display": "3", "label": "3 — ss01", "unicode": "U+0033", "decimal": 51 },
+            { "glyphName": "four.001", "display": "4", "label": "4 — ss01", "unicode": "U+0034", "decimal": 52 },
+            { "glyphName": "five.001", "display": "5", "label": "5 — ss01", "unicode": "U+0035", "decimal": 53 },
+            { "glyphName": "six.001", "display": "6", "label": "6 — ss01", "unicode": "U+0036", "decimal": 54 },
+            { "glyphName": "seven.001", "display": "7", "label": "7 — ss01", "unicode": "U+0037", "decimal": 55 },
+            { "glyphName": "eight.001", "display": "8", "label": "8 — ss01", "unicode": "U+0038", "decimal": 56 },
+            { "glyphName": "nine.001", "display": "9", "label": "9 — ss01", "unicode": "U+0039", "decimal": 57 }
           ]
         },
         {
           "id": "ss02",
-          "label": "ss02",
+          "label": "מספרים חלופיים ב׳ ואמפרסנד",
           "featureTag": "ss02",
           "glyphs": [
-            {
-              "glyphName": "zero.002",
-              "display": "0",
-              "label": "0 — ss02",
-              "unicode": "U+0030",
-              "decimal": 48
-            },
-            {
-              "glyphName": "two.002",
-              "display": "2",
-              "label": "2 — ss02",
-              "unicode": "U+0032",
-              "decimal": 50
-            },
-            {
-              "glyphName": "three.002",
-              "display": "3",
-              "label": "3 — ss02",
-              "unicode": "U+0033",
-              "decimal": 51
-            },
-            {
-              "glyphName": "four.002",
-              "display": "4",
-              "label": "4 — ss02",
-              "unicode": "U+0034",
-              "decimal": 52
-            },
-            {
-              "glyphName": "five.002",
-              "display": "5",
-              "label": "5 — ss02",
-              "unicode": "U+0035",
-              "decimal": 53
-            },
-            {
-              "glyphName": "six.002",
-              "display": "6",
-              "label": "6 — ss02",
-              "unicode": "U+0036",
-              "decimal": 54
-            },
-            {
-              "glyphName": "nine.002",
-              "display": "9",
-              "label": "9 — ss02",
-              "unicode": "U+0039",
-              "decimal": 57
-            }
+            { "glyphName": "two.002", "display": "2", "label": "2 — ss02", "unicode": "U+0032", "decimal": 50 },
+            { "glyphName": "three.002", "display": "3", "label": "3 — ss02", "unicode": "U+0033", "decimal": 51 },
+            { "glyphName": "four.002", "display": "4", "label": "4 — ss02", "unicode": "U+0034", "decimal": 52 },
+            { "glyphName": "five.002", "display": "5", "label": "5 — ss02", "unicode": "U+0035", "decimal": 53 },
+            { "glyphName": "six.002", "display": "6", "label": "6 — ss02", "unicode": "U+0036", "decimal": 54 },
+            { "glyphName": "nine.002", "display": "9", "label": "9 — ss02", "unicode": "U+0039", "decimal": 57 },
+            { "glyphName": "ampersand.001", "display": "&", "label": "אמפרסנד חלופי — ss02", "unicode": "U+0026", "decimal": 38 }
           ]
         },
         {
           "id": "ss03",
-          "label": "ss03",
+          "label": "מספרים וחצים בעיגול",
           "featureTag": "ss03",
           "glyphs": [
-            {
-              "glyphName": "gimel-hb.001",
-              "display": "ג",
-              "label": "גימל — ss03",
-              "unicode": "U+05D2",
-              "decimal": 1490,
-              "direction": "rtl"
-            },
-            {
-              "glyphName": "lamed-hb.002",
-              "display": "ל",
-              "label": "למד — ss03 v2",
-              "unicode": "U+05DC",
-              "decimal": 1500,
-              "direction": "rtl"
-            },
-            {
-              "glyphName": "alef-hb.001",
-              "display": "א",
-              "label": "אלף — ss03",
-              "unicode": "U+05D0",
-              "decimal": 1488,
-              "direction": "rtl"
-            },
-            {
-              "glyphName": "tet-hb.001",
-              "display": "ט",
-              "label": "טית — ss03",
-              "unicode": "U+05D8",
-              "decimal": 1496,
-              "direction": "rtl"
-            },
-            {
-              "glyphName": "lamed-hb.001",
-              "display": "ל",
-              "label": "למד — ss03",
-              "unicode": "U+05DC",
-              "decimal": 1500,
-              "direction": "rtl"
-            },
-            {
-              "glyphName": "samekh-hb.001",
-              "display": "ס",
-              "label": "סמך — ss03",
-              "unicode": "U+05E1",
-              "decimal": 1505,
-              "direction": "rtl"
-            },
-            {
-              "glyphName": "qof-hb.001",
-              "display": "ק",
-              "label": "קוף — ss03",
-              "unicode": "U+05E7",
-              "decimal": 1511,
-              "direction": "rtl"
-            },
-            {
-              "glyphName": "Z.001",
-              "display": "Z",
-              "label": "Z — ss03",
-              "unicode": "U+005A",
-              "decimal": 90
-            },
-            {
-              "glyphName": "z.001",
-              "display": "z",
-              "label": "z — ss03",
-              "unicode": "U+007A",
-              "decimal": 122
-            },
-            {
-              "glyphName": "f_f.001",
-              "display": "ff",
-              "label": "ff — ss03",
-              "unicode": null,
-              "decimal": null
-            }
+            { "glyphName": "zero.circle", "display": "0", "label": "0 בעיגול", "unicode": "U+0030", "decimal": 48 },
+            { "glyphName": "one.circle", "display": "1", "label": "1 בעיגול", "unicode": "U+0031", "decimal": 49 },
+            { "glyphName": "two.circle", "display": "2", "label": "2 בעיגול", "unicode": "U+0032", "decimal": 50 },
+            { "glyphName": "three.circle", "display": "3", "label": "3 בעיגול", "unicode": "U+0033", "decimal": 51 },
+            { "glyphName": "four.circle", "display": "4", "label": "4 בעיגול", "unicode": "U+0034", "decimal": 52 },
+            { "glyphName": "five.circle", "display": "5", "label": "5 בעיגול", "unicode": "U+0035", "decimal": 53 },
+            { "glyphName": "six.circle", "display": "6", "label": "6 בעיגול", "unicode": "U+0036", "decimal": 54 },
+            { "glyphName": "seven.circle", "display": "7", "label": "7 בעיגול", "unicode": "U+0037", "decimal": 55 },
+            { "glyphName": "eight.circle", "display": "8", "label": "8 בעיגול", "unicode": "U+0038", "decimal": 56 },
+            { "glyphName": "nine.circle", "display": "9", "label": "9 בעיגול", "unicode": "U+0039", "decimal": 57 },
+            { "glyphName": "arrowup.circle", "display": "↑", "label": "חץ למעלה בעיגול", "unicode": "U+2191", "decimal": 8593 },
+            { "glyphName": "uni2197.circle", "display": "↗", "label": "חץ צפון-מזרח בעיגול", "unicode": "U+2197", "decimal": 8599 },
+            { "glyphName": "arrowright.circle", "display": "→", "label": "חץ לימין בעיגול", "unicode": "U+2192", "decimal": 8594 },
+            { "glyphName": "uni2198.circle", "display": "↘", "label": "חץ דרום-מזרח בעיגול", "unicode": "U+2198", "decimal": 8600 },
+            { "glyphName": "arrowdown.circle", "display": "↓", "label": "חץ למטה בעיגול", "unicode": "U+2193", "decimal": 8595 },
+            { "glyphName": "uni2199.circle", "display": "↙", "label": "חץ דרום-מערב בעיגול", "unicode": "U+2199", "decimal": 8601 },
+            { "glyphName": "arrowleft.circle", "display": "←", "label": "חץ לשמאל בעיגול", "unicode": "U+2190", "decimal": 8592 },
+            { "glyphName": "uni2196.circle", "display": "↖", "label": "חץ צפון-מערב בעיגול", "unicode": "U+2196", "decimal": 8598 },
+            { "glyphName": "arrowboth.circle", "display": "↔", "label": "חץ דו-כיווני אופקי בעיגול", "unicode": "U+2194", "decimal": 8596 },
+            { "glyphName": "arrowupdn.circle", "display": "↕", "label": "חץ דו-כיווני אנכי בעיגול", "unicode": "U+2195", "decimal": 8597 }
           ]
         },
         {
           "id": "ss04",
-          "label": "ss04",
+          "label": "מספרים וחצים בטבעת",
           "featureTag": "ss04",
           "glyphs": [
-            {
-              "glyphName": "alefWide-hb",
-              "display": "א",
-              "label": "אלף רחב — ss04",
-              "unicode": "U+05D0",
-              "decimal": 1488,
-              "direction": "rtl"
-            },
-            {
-              "glyphName": "daletWide-hb",
-              "display": "ד",
-              "label": "דלת רחב — ss04",
-              "unicode": "U+05D3",
-              "decimal": 1491,
-              "direction": "rtl"
-            },
-            {
-              "glyphName": "heWide-hb",
-              "display": "ה",
-              "label": "הא רחב — ss04",
-              "unicode": "U+05D4",
-              "decimal": 1492,
-              "direction": "rtl"
-            },
-            {
-              "glyphName": "kafWide-hb",
-              "display": "כ",
-              "label": "כף רחב — ss04",
-              "unicode": "U+05DB",
-              "decimal": 1499,
-              "direction": "rtl"
-            },
-            {
-              "glyphName": "lamedWide-hb",
-              "display": "ל",
-              "label": "למד רחב — ss04",
-              "unicode": "U+05DC",
-              "decimal": 1500,
-              "direction": "rtl"
-            },
-            {
-              "glyphName": "memfinalWide-hb",
-              "display": "ם",
-              "label": "מם סופי רחב — ss04",
-              "unicode": "U+05DD",
-              "decimal": 1501,
-              "direction": "rtl"
-            },
-            {
-              "glyphName": "reshWide-hb",
-              "display": "ר",
-              "label": "ריש רחב — ss04",
-              "unicode": "U+05E8",
-              "decimal": 1512,
-              "direction": "rtl"
-            },
-            {
-              "glyphName": "tavWide-hb",
-              "display": "ת",
-              "label": "תו רחב — ss04",
-              "unicode": "U+05EA",
-              "decimal": 1514,
-              "direction": "rtl"
-            }
+            { "glyphName": "zero.ring", "display": "0", "label": "0 בטבעת", "unicode": "U+0030", "decimal": 48 },
+            { "glyphName": "one.ring", "display": "1", "label": "1 בטבעת", "unicode": "U+0031", "decimal": 49 },
+            { "glyphName": "two.ring", "display": "2", "label": "2 בטבעת", "unicode": "U+0032", "decimal": 50 },
+            { "glyphName": "three.ring", "display": "3", "label": "3 בטבעת", "unicode": "U+0033", "decimal": 51 },
+            { "glyphName": "four.ring", "display": "4", "label": "4 בטבעת", "unicode": "U+0034", "decimal": 52 },
+            { "glyphName": "five.ring", "display": "5", "label": "5 בטבעת", "unicode": "U+0035", "decimal": 53 },
+            { "glyphName": "six.ring", "display": "6", "label": "6 בטבעת", "unicode": "U+0036", "decimal": 54 },
+            { "glyphName": "seven.ring", "display": "7", "label": "7 בטבעת", "unicode": "U+0037", "decimal": 55 },
+            { "glyphName": "eight.ring", "display": "8", "label": "8 בטבעת", "unicode": "U+0038", "decimal": 56 },
+            { "glyphName": "nine.ring", "display": "9", "label": "9 בטבעת", "unicode": "U+0039", "decimal": 57 },
+            { "glyphName": "arrowup.ring", "display": "↑", "label": "חץ למעלה בטבעת", "unicode": "U+2191", "decimal": 8593 },
+            { "glyphName": "uni2197.ring", "display": "↗", "label": "חץ צפון-מזרח בטבעת", "unicode": "U+2197", "decimal": 8599 },
+            { "glyphName": "arrowright.ring", "display": "→", "label": "חץ לימין בטבעת", "unicode": "U+2192", "decimal": 8594 },
+            { "glyphName": "uni2198.ring", "display": "↘", "label": "חץ דרום-מזרח בטבעת", "unicode": "U+2198", "decimal": 8600 },
+            { "glyphName": "arrowdown.ring", "display": "↓", "label": "חץ למטה בטבעת", "unicode": "U+2193", "decimal": 8595 },
+            { "glyphName": "uni2199.ring", "display": "↙", "label": "חץ דרום-מערב בטבעת", "unicode": "U+2199", "decimal": 8601 },
+            { "glyphName": "arrowleft.ring", "display": "←", "label": "חץ לשמאל בטבעת", "unicode": "U+2190", "decimal": 8592 },
+            { "glyphName": "uni2196.ring", "display": "↖", "label": "חץ צפון-מערב בטבעת", "unicode": "U+2196", "decimal": 8598 },
+            { "glyphName": "arrowboth.ring", "display": "↔", "label": "חץ דו-כיווני אופקי בטבעת", "unicode": "U+2194", "decimal": 8596 },
+            { "glyphName": "arrowupdn.ring", "display": "↕", "label": "חץ דו-כיווני אנכי בטבעת", "unicode": "U+2195", "decimal": 8597 }
+          ]
+        },
+        {
+          "id": "ss05",
+          "label": "מספרים וחצים בריבוע",
+          "featureTag": "ss05",
+          "glyphs": [
+            { "glyphName": "zero.square", "display": "0", "label": "0 בריבוע", "unicode": "U+0030", "decimal": 48 },
+            { "glyphName": "one.square", "display": "1", "label": "1 בריבוע", "unicode": "U+0031", "decimal": 49 },
+            { "glyphName": "two.square", "display": "2", "label": "2 בריבוע", "unicode": "U+0032", "decimal": 50 },
+            { "glyphName": "three.square", "display": "3", "label": "3 בריבוע", "unicode": "U+0033", "decimal": 51 },
+            { "glyphName": "four.square", "display": "4", "label": "4 בריבוע", "unicode": "U+0034", "decimal": 52 },
+            { "glyphName": "five.square", "display": "5", "label": "5 בריבוע", "unicode": "U+0035", "decimal": 53 },
+            { "glyphName": "six.square", "display": "6", "label": "6 בריבוע", "unicode": "U+0036", "decimal": 54 },
+            { "glyphName": "seven.square", "display": "7", "label": "7 בריבוע", "unicode": "U+0037", "decimal": 55 },
+            { "glyphName": "eight.square", "display": "8", "label": "8 בריבוע", "unicode": "U+0038", "decimal": 56 },
+            { "glyphName": "nine.square", "display": "9", "label": "9 בריבוע", "unicode": "U+0039", "decimal": 57 },
+            { "glyphName": "arrowup.square", "display": "↑", "label": "חץ למעלה בריבוע", "unicode": "U+2191", "decimal": 8593 },
+            { "glyphName": "uni2197.square", "display": "↗", "label": "חץ צפון-מזרח בריבוע", "unicode": "U+2197", "decimal": 8599 },
+            { "glyphName": "arrowright.square", "display": "→", "label": "חץ לימין בריבוע", "unicode": "U+2192", "decimal": 8594 },
+            { "glyphName": "uni2198.square", "display": "↘", "label": "חץ דרום-מזרח בריבוע", "unicode": "U+2198", "decimal": 8600 },
+            { "glyphName": "arrowdown.square", "display": "↓", "label": "חץ למטה בריבוע", "unicode": "U+2193", "decimal": 8595 },
+            { "glyphName": "uni2199.square", "display": "↙", "label": "חץ דרום-מערב בריבוע", "unicode": "U+2199", "decimal": 8601 },
+            { "glyphName": "arrowleft.square", "display": "←", "label": "חץ לשמאל בריבוע", "unicode": "U+2190", "decimal": 8592 },
+            { "glyphName": "uni2196.square", "display": "↖", "label": "חץ צפון-מערב בריבוע", "unicode": "U+2196", "decimal": 8598 },
+            { "glyphName": "arrowboth.square", "display": "↔", "label": "חץ דו-כיווני אופקי בריבוע", "unicode": "U+2194", "decimal": 8596 },
+            { "glyphName": "arrowupdn.square", "display": "↕", "label": "חץ דו-כיווני אנכי בריבוע", "unicode": "U+2195", "decimal": 8597 }
+          ]
+        },
+        {
+          "id": "ss06",
+          "label": "חלופות צורניות נוספות",
+          "featureTag": "ss06",
+          "glyphs": [
+            { "glyphName": "A.001", "display": "A", "label": "A — ss06", "unicode": "U+0041", "decimal": 65 },
+            { "glyphName": "B.001", "display": "B", "label": "B — ss06", "unicode": "U+0042", "decimal": 66 },
+            { "glyphName": "Q.001", "display": "Q", "label": "Q — ss06", "unicode": "U+0051", "decimal": 81 },
+            { "glyphName": "Z.001", "display": "Z", "label": "Z — ss06", "unicode": "U+005A", "decimal": 90 },
+            { "glyphName": "k.001", "display": "k", "label": "k — ss06", "unicode": "U+006B", "decimal": 107 },
+            { "glyphName": "m.001", "display": "m", "label": "m — ss06", "unicode": "U+006D", "decimal": 109 },
+            { "glyphName": "n.001", "display": "n", "label": "n — ss06", "unicode": "U+006E", "decimal": 110 },
+            { "glyphName": "r.003", "display": "r", "label": "r — ss06", "unicode": "U+0072", "decimal": 114 },
+            { "glyphName": "u.003", "display": "u", "label": "u — ss06", "unicode": "U+0075", "decimal": 117 },
+            { "glyphName": "v.001", "display": "v", "label": "v — ss06", "unicode": "U+0076", "decimal": 118 },
+            { "glyphName": "w.001", "display": "w", "label": "w — ss06", "unicode": "U+0077", "decimal": 119 },
+            { "glyphName": "z.001", "display": "z", "label": "z — ss06", "unicode": "U+007A", "decimal": 122 },
+            { "glyphName": "uni05D0.001", "display": "א", "label": "אלף חלופי — ss06", "unicode": "U+05D0", "decimal": 1488, "direction": "rtl" },
+            { "glyphName": "uni05D8.001", "display": "ט", "label": "טית חלופי — ss06", "unicode": "U+05D8", "decimal": 1496, "direction": "rtl" },
+            { "glyphName": "uni05DC.001", "display": "ל", "label": "למד חלופי — ss06", "unicode": "U+05DC", "decimal": 1500, "direction": "rtl" },
+            { "glyphName": "uni05E1.001", "display": "ס", "label": "סמך חלופי — ss06", "unicode": "U+05E1", "decimal": 1505, "direction": "rtl" },
+            { "glyphName": "uni05E7.001", "display": "ק", "label": "קוף חלופי — ss06", "unicode": "U+05E7", "decimal": 1511, "direction": "rtl" },
+            { "glyphName": "uniFB24.001", "display": "כ", "label": "כף רחב חלופי — ss06", "unicode": "U+05DB", "decimal": 1499, "direction": "rtl" },
+            { "glyphName": "f_f.001", "display": "ff", "label": "ff חלופי — ss06", "unicode": null, "decimal": null },
+            { "glyphName": "f_i.001", "display": "fi", "label": "fi חלופי — ss06", "unicode": null, "decimal": null },
+            { "glyphName": "uni05D005DC", "display": "אל", "label": "ליגטורה אלף-למד — ss06", "direction": "rtl", "unicode": null, "decimal": null },
+            { "glyphName": "uni05DC05D9", "display": "לי", "label": "ליגטורה למד-יוד — ss06", "direction": "rtl", "unicode": null, "decimal": null },
+            { "glyphName": "uni05DC05D905D9", "display": "ליי", "label": "ליגטורה למד-יוד-יוד — ss06", "direction": "rtl", "unicode": null, "decimal": null }
           ]
         }
       ]

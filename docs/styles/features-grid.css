@@ -1,5 +1,5 @@
 /* =====================================================
-   SHMUEL — Research Page
+   NOVORELIC — Research Page
    features-grid.css — Section 05 grid-area assignments,
    typography layers, and hover micro-interactions.
    ===================================================== */
@@ -219,10 +219,10 @@
 .fg-w-lines { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.4s ease; }
 .fg-w-lines::before, .fg-w-lines::after { content: ''; position: absolute; left: -15%; right: -15%; border-top: 1px solid currentColor; }
 .fg-w-lines::before { top: 22%; }
-.fg-w-lines::after { bottom: 16%; }
+.fg-w-lines::after { bottom: 18.6%; }
 .fg-cell--weights:hover .fg-w-lines { opacity: 0.3; }
 
-.fg-w-letter--A { font-variation-settings: 'wght' 900; animation-name: wghtPulseA; margin-left: -0.05em; }
+.fg-w-letter--A { font-variation-settings: 'wght' 900; animation-name: wghtPulseA; }
 .fg-w-letter--Aleph { font-variation-settings: 'wght' 700; animation-name: wghtPulseAleph; }
 .fg-w-letter--a { font-variation-settings: 'wght' 500; animation-name: wghtPulse_a; }
 
@@ -275,7 +275,6 @@
 }
 .fg-cell--contrast:hover .fg-contrast-word {
   font-size: clamp(70px, 10.6vw, 200px);
-  transform: translateY(-12%);
 }
 .fg-cell--contrast:hover .fg-contrast-word--he { font-variation-settings: 'wght' 500; }
 .fg-cell--contrast:hover .fg-contrast-word--en { font-variation-settings: 'wght' 900; }

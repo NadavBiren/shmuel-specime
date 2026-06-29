@@ -1,5 +1,5 @@
 /* =====================================================
-   SHMUEL — Research Page Interactions
+   NOVORELIC — Research Page Interactions
    research.js
    ===================================================== */
 

@@ -1,5 +1,5 @@
 /* =====================================================
-   SHMUEL — Specimen Page Interactions
+   NOVORELIC — Specimen Page Interactions
    specimen.js
    ===================================================== */
 

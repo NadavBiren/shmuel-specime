@@ -1,5 +1,5 @@
 /* =====================================================
-   SHMUEL — Try Me Page Interactions
+   NOVORELIC — Try Me Page Interactions
    try-me.js
    ===================================================== */
 
@@ -868,6 +868,35 @@ function initOpenTypeFeatures() {
 }
 
 
+/* ── TEXT CLEANUP ───────────────────────────────────────
+   Prevent hard line breaks; strip double spaces on input.
+─────────────────────────────────────────────────────── */
+function initTextCleanup() {
+  canvas.addEventListener('keydown', e => {
+    if (e.key === 'Enter') e.preventDefault();
+  });
+
+  canvas.addEventListener('input', () => {
+    canvas.querySelectorAll('br').forEach(br => br.replaceWith(' '));
+
+    const sel = window.getSelection();
+    if (!sel.rangeCount) return;
+    const node = sel.anchorNode;
+    const offset = sel.anchorOffset;
+    if (node && node.nodeType === Node.TEXT_NODE && node.nodeValue.includes('  ')) {
+      const before = node.nodeValue;
+      node.nodeValue = before.replace(/  +/g, ' ');
+      const newOffset = Math.max(0, offset - (before.length - node.nodeValue.length));
+      const r = document.createRange();
+      r.setStart(node, Math.min(newOffset, node.nodeValue.length));
+      r.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(r);
+    }
+  });
+}
+
+
 /* ── INIT ───────────────────────────────────────────────
 ─────────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
@@ -900,6 +929,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCollapsibles();
   initCustomCSS();
   initPlaceholder();
+  initTextCleanup();
   initEffectsControls();
   initWeightAnimation();
   initSettingsReset();

@@ -1,5 +1,5 @@
 /* =====================================================
-   SHMUEL — Specimen Page
+   NOVORELIC — Specimen Page
    ===================================================== */
 
 /* ── Shared components ──────────────────────────── */
@@ -1230,7 +1230,7 @@
   position: relative;
   min-height: 220vh;
   background: var(--color-black);
-  font-family: 'Shmuel', serif;
+  font-family: 'NovoRelic', serif;
 }
 
 .fingers-section,
@@ -1295,7 +1295,7 @@
 
 .soda-copy__line {
   display: block;
-  font-family: 'Shmuel', serif;
+  font-family: 'NovoRelic', serif;
   font-variation-settings: 'wght' var(--line-weight);
   font-weight: var(--line-weight);
 }
@@ -1366,7 +1366,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Shmuel', serif;
+  font-family: 'NovoRelic', serif;
   font-variation-settings: 'wght' var(--live-text-weight);
   font-weight: var(--live-text-weight);
   font-size: clamp(1.5rem, 7vw, 10rem);
@@ -1452,7 +1452,7 @@
   z-index: 2;
   pointer-events: none;
   color: var(--color-pink);
-  font-family: var(--font-primary, 'Shmuel', serif);
+  font-family: var(--font-primary, 'NovoRelic', serif);
   text-align: center;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1671,7 +1671,7 @@
   color: var(--color-black);
   padding: 0 15px;
   width: 365px;
-  font-family: 'Shmuel', serif;
+  font-family: 'NovoRelic', serif;
 font-size: clamp(1rem, 4.3vw, 5VW);
   will-change: font-variation-settings;
 }

@@ -1,5 +1,5 @@
 /* =====================================================
-   SHMUEL — Research Page
+   NOVORELIC — Research Page
    research.css
    ===================================================== */
 
@@ -1058,7 +1058,7 @@
   color: var(--rs-bg);
   border: 1px solid var(--color-black) !important;
   border-radius: 50%;
-  font-family: 'Shmuel', serif;
+  font-family: 'NovoRelic', serif;
   font-weight: 500;
   font-variation-settings: 'wght' 500;
   font-size: 45px;
@@ -1546,7 +1546,7 @@ body.light-theme .caption-hover__overlay {
 .img-wrapper:hover .img-hover   { opacity: 1; }
 
 .comp-arrow {
-  font-family: 'Shmuel', sans-serif;
+  font-family: 'NovoRelic', sans-serif;
   font-size: 5rem;
   color: var(--color-orange);
   line-height: 1;

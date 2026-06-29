@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════
-   SHMUEL — Canvas 2D Hero
+   NOVORELIC — Canvas 2D Hero
    Three-layer reveal via mouse-driven circle clips.
 
    Layer order (back → front):

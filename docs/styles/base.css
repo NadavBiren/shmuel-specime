@@ -1,5 +1,5 @@
 @font-face {
-  font-family: 'Shmuel';
+  font-family: 'NovoRelic';
   src: url('../assets/fonts/shmuel-Regular.ttf') format('truetype');
   font-weight: 500 900;
   font-display: block; /* specimen must not flash unstyled */
@@ -57,7 +57,7 @@
      Contrast: calligraphic historical serif vs. sterile
      machine-precision mono. That tension reads as premium.
   ──────────────────────────────────────────────────────── */
-  --font-primary:         'Shmuel', serif;
+  --font-primary:         'NovoRelic', serif;
   --font-secondary:       'SimplerMono', 'Courier New', monospace;
 
   /* Size scale for secondary / metadata text */
@@ -255,8 +255,12 @@ p {
   text-align: right;
 }
 
-.footer-title-en {
-  text-align: left;
+.footer-col-brand {
+  align-self: center !important;
+  font-family: var(--font-primary);
+  font-variation-settings: 'wght' 900;
+  font-weight: 900;
+  letter-spacing: 0.02em;
 }
 
 .site-footer__col p,
@@ -416,7 +420,7 @@ p {
 }
 
 /* Activate only on tablets and below */
-@media (max-width: 1430px) {
+@media (max-width: 1200px) {
   .mobile-blocker {
     display: flex;
   }

@@ -1480,6 +1480,8 @@ body.light-theme .caption-hover__overlay {
   width: calc(100% + 100% / 5);         /* 5 cols (layout-media) + 1 col = 6 cols (full working area) */
   margin-inline-start: calc(-100% / 5); /* extend right edge into Col 00 */
   margin-top: 0;
+  padding-right: 2.25vw !important;
+  padding-left: 2.25vw !important;
 }
 
 .sticky-wrapper {
@@ -1711,12 +1713,14 @@ body.light-theme .caption-hover__overlay {
 ─────────────────────────────────────────────────────────────── */
 .features-grid-section {
   --fg-pad: clamp(10px, 1.1vw, 20px);
-  grid-column: 1 / -1;
+  grid-column: 1 / -1 !important;
   position: relative;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: repeat(3, auto);
-  gap: var(--rs-grid-gap);
+  grid-template-rows: repeat(5, auto);
+  gap: 1vw;
+  padding-right: 2.25vw !important;
+  padding-left: 2.25vw !important;
 }
 
 .fg-row-sizer {
@@ -1729,6 +1733,8 @@ body.light-theme .caption-hover__overlay {
 .fg-row-sizer--a { grid-row: 1; }
 .fg-row-sizer--b { grid-row: 2; }
 .fg-row-sizer--c { grid-row: 3; }
+.fg-row-sizer--d { grid-row: 4; }
+.fg-row-sizer--e { grid-row: 5; }
 
 .fg-cell {
   position: relative;

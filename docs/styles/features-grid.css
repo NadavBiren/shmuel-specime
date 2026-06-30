@@ -129,7 +129,7 @@ body:not(.light-theme) .fg-cell--angle .fg-angle-lines {
 }
 
 .fg-cell--vector:hover .fg-letter-giant {
-  transform: scale(2.4) translateY(22%);
+  transform: scale(2.5) translateY(35%);
 }
 body:not(.light-theme) .fg-cell--vector:hover { background-color: var(--fg-theme-color); color: var(--color-black); }
 
@@ -396,16 +396,20 @@ body:not(.light-theme) .fg-cell--contrast:hover .fg-contrast-word--he { color: v
   font-size: clamp(44px, 8.5vw, 200px);
   line-height: 1;
 }
-
-/* במצב רגיל (בלי הובר) - שקופית A לבנה, שקופית B מוסתרת בשחור */
-body:not(.light-theme) #fg-ss-b { 
-  color: var(--color-black) !important; 
+/* Default State: A is white, B is black (hidden) */
+body:not(.light-theme) #fg-ss-a,
+body:not(.light-theme) #fg-ss-a * {
+  color: var(--color-white) !important;
 }
-body:not(.light-theme) #fg-ss-a { 
-  color: var(--color-white) !important; 
+body:not(.light-theme) #fg-ss-b,
+body:not(.light-theme) #fg-ss-b * {
+  color: var(--color-black) !important;
 }
 
-/* ברגע שיש הובר - כל השקופיות (גם A וגם B) נצבעות בכתום של הרכיב! */
-body:not(.light-theme) .fg-cell--ss-cycle:hover .fg-ss-slide { 
-  color: var(--fg-theme-color) !important; 
+/* Hover State: Both slides and their children turn Orange. Using IDs so it overrides the default state! */
+body:not(.light-theme) .fg-cell--ss-cycle:hover #fg-ss-a,
+body:not(.light-theme) .fg-cell--ss-cycle:hover #fg-ss-b,
+body:not(.light-theme) .fg-cell--ss-cycle:hover #fg-ss-a *,
+body:not(.light-theme) .fg-cell--ss-cycle:hover #fg-ss-b * {
+  color: var(--fg-theme-color) !important;
 }

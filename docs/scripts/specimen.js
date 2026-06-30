@@ -12,6 +12,12 @@ const glyphMap = {};
 
 // ── DOM Population ────────────────────────────────────
 
+function featureSettingsFor(tag) {
+  if (tag === 'dlig') return '"liga" 1, "dlig" 1';
+  if (tag) return `"${tag}" 1`;
+  return '';
+}
+
 function buildCell(glyph, categoryFeatureTag, categoryDirection) {
   const ft  = glyph.featureTag  || categoryFeatureTag  || null;
   const dir = glyph.direction   || categoryDirection   || null;
@@ -25,7 +31,7 @@ function buildCell(glyph, categoryFeatureTag, categoryDirection) {
   span.textContent = glyph.display;
   span.dataset.glyphName = glyph.glyphName;
   span.setAttribute('aria-hidden', 'true');
-  if (ft)  span.style.setProperty('font-feature-settings', `"${ft}" 1`);
+  if (ft)  span.style.setProperty('font-feature-settings', featureSettingsFor(ft));
   if (dir) span.setAttribute('dir', dir);
   return span;
 }
@@ -115,7 +121,7 @@ function initCharInspector() {
     if (!data) return;
 
     glyphEl.textContent = data.display;
-    glyphEl.style.fontFeatureSettings = data.featureTag ? `"${data.featureTag}" 1` : '';
+    glyphEl.style.fontFeatureSettings = featureSettingsFor(data.featureTag);
     if (data.direction) glyphEl.setAttribute('dir', data.direction);
     else glyphEl.removeAttribute('dir');
 

@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'NovoRelic';
-  src: url('../assets/fonts/shmuel-Regular.ttf') format('truetype');
+  src: url('../assets/fonts/shmuel-Regular.ttf?v=20260630-dlig') format('truetype');
   font-weight: 500 900;
   font-display: block; /* specimen must not flash unstyled */
 }
@@ -369,7 +369,6 @@ p {
   line-height: 0.87 !important;
   font-variation-settings: 'wght' 600;
   font-weight: 600;
-  animation: weightPulse 2.4s infinite alternate ease-in-out;
 }
 
 @keyframes weightPulse {

@@ -109,7 +109,7 @@
 
 .section-try-me {
   background: var(--color-black);
-  padding: 5vh 12vw 6vh;
+  padding: 3vh 12vw 6vh;
   display: flex;
   flex-direction: column;
   gap: 4rem;
@@ -137,7 +137,7 @@
   font-variation-settings: 'wght' 400;
   direction: rtl;
   width: 100%;
-  height: 1.05em;
+  height: auto;
   min-height: 0;
   background: transparent;
   color: var(--color-yellow);
@@ -145,9 +145,10 @@
   border: none;
   outline: none;
   padding: 0;
+  padding-bottom: 0.2em;
   resize: none;
   overflow: hidden;
-  line-height: 1.05;
+  line-height: 0.85;
   transition: font-variation-settings 0.12s ease;
   caret-color: var(--color-pink);
 }
@@ -297,7 +298,8 @@
 
 .charview-inspector .chardata-key,
 .charview-inspector .chardata-val {
-  font-size: calc(var(--size-meta-large) * 0.7);
+  font-size: var(--size-meta-small);
+  line-height: 1.3;
 }
 
 /* ─ Inspector ─────────────────────────────────────── */
@@ -506,7 +508,7 @@
 
 .char-alt-group-label {
   font-family: var(--font-secondary);
-  font-size: 11px;
+  font-size: var(--size-meta-small);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: color-mix(in srgb, var(--color-white) 28%, transparent);
@@ -515,6 +517,7 @@
 }
 
 .char-cell--liga { font-feature-settings: "liga" 1; }
+.char-cell--dlig { font-feature-settings: "liga" 1, "dlig" 1; }
 .char-cell--ss01 { font-feature-settings: "ss01" 1; }
 .char-cell--ss02 { font-feature-settings: "ss02" 1; }
 .char-cell--ss03 { font-feature-settings: "ss03" 1; }

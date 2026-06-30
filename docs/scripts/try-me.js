@@ -9,7 +9,7 @@
 /* ── DEFAULT TEXT ───────────────────────────────────────
    Canonical paragraph used on load and when reset is clicked.
 ─────────────────────────────────────────────────────── */
-const DEFAULT_TEXT = '←←← חבית‭ ‬בירה? Punk IPA 13% מארז‭ ‬סודה 12 ליטר + 6 כוסות & ארגז של יין‭ ‬כתום 12.3% Midbar הפוך על מים {₪28} • מים (₪9)    § וויסקי Glenfiddich 21 בחנויות אספרסו כפול מפולי Arabica →→ חֲלִיטַת תֵּה Wissotzky החל מ־2€ ¾ מצ׳ייסר של Noah №12 ב־18:25';
+const DEFAULT_TEXT = '←←← חבית‭ ‬בירה? Punk IPA 13% מארז‭ ‬סודה 12 ליטר + 6 כוסות & ארגז יין‭ ‬כתום 12.3% Midbar הפוך שיבולת {₪28} • מים (₪9) וויסקי Glenfiddich 21 בחנויות אספרסו כפול מפולי Arabica →→ חֲלִיטַת תֵּה Wissotzky החל מ־2€ ¾ מצ׳ייסר של Noah №12 ב־18:25';
 
 
 /* ── PALETTES ───────────────────────────────────────────
@@ -36,7 +36,7 @@ const state = {
   fontSize:      130,
   fontWeight:    900,
   letterSpacing: 0,
-  lineHeight:    0.8,
+  lineHeight:    0.85,
   textColor:     '#87c540',
   bgColor:       '#0F0E0C',
   align:         'rtl',   // 'rtl' | 'center' | 'ltr'
@@ -761,7 +761,7 @@ function initSliderReloads() {
   const SLIDER_DEFAULTS = {
     'tp-size': { stateKey: 'fontSize',      value: 130,  range: sizeRange,    num: sizeNum },
     'tp-ls':   { stateKey: 'letterSpacing', value: 0,    range: lsRange,      num: lsNum   },
-    'tp-lh':   { stateKey: 'lineHeight',    value: 0.8,  range: lhRange,      num: lhNum   },
+    'tp-lh':   { stateKey: 'lineHeight',    value: 0.85, range: lhRange,      num: lhNum   },
     'tp-wght': { stateKey: 'fontWeight',    value: 900,  range: weightSlider, num: weightSliderOut,
                  onReset: () => setActivePreset(900) },
   };

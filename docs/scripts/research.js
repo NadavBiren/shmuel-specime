@@ -596,7 +596,7 @@ function initSsCycle() {
     { label: 'ss05', feature: '"ss05" 1' },
   ];
 
-  const DISPLAY_MS  = 2500;
+  const DISPLAY_MS  = 1500;
   const TRANSIT_MS  = 1000;
   const EASING      = 'cubic-bezier(0.4, 0, 0.2, 1)';
 
@@ -610,6 +610,11 @@ function initSsCycle() {
 
   function applyItem(slide, item) {
     slide.querySelector('.fg-ss-number').style.fontFeatureSettings = item.feature;
+  }
+
+  function setRole(frontEl, backEl) {
+    frontEl.classList.remove('fg-ss-slide--back');
+    backEl.classList.add('fg-ss-slide--back');
   }
 
   function snap(el, y) {
@@ -629,6 +634,7 @@ function initSsCycle() {
 
   let cur = slideA;
   let nxt = slideB;
+  setRole(cur, nxt);
 
   function advance() {
     const nextIdx  = (currentIdx + 1) % ITEMS.length;
@@ -652,6 +658,7 @@ function initSsCycle() {
     setTimeout(() => {
       snap(cur, '110%');
       [cur, nxt] = [nxt, cur];
+      setRole(cur, nxt);
       currentIdx = nextIdx;
     }, TRANSIT_MS + 80);
   }
@@ -671,6 +678,7 @@ function initSsCycle() {
     cycleTimer = null;
     snap(cur, '0%');
     snap(nxt, '110%');
+    setRole(cur, nxt);
     currentIdx = 0;
     applyItem(cur, ITEMS[0]);
     applyItem(nxt, ITEMS[1]);

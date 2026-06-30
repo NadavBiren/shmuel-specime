@@ -123,13 +123,13 @@ body:not(.light-theme) .fg-cell--angle .fg-angle-lines {
   font-variation-settings: 'wght' 900;
   font-size: clamp(160px, 26vw, 420px);
   line-height: 0.8;
-  transform-origin: center center;
-  transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: top center;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
 }
 
 .fg-cell--vector:hover .fg-letter-giant {
-  transform: scale(2.5) translateY(35%);
+  transform: scale(2.1) translateY(35%);
 }
 body:not(.light-theme) .fg-cell--vector:hover { background-color: var(--fg-theme-color); color: var(--color-black); }
 
@@ -195,7 +195,7 @@ body:not(.light-theme) .fg-cell--variable:hover { color: var(--fg-theme-color); 
 
 .fg-cell--variable .fg-variable-word {
   font-family: var(--font-primary);
-  line-height: 0.8;
+  line-height: 1;
 }
 
 .fg-cell--variable .fg-variable-word span {
@@ -312,8 +312,8 @@ body:not(.light-theme) .fg-cell--i-letter:hover { color: var(--fg-theme-color); 
 }
 @keyframes fgRoof_i {
   0%       { transform: scale(1)   translate(0, 0); }
-  7%, 36%  { transform: scale(2.6) translate(0, -20%); }
-  61%, 72% { transform: scale(2.6) translate(0,  20%); }
+  7%, 36%  { transform: scale(2.6) translate(0, 20%); }
+  61%, 72% { transform: scale(2.6) translate(0, -20%); }
   100%     { transform: scale(1)   translate(0, 0); }
 }
 
@@ -330,7 +330,7 @@ body:not(.light-theme) .fg-cell--i-letter:hover { color: var(--fg-theme-color); 
 body:not(.light-theme) .fg-cell--contrast:hover .fg-contrast-word--he { color: var(--fg-theme-color) !important; }
 .fg-cell--contrast:hover .fg-contrast-word {
   font-size: clamp(70px, 10.6vw, 200px);
-  transform: translateY(-18%);
+  transform: translateY(-10%);
 }
 .fg-cell--contrast:hover .fg-contrast-word--he { font-variation-settings: 'wght' 500; }
 .fg-cell--contrast:hover .fg-contrast-word--en { font-variation-settings: 'wght' 900; }
@@ -347,7 +347,7 @@ body:not(.light-theme) .fg-cell--contrast:hover .fg-contrast-word--he { color: v
 
 .fg-ss-viewport {
   position: absolute;
-  inset: 0;
+  inset: 0 0 0 calc(var(--fg-pad) + 1.5vw);
   overflow: visible;
 }
 
@@ -361,7 +361,13 @@ body:not(.light-theme) .fg-cell--contrast:hover .fg-contrast-word--he { color: v
   gap: 0.15em;
   will-change: transform;
   color: var(--color-white);
+  transform: translateY(110%);
 }
+
+/* CSS-level fallback so slides are correctly positioned even if JS
+   hasn't run yet (or fails) — initSsCycle() overrides via inline style */
+#fg-ss-a { transform: translateY(0%); z-index: 2; }
+#fg-ss-b { transform: translateY(110%); z-index: 1; }
 
 .fg-ss-arrow {
   display: inline-block;
@@ -396,20 +402,44 @@ body:not(.light-theme) .fg-cell--contrast:hover .fg-contrast-word--he { color: v
   font-size: clamp(44px, 8.5vw, 200px);
   line-height: 1;
 }
-/* Default State: A is white, B is black (hidden) */
-body:not(.light-theme) #fg-ss-a,
-body:not(.light-theme) #fg-ss-a * {
+/* Default State: front slide (role-based via .fg-ss-slide--back, kept in sync by
+   initSsCycle()) is white; back slide is muted. Correct regardless of which DOM
+   element (#fg-ss-a / #fg-ss-b) currently holds the front role. */
+body:not(.light-theme) .fg-ss-slide:not(.fg-ss-slide--back),
+body:not(.light-theme) .fg-ss-slide:not(.fg-ss-slide--back) * {
   color: var(--color-white) !important;
 }
-body:not(.light-theme) #fg-ss-b,
-body:not(.light-theme) #fg-ss-b * {
-  color: var(--color-black) !important;
+body:not(.light-theme) .fg-ss-slide--back,
+body:not(.light-theme) .fg-ss-slide--back * {
+  color: var(--color-grey) !important;
 }
 
-/* Hover State: Both slides and their children turn Orange. Using IDs so it overrides the default state! */
-body:not(.light-theme) .fg-cell--ss-cycle:hover #fg-ss-a,
-body:not(.light-theme) .fg-cell--ss-cycle:hover #fg-ss-b,
-body:not(.light-theme) .fg-cell--ss-cycle:hover #fg-ss-a *,
-body:not(.light-theme) .fg-cell--ss-cycle:hover #fg-ss-b * {
+/* Hover State: both slides (front and back, whichever they are) turn Orange. */
+body:not(.light-theme) .fg-cell--ss-cycle:hover .fg-ss-slide,
+body:not(.light-theme) .fg-cell--ss-cycle:hover .fg-ss-slide * {
   color: var(--fg-theme-color) !important;
 }
+
+
+/* ── EDGE BREATHING ROOM ─────────────────────────────────────────
+   .features-grid-section has no side padding so its grid tracks
+   align exactly with the .rs-tab columns above it. To still pull
+   content in from the page edges, inset it via padding on the
+   cells that touch the outer grid lines, not the tracks themselves.
+   dir="rtl": grid-column 1 is the RIGHT page edge, column 6/7 is
+   the LEFT page edge.
+   ─────────────────────────────────────────────────────────────── */
+.fg-cell--endings,
+.fg-cell--variable,
+.fg-cell--weights,
+.fg-cell--contrast {
+  padding-right: calc(var(--fg-pad) + 1.5vw);
+}
+
+.fg-cell--vector,
+.fg-cell--punctuation,
+.fg-cell--clogging {
+  padding-left: calc(var(--fg-pad) + 1.5vw);
+}
+/* .fg-cell--ss-cycle also touches the left edge, but its content is
+   absolutely positioned (ignores padding) — see .fg-ss-viewport inset above. */

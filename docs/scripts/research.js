@@ -213,6 +213,56 @@ async function initSourcesSection() {
 }
 
 
+/* ── SKETCH WEIGHT COMPARE (Section 03) ──────────────────────────
+   mousemove → clip-path wipe, mirrors the sources-viewer logic.
+─────────────────────────────────────────────────────────────── */
+function initSketchWeightCompare() {
+  const viewer = document.getElementById('sketch-weight-compare');
+  if (!viewer) return;
+
+  const overlay = viewer.querySelector('.compare-overlay');
+  const line = viewer.querySelector('.compare-line');
+
+  let splitPct = 50;
+  let leaveRAF = null;
+
+  function applyClip(pct) {
+    if (overlay) overlay.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+  }
+
+  viewer.addEventListener('mousemove', e => {
+    if (leaveRAF) { cancelAnimationFrame(leaveRAF); leaveRAF = null; }
+    const rect = viewer.getBoundingClientRect();
+    splitPct = (e.clientX - rect.left) / rect.width * 100;
+    applyClip(splitPct);
+    if (line) line.style.left = (e.clientX - rect.left) + 'px';
+  });
+
+  viewer.addEventListener('mouseleave', () => {
+    const rect = viewer.getBoundingClientRect();
+    const startSplit = splitPct;
+    const lineStartPx = line ? parseFloat(line.style.left) || rect.width / 2 : 0;
+    const lineTargetPx = rect.width / 2;
+    const duration = 300;
+    const t0 = performance.now();
+    function step(now) {
+      const p = Math.min((now - t0) / duration, 1);
+      const ease = p * (2 - p); // ease-out quad
+      splitPct = startSplit + (50 - startSplit) * ease;
+      applyClip(splitPct);
+      if (line) line.style.left = (lineStartPx + (lineTargetPx - lineStartPx) * ease) + 'px';
+      if (p < 1) { leaveRAF = requestAnimationFrame(step); }
+      else {
+        splitPct = 50;
+        if (overlay) overlay.style.clipPath = '';
+        if (line) line.style.left = '';
+      }
+    }
+    leaveRAF = requestAnimationFrame(step);
+  });
+}
+
+
 /* ── HEADER WEIGHT SCROLL ──────────────────────────────────────────
    Maps each .rs-section__title through wght 500→900 as it scrolls
    from entering the viewport (bottom) to exiting the top.
@@ -712,6 +762,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   initSourcesSection();
+  initSketchWeightCompare();
   initBottomAccordion();
   initScriptComparisonScroll();
   initInfiniteCarousel();

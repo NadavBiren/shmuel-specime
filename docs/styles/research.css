@@ -901,6 +901,73 @@
 }
 
 
+/* ── SKETCH WEIGHT COMPARE (Section 03) — mousemove clip-path slider ── */
+.sketch-weight-compare {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+
+.sketch-weight-compare .compare-base,
+.sketch-weight-compare .compare-overlay {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+}
+
+.sketch-weight-compare .compare-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: inset(0 50% 0 0);
+}
+
+.sketch-weight-compare .compare-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  left: 50%;
+  background-color: var(--rs-fg);
+  pointer-events: none;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+
+/* ── WEIGHTS CROSSFADE (Section 03) — hover opacity fade ──────── */
+.weights-crossfade {
+  position: relative;
+  width: 100%;
+}
+
+.weights-crossfade .img-base,
+.weights-crossfade .img-hover {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.weights-crossfade .img-hover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 4s ease;
+}
+
+.weights-crossfade:hover .img-hover {
+  opacity: 1;
+}
+
+
 /* ── EXIT SECTION ──────────────────────────────────────────── */
 .section-exit {
   min-height: 65vh;
@@ -1716,6 +1783,7 @@ body.light-theme .caption-hover__overlay {
    (indefinite here) — padding-% resolves against the grid AREA's
    width instead, which is exactly what we need.
 ─────────────────────────────────────────────────────────────── */
+/* REVERTED TO PREVIOUS WORKING GRID LAYOUT */
 .features-grid-section {
   --fg-pad: clamp(10px, 1.1vw, 20px);
   grid-column: 1 / -1 !important;
@@ -1723,8 +1791,8 @@ body.light-theme .caption-hover__overlay {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(5, auto);
-  gap: 0;
-  padding-right: 2.5vw !important;
+  gap: 1vw; /* ה-Gap המקורי שהחזיק את המבנה */
+  padding-right: 2.5vw !important; /* החזרה ל-2.5vw כפי שביקשת */
   padding-left: 2.5vw !important;
 }
 
@@ -1741,13 +1809,14 @@ body.light-theme .caption-hover__overlay {
 .fg-row-sizer--d { grid-row: 4; }
 .fg-row-sizer--e { grid-row: 5; }
 
+/* REVERTED CELL STYLING */
 .fg-cell {
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
-  padding: calc(var(--fg-pad) * 1.5);
-  margin-top: -1px;
-  margin-left: -1px;
+  padding: var(--fg-pad); /* חזרה ל-Padding המקורי */
+  margin-top: 0;   /* הסרת ה-negative margin */
+  margin-left: 0;  /* הסרת ה-negative margin */
   border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
   display: flex;
   align-items: center;

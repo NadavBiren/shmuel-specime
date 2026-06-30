@@ -49,7 +49,7 @@ body:not(.light-theme) .features-grid-section .fg-cell:hover .caption-hover__ove
   z-index: 1;
 }
 .fg-cell--endings:hover .fg-endings-circle { opacity: 1; }
-.fg-endings-circle--tr { right: 130px; top: 15px; }
+.fg-endings-circle--tr { right: 150px; top: 15px; }
 .fg-endings-circle--tl { left: -10px; top: 45px; }
 body:not(.light-theme) .fg-endings-circle { border: none; background-color: var(--fg-theme-color); }
 
@@ -129,7 +129,7 @@ body:not(.light-theme) .fg-cell--angle .fg-angle-lines {
 }
 
 .fg-cell--vector:hover .fg-letter-giant {
-  transform: scale(2.1) translateY(35%);
+  transform: scale(2.1) translateY(5%);
 }
 body:not(.light-theme) .fg-cell--vector:hover { background-color: var(--fg-theme-color); color: var(--color-black); }
 
@@ -170,16 +170,16 @@ body:not(.light-theme) .fg-cell--roofs:hover { color: var(--fg-theme-color); }
 
 @keyframes fgRoofHe {
   0%        { transform: scale(1)   translate(22%, 0); }
-  10%, 32%  { transform: scale(4.5) translate(22%, 15%); }
-  42%, 65%  { transform: scale(4.5) translate(22%, -15%); }
-  75%, 100% { transform: scale(1)   translate(22%, 0); }
+  5%, 16%   { transform: scale(4.5) translate(22%, 15%); }
+  21%, 33%  { transform: scale(4.5) translate(22%, -15%); }
+  38%, 100% { transform: scale(1)   translate(22%, 0); }
 }
 
 @keyframes fgRoofEn {
   0%        { transform: scale(1)   translate(0, 0); }
-  10%, 32%  { transform: scale(4.5) translate(15%, 0); }
-  42%, 65%  { transform: scale(4.5) translate(-28%, 0); }
-  75%, 100% { transform: scale(1)   translate(0, 0); }
+  5%, 16%   { transform: scale(4.5) translate(15%, 0); }
+  21%, 33%  { transform: scale(4.5) translate(-28%, 0); }
+  38%, 100% { transform: scale(1)   translate(0, 0); }
 }
 
 
@@ -311,10 +311,10 @@ body:not(.light-theme) .fg-cell--i-letter:hover { color: var(--fg-theme-color); 
   animation: fgRoof_i 7s ease-in-out 0.5s infinite;
 }
 @keyframes fgRoof_i {
-  0%       { transform: scale(1)   translate(0, 0); }
-  7%, 36%  { transform: scale(2.6) translate(0, 20%); }
-  61%, 72% { transform: scale(2.6) translate(0, -20%); }
-  100%     { transform: scale(1)   translate(0, 0); }
+  0%        { transform: scale(1)   translate(0, 0); }
+  4%, 19%   { transform: scale(2.6) translate(0, 20%); }
+  32%, 38%  { transform: scale(2.6) translate(0, -20%); }
+  52%, 100% { transform: scale(1)   translate(0, 0); }
 }
 
 /* ── e3-e6 — CONTRAST ────────────────────────────────────── */
@@ -347,7 +347,7 @@ body:not(.light-theme) .fg-cell--contrast:hover .fg-contrast-word--he { color: v
 
 .fg-ss-viewport {
   position: absolute;
-  inset: 0 0 0 calc(var(--fg-pad) + 1.5vw);
+  inset: 0;
   overflow: visible;
 }
 
@@ -399,8 +399,13 @@ body:not(.light-theme) .fg-cell--contrast:hover .fg-contrast-word--he { color: v
 .fg-ss-number {
   font-family: var(--font-primary);
   font-variation-settings: 'wght' 700;
-  font-size: clamp(44px, 8.5vw, 200px);
+  font-size: 7.8vw;
   line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
 }
 /* Default State: front slide (role-based via .fg-ss-slide--back, kept in sync by
    initSsCycle()) is white; back slide is muted. Correct regardless of which DOM

@@ -4,13 +4,40 @@
    typography layers, and hover micro-interactions.
    ===================================================== */
 
+.features-grid-section * {
+  font-variant-ligatures: none !important;
+}
+
+/* ── DARK THEME CELL COLORS ──────────────────────────────────── */
+body:not(.light-theme) .fg-cell--endings     { --fg-theme-color: var(--color-pink); }
+body:not(.light-theme) .fg-cell--angle       { --fg-theme-color: var(--color-yellow); }
+body:not(.light-theme) .fg-cell--vector      { --fg-theme-color: var(--color-green); }
+body:not(.light-theme) .fg-cell--roofs       { --fg-theme-color: var(--color-green); }
+body:not(.light-theme) .fg-cell--variable    { --fg-theme-color: var(--color-orange); }
+body:not(.light-theme) .fg-cell--clogging    { --fg-theme-color: var(--color-pink); }
+body:not(.light-theme) .fg-cell--punctuation { --fg-theme-color: var(--color-yellow); }
+body:not(.light-theme) .fg-cell--weights     { --fg-theme-color: var(--color-orange); }
+body:not(.light-theme) .fg-cell--i-letter    { --fg-theme-color: var(--color-green); }
+body:not(.light-theme) .fg-cell--contrast    { --fg-theme-color: var(--color-yellow); }
+body:not(.light-theme) .fg-cell--ss-cycle    { --fg-theme-color: var(--color-orange); }
+
+/* Apply colored borders and custom captions only on hover in dark theme */
+body:not(.light-theme) .features-grid-section .fg-cell:hover {
+  border-color: var(--fg-theme-color) !important;
+}
+body:not(.light-theme) .features-grid-section .fg-cell:not(:hover) {
+  border-color: color-mix(in srgb, var(--color-white) 14%, transparent) !important;
+}
+body:not(.light-theme) .features-grid-section .fg-cell:hover .caption-hover__overlay {
+  background-color: var(--color-black);
+  color: var(--fg-theme-color, var(--color-white));
+}
+
 /* ── a1-a2 — ENDINGS COMPARISON ──────────────────────────────── */
 .fg-cell--endings { grid-column: 1 / 3; grid-row: 1; gap: 0; align-items: stretch; }
 
 .fg-endings-circle {
   position: absolute;
-  top: 0;
-  margin: 15px;
   width: 100px;
   height: 100px;
   border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
@@ -18,10 +45,13 @@
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.4s ease;
+  margin: 0;
+  z-index: 1;
 }
 .fg-cell--endings:hover .fg-endings-circle { opacity: 1; }
-.fg-endings-circle--tr { right: 0; }
-.fg-endings-circle--tl { left: 0; }
+.fg-endings-circle--tr { right: 130px; top: 15px; }
+.fg-endings-circle--tl { left: -10px; top: 45px; }
+body:not(.light-theme) .fg-endings-circle { border: none; background-color: var(--fg-theme-color); }
 
 .fg-endings-half {
   flex: 1 1 50%;
@@ -32,6 +62,8 @@
   overflow: hidden;
   padding-bottom: 0;
   padding-top: 5%;
+  z-index: 2;
+  position: relative;
 }
 
 .fg-cell--endings .fg-letter {
@@ -47,8 +79,8 @@
 .fg-cell--endings .fg-letter--he { font-size: clamp(70px, 9vw, 180px); }
 .fg-cell--endings .fg-letter--en { font-size: clamp(60px, 8vw, 160px); }
 
-.fg-cell--endings:hover .fg-letter--he { transform: scale(3.5) translateY(10%); }
-.fg-cell--endings:hover .fg-letter--en { transform: scale(3.5) translateY(10%); }
+.fg-cell--endings:hover .fg-letter--he { transform: scale(3.5) translateY(15%); }
+.fg-cell--endings:hover .fg-letter--en { transform: scale(3.5) translateY(20%); }
 
 
 /* ── a3-a5 — 5-DEGREE ANGLE ──────────────────────────────────── */
@@ -78,37 +110,51 @@
 }
 
 .fg-cell--angle:hover .fg-angle-lines  { opacity: 0.5; }
+body:not(.light-theme) .fg-cell--angle .fg-angle-lines {
+  background-image: repeating-linear-gradient(-85deg, color-mix(in srgb, var(--fg-theme-color) 50%, transparent) 0, color-mix(in srgb, var(--fg-theme-color) 50%, transparent) 1.5px, transparent 1.5px, transparent 28px);
+}
 
 
 /* ── a6-b6 — MODERN VECTOR DRAWING ───────────────────────────── */
-.fg-cell--vector { grid-column: 6 / 7; grid-row: 1 / 3; }
+.fg-cell--vector { grid-column: 6 / 7; grid-row: 1 / 3; transition: background-color 0.4s ease, color 0.4s ease; }
 
 .fg-cell--vector .fg-letter-giant {
   font-family: var(--font-primary);
   font-variation-settings: 'wght' 900;
   font-size: clamp(160px, 26vw, 420px);
   line-height: 0.8;
-  transform-origin: 50% 0%; /* apex of the ascender — tune against the live glyph */
+  transform-origin: center center;
   transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
 }
 
 .fg-cell--vector:hover .fg-letter-giant {
-  transform: scale(2.4) translateY(4%);
+  transform: scale(2.4) translateY(22%);
 }
+body:not(.light-theme) .fg-cell--vector:hover { background-color: var(--fg-theme-color); color: var(--color-black); }
 
 
 /* ── b4-b5 — FLAT ROOFS VS. ANGLED BASES ─────────────────────── */
-.fg-cell--roofs { grid-column: 4 / 6; grid-row: 2 / 4; gap: 0; }
+.fg-cell--roofs { grid-column: 4 / 6; grid-row: 2 / 4; gap: 0; transition: color 0.4s ease; }
+body:not(.light-theme) .fg-cell--roofs:hover { color: var(--fg-theme-color); }
+
+.fg-roofs-half {
+  flex: 1 1 50%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .fg-cell--roofs .fg-roof-letter {
-  flex: 1 1 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-primary);
   font-variation-settings: 'wght' 800;
   line-height: 1;
+  transform: translateY(-4%);
   animation-duration: 10s;
   animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
@@ -123,17 +169,17 @@
 .fg-cell--roofs:hover .fg-roof-letter--en { animation-name: fgRoofEn; animation-play-state: running; }
 
 @keyframes fgRoofHe {
-  0%       { transform: scale(1) translate(0, 0); }
-  10%, 32% { transform: scale(4.5) translate(0, -15%); }
-  42%, 65% { transform: scale(4.5) translate(0, 15%); }
-  75%, 100%{ transform: scale(1) translate(0, 0); }
+  0%        { transform: scale(1)   translate(22%, 0); }
+  10%, 32%  { transform: scale(4.5) translate(22%, 15%); }
+  42%, 65%  { transform: scale(4.5) translate(22%, -15%); }
+  75%, 100% { transform: scale(1)   translate(22%, 0); }
 }
 
 @keyframes fgRoofEn {
-  0%       { transform: scale(1) translate(0, 0); }
-  10%, 32% { transform: scale(4.5) translate(5%, -15%); }
-  42%, 65% { transform: scale(4.5) translate(5%, 15%); }
-  75%, 100%{ transform: scale(1) translate(0, 0); }
+  0%        { transform: scale(1)   translate(0, 0); }
+  10%, 32%  { transform: scale(4.5) translate(15%, 0); }
+  42%, 65%  { transform: scale(4.5) translate(-28%, 0); }
+  75%, 100% { transform: scale(1)   translate(0, 0); }
 }
 
 
@@ -143,11 +189,13 @@
   grid-row: 2 / 4;
   flex-direction: column;
   justify-content: space-around;
+  transition: color 0.4s ease;
 }
+body:not(.light-theme) .fg-cell--variable:hover { color: var(--fg-theme-color); }
 
 .fg-cell--variable .fg-variable-word {
   font-family: var(--font-primary);
-  line-height: 1;
+  line-height: 0.8;
 }
 
 .fg-cell--variable .fg-variable-word span {
@@ -171,7 +219,7 @@
   font-size: clamp(80px, 12vw, 240px);
   letter-spacing: 0.01em;
   line-height: 0.8;
-  transition: transform 0.4s ease, font-variation-settings 0.25s ease-out;
+  transition: transform 0.4s ease, font-variation-settings 0.25s ease-out, color 0.25s ease-out;
 }
 
 .fg-cell--clogging .fg-clog-arrow {
@@ -191,6 +239,7 @@
 }
 .fg-clog-arrow--right { right: var(--fg-pad); }
 .fg-clog-arrow--left { left: var(--fg-pad); }
+body:not(.light-theme) .fg-cell--clogging .fg-clog-arrow { color: var(--fg-theme-color); }
 
 .fg-cell--clogging:hover .fg-clog-arrow {
   opacity: 1;
@@ -200,10 +249,12 @@
 .fg-cell--clogging:hover .fg-clog-letter {
   transform: translateY(-18%);
 }
+.fg-cell--clogging:not(:hover) .fg-clog-letter { color: var(--color-white) !important; }
+body:not(.light-theme) .fg-cell--clogging.is-heavy .fg-clog-letter { color: var(--fg-theme-color); }
 
 
 .fg-cell--weights { grid-column: 1 / 3; grid-row: 4; gap: 0; }
-.fg-w-wrapper { display: flex; position: relative; gap: 2vw; justify-content: center; }
+.fg-w-wrapper { display: flex; position: relative; gap: 2vw; justify-content: center; margin-top: -10%; }
 .fg-w-letter {
   font-family: var(--font-primary);
   font-size: clamp(80px, 12vw, 240px);
@@ -220,10 +271,12 @@
 .fg-w-lines::before, .fg-w-lines::after { content: ''; position: absolute; left: -15%; right: -15%; border-top: 1px solid currentColor; }
 .fg-w-lines::before { top: 22%; }
 .fg-w-lines::after { bottom: 18.6%; }
+body:not(.light-theme) .fg-w-lines::before,
+body:not(.light-theme) .fg-w-lines::after { border-color: var(--fg-theme-color); }
 .fg-cell--weights:hover .fg-w-lines { opacity: 0.3; }
 
 .fg-w-letter--A { font-variation-settings: 'wght' 900; animation-name: wghtPulseA; }
-.fg-w-letter--Aleph { font-variation-settings: 'wght' 700; animation-name: wghtPulseAleph; }
+.fg-w-letter--Aleph { font-variation-settings: 'wght' 700; animation-name: wghtPulseAleph; margin-left: -7px; }
 .fg-w-letter--a { font-variation-settings: 'wght' 500; animation-name: wghtPulse_a; }
 
 @keyframes wghtPulseA { 0% { font-variation-settings: 'wght' 900; } 100% { font-variation-settings: 'wght' 500; } }
@@ -232,7 +285,8 @@
 
 
 /* ── c6 — PUNCTUATION ────────────────────────────────────── */
-.fg-cell--punctuation { grid-column: 6 / 7; grid-row: 3; justify-content: center; }
+.fg-cell--punctuation { grid-column: 6 / 7; grid-row: 3; justify-content: center; transition: background-color 0.4s ease, color 0.4s ease; }
+body:not(.light-theme) .fg-cell--punctuation:hover { background-color: var(--fg-theme-color); color: var(--color-black); }
 .fg-punct {
   font-family: var(--font-primary);
   font-variation-settings: 'wght' 500;
@@ -245,23 +299,22 @@
 .fg-cell--punctuation:hover .fg-punct { animation-play-state: running; }
 
 /* ── d3 — i LETTER ───────────────────────────────────────── */
-.fg-cell--i-letter { grid-column: 3 / 4; grid-row: 4; justify-content: center; }
+.fg-cell--i-letter { grid-column: 3 / 4; grid-row: 4; justify-content: center; transition: color 0.4s ease; }
+body:not(.light-theme) .fg-cell--i-letter:hover { color: var(--fg-theme-color); }
 .fg-i-letter {
   font-family: var(--font-primary);
   font-variation-settings: 'wght' 800;
   font-size: clamp(80px, 11vw, 220px);
   line-height: 1;
-  animation-duration: 6s;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-  animation-play-state: paused;
 }
-.fg-cell--i-letter:hover .fg-i-letter { animation-name: fgRoof_i; animation-play-state: running; }
+.fg-cell--i-letter:hover .fg-i-letter {
+  animation: fgRoof_i 7s ease-in-out 0.5s infinite;
+}
 @keyframes fgRoof_i {
-  0%       { transform: scale(1) translate(0, 0); }
-  10%, 32% { transform: scale(2.6) translate(0, 20%); }
-  42%, 65% { transform: scale(2.6) translate(0, -20%); }
-  75%, 100%{ transform: scale(1) translate(0, 0); }
+  0%       { transform: scale(1)   translate(0, 0); }
+  7%, 36%  { transform: scale(2.6) translate(0, -20%); }
+  61%, 72% { transform: scale(2.6) translate(0,  20%); }
+  100%     { transform: scale(1)   translate(0, 0); }
 }
 
 /* ── e3-e6 — CONTRAST ────────────────────────────────────── */
@@ -271,10 +324,88 @@
   font-variation-settings: 'wght' 700;
   font-size: clamp(50px, 7vw, 140px);
   line-height: 1;
-  transition: font-variation-settings 0.5s ease, font-size 0.5s ease;
+  transition: font-variation-settings 0.5s ease, font-size 0.5s ease, transform 0.5s ease;
 }
+.fg-contrast-word--he { color: var(--color-white) !important; }
+body:not(.light-theme) .fg-cell--contrast:hover .fg-contrast-word--he { color: var(--fg-theme-color) !important; }
 .fg-cell--contrast:hover .fg-contrast-word {
   font-size: clamp(70px, 10.6vw, 200px);
+  transform: translateY(-18%);
 }
 .fg-cell--contrast:hover .fg-contrast-word--he { font-variation-settings: 'wght' 500; }
 .fg-cell--contrast:hover .fg-contrast-word--en { font-variation-settings: 'wght' 900; }
+
+
+/* ── col 6, rows 5-6 — STYLISTIC SETS CYCLE ─────────────────── */
+.fg-cell--ss-cycle {
+  grid-column: 5 / 7;
+  grid-row: 5;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+}
+
+.fg-ss-viewport {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+
+.fg-ss-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15em;
+  will-change: transform;
+  color: var(--color-white);
+}
+
+.fg-ss-arrow {
+  display: inline-block;
+  font-family: var(--font-primary);
+  font-size: 1em;
+  vertical-align: baseline;
+}
+
+.fg-ss-label-overlay {
+  position: absolute;
+  top: var(--fg-pad);
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: var(--font-secondary);
+  font-size: var(--size-meta-small);
+  letter-spacing: var(--tracking-mono);
+  font-weight: 400;
+  color: var(--color-white);
+  opacity: 0;
+  transition: opacity 400ms ease;
+  z-index: 2;
+  pointer-events: none;
+}
+.fg-ss-label-overlay.is-visible {
+  opacity: 0.5;
+}
+
+.fg-ss-number {
+  font-family: var(--font-primary);
+  font-variation-settings: 'wght' 700;
+  font-size: clamp(44px, 8.5vw, 200px);
+  line-height: 1;
+}
+
+/* במצב רגיל (בלי הובר) - שקופית A לבנה, שקופית B מוסתרת בשחור */
+body:not(.light-theme) #fg-ss-b { 
+  color: var(--color-black) !important; 
+}
+body:not(.light-theme) #fg-ss-a { 
+  color: var(--color-white) !important; 
+}
+
+/* ברגע שיש הובר - כל השקופיות (גם A וגם B) נצבעות בכתום של הרכיב! */
+body:not(.light-theme) .fg-cell--ss-cycle:hover .fg-ss-slide { 
+  color: var(--fg-theme-color) !important; 
+}

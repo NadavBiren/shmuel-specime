@@ -1675,3 +1675,8 @@
 font-size: clamp(1rem, 4.3vw, 5VW);
   will-change: font-variation-settings;
 }
+
+.hc-tr .hc-box:last-child {
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0;
+}

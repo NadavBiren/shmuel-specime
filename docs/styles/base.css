@@ -238,8 +238,9 @@ p {
 }
 
 .site-footer__title {
-  display: flex !important;
-  justify-content: space-between !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: clamp(1.5rem, 3vw, 3rem) !important;
   align-items: baseline !important;
   width: 100% !important;
   font-family: var(--font-primary);
@@ -251,7 +252,19 @@ p {
   color: var(--color-black);
 }
 
-.footer-title-he {
+.footer-title-he { grid-column: 1; }
+.footer-title-en { grid-column: 2; text-align: right; letter-spacing: 0.02em; }
+
+.site-footer_title-he {
+  font-family: var(--font-primary);
+  font-variation-settings: 'wght' 700;
+  font-size: clamp(32px, 4.5vw, 90px);
+}
+
+.site-footer_title-en {
+  font-family: var(--font-primary);
+  font-variation-settings: 'wght' 700;
+  font-size: clamp(32px, 4.5vw, 90px);
   text-align: right;
 }
 

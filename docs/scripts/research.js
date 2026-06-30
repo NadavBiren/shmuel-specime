@@ -583,6 +583,108 @@ function initStickyBars() {
 }
 
 
+/* ── STYLISTIC SETS CYCLE ──────────────────────────────────────
+─────────────────────────────────────────────────────────────── */
+function initSsCycle() {
+  const cell = document.getElementById('fg-ss-cycle');
+  if (!cell) return;
+
+  const ITEMS = [
+    { label: '',     feature: 'normal' },
+    { label: 'ss03', feature: '"ss03" 1' },
+    { label: 'ss04', feature: '"ss04" 1' },
+    { label: 'ss05', feature: '"ss05" 1' },
+  ];
+
+  const DISPLAY_MS  = 2500;
+  const TRANSIT_MS  = 1000;
+  const EASING      = 'cubic-bezier(0.4, 0, 0.2, 1)';
+
+  let currentIdx = 0;
+
+  const slideA = document.getElementById('fg-ss-a');
+  const slideB = document.getElementById('fg-ss-b');
+  if (!slideA || !slideB) return;
+
+  const labelOverlay = document.getElementById('fg-ss-label-overlay');
+
+  function applyItem(slide, item) {
+    slide.querySelector('.fg-ss-number').style.fontFeatureSettings = item.feature;
+  }
+
+  function snap(el, y) {
+    el.style.transition = 'none';
+    el.style.transform  = `translateY(${y})`;
+  }
+
+  function slide(el, y) {
+    el.style.transition = `transform ${TRANSIT_MS}ms ${EASING}`;
+    el.style.transform  = `translateY(${y})`;
+  }
+
+  applyItem(slideA, ITEMS[0]);
+  snap(slideA, '0%');
+  applyItem(slideB, ITEMS[1]);
+  snap(slideB, '110%');
+
+  let cur = slideA;
+  let nxt = slideB;
+
+  function advance() {
+    const nextIdx  = (currentIdx + 1) % ITEMS.length;
+    const nextItem = ITEMS[nextIdx];
+    applyItem(nxt, nextItem);
+
+    if (labelOverlay) {
+      labelOverlay.textContent = nextItem.label;
+      labelOverlay.classList.toggle('is-visible', !!nextItem.label);
+    }
+
+    snap(nxt, '110%');
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        slide(cur, '-110%');
+        slide(nxt, '0%');
+      });
+    });
+
+    setTimeout(() => {
+      snap(cur, '110%');
+      [cur, nxt] = [nxt, cur];
+      currentIdx = nextIdx;
+    }, TRANSIT_MS + 80);
+  }
+
+  let cycleTimer = null;
+
+  function startCycle() {
+    if (cycleTimer) return;
+    cycleTimer = setTimeout(function tick() {
+      advance();
+      cycleTimer = setTimeout(tick, DISPLAY_MS + TRANSIT_MS);
+    }, 500);
+  }
+
+  function stopCycle() {
+    clearTimeout(cycleTimer);
+    cycleTimer = null;
+    snap(cur, '0%');
+    snap(nxt, '110%');
+    currentIdx = 0;
+    applyItem(cur, ITEMS[0]);
+    applyItem(nxt, ITEMS[1]);
+    if (labelOverlay) {
+      labelOverlay.textContent = '';
+      labelOverlay.classList.remove('is-visible');
+    }
+  }
+
+  cell.addEventListener('mouseenter', startCycle);
+  cell.addEventListener('mouseleave', stopCycle);
+}
+
+
 /* ── INIT ──────────────────────────────────────────────────────
 ─────────────────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
@@ -606,6 +708,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initScriptComparisonScroll();
   initInfiniteCarousel();
   initSketchSequence();
+  initSsCycle();
   /* initSourcesMagnet — removed: CSS scroll-snap handles this */
 
   const heroEl = document.getElementById('heroWebglMount');
@@ -665,6 +768,11 @@ function initFeaturesGridWeight() {
     letters.forEach(el => {
       el.style.fontVariationSettings = `'wght' ${Math.round(wght)}`;
     });
+    if (wght > 760) {
+      cell.classList.add('is-heavy');
+    } else {
+      cell.classList.remove('is-heavy');
+    }
   }
 
   cell.addEventListener('mousemove', (e) => {

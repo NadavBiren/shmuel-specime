@@ -498,7 +498,6 @@
     <div class="layout-text">
       <p>נובורליק NovoRelic הוא פונט לתצוגה ולכותרות, המיועד לייצר נוכחות ויזואלית חזקה ולא נועד לקריאה של גוף טקסט ארוך. האנטומיה שלו מזקקת את העקרונות המגדירים את הכתב הבינוני: גגות ישרים, בסיסים מעוגלים וחללים פנימיים מצומצמים ועקביים המייצרים ריתמוס צפוף ומובהק.</p>
       <p>ציר הווריאציה של הפונט (משקל 500–900) מאפשר שליטה מלאה בעובי האות, תוך שמירה על ה״שלד״ המשותף לסגנון. העיצוב אינו מחקה מסמך היסטורי ספציפי, אלא מייצג מערכת המבוססת על עובי קו מדוד וסריפים בעלי מקור קליגרפי ברור, שאינם מסוגננים באופן מלאכותי אלא נובעים מהלוגיקה של תנועת הקולמוס.</p>
-      <p>מעבר לצד הטכני, ״נובורליק NovoRelic״ הוא ניסיון מחקרי לבדוק האם כתב שנעלם כמעט לחלוטין לפני כחמש מאות שנה יכול להפוך לכלי עבודה פונקציונלי ורלוונטי ב־2026. הפרויקט מציע נקודת אמצע מוגדרת: מחויבות מלאה לעקרונות האנטומיים והקליגרפיים של המקור, לצד חופש עיצובי מכוון בפרטים הקטנים כדי להבטיח את שימושיותו במרחב העיצובי והדיגיטלי העכשווי.</p>
     </div>
 
         <!-- ── FEATURES GRID — Section 5 ───────────────────────── -->
@@ -539,8 +538,12 @@
 
           <!-- b4-b5 — Flat Roofs vs. Angled Bases -->
           <div class="fg-cell fg-cell--roofs caption-hover">
-            <span class="fg-roof-letter fg-roof-letter--he" aria-hidden="true">ת</span>
-            <span class="fg-roof-letter fg-roof-letter--en" dir="ltr" aria-hidden="true">k</span>
+            <div class="fg-roofs-half">
+              <span class="fg-roof-letter fg-roof-letter--he" aria-hidden="true">ת</span>
+            </div>
+            <div class="fg-roofs-half">
+              <span class="fg-roof-letter fg-roof-letter--en" dir="ltr" aria-hidden="true">k</span>
+            </div>
             <div class="caption-hover__overlay">הגגות ישרים אל מול הבסיסים העגולים בלטינית, משום שאין גגות, התנועה צומחת מהחלק הישר האנכי של האות.</div>
           </div>
 
@@ -587,10 +590,26 @@
           <div class="fg-cell fg-cell--contrast caption-hover">
             <span class="fg-contrast-word fg-contrast-word--he">קונטרסט</span>
             <span class="fg-contrast-word fg-contrast-word--en" dir="ltr">contrast</span>
-            <div class="caption-hover__overlay">קונטקסט רגיל</div>
+            <div class="caption-hover__overlay">ההבדלים בין העבה לדק נצמדים לצורת הכתיבה של הכלי ושומרת על ההבדלי עובי (״קונטרסט״) מסוג רגיל</div>
+          </div>
+
+          <div class="fg-cell fg-cell--ss-cycle" id="fg-ss-cycle">
+            <div class="fg-ss-label-overlay" id="fg-ss-label-overlay"></div>
+            <div class="fg-ss-viewport">
+              <div class="fg-ss-slide" id="fg-ss-a">
+                <span class="fg-ss-number"><span class="fg-ss-arrow">←</span>1982</span>
+              </div>
+              <div class="fg-ss-slide" id="fg-ss-b">
+                <span class="fg-ss-number"><span class="fg-ss-arrow">←</span>1982</span>
+              </div>
+            </div>
           </div>
 
         </div><!-- /features-grid-section -->
+
+    <div class="layout-text">
+      <p>מעבר לצד הטכני, ״נובורליק NovoRelic״ הוא ניסיון מחקרי לבדוק האם כתב שנעלם כמעט לחלוטין לפני כחמש מאות שנה יכול להפוך לכלי עבודה פונקציונלי ורלוונטי ב־2026. הפרויקט מציע נקודת אמצע מוגדרת: מחויבות מלאה לעקרונות הצורניים והקליגרפיים של המקור, לצד חופש עיצובי מכוון בפרטים הקטנים כדי להבטיח את שימושיותו במרחב העיצובי והדיגיטלי העכשווי.</p>
+    </div>
 
           </div>
         </section>
@@ -614,6 +633,7 @@
   <footer class="site-footer" dir="rtl">
     <div class="site-footer__title">
       <span class="footer-title-he">נובורליק</span>
+      <span class="footer-title-en" dir="ltr">NovoRelic</span>
     </div>
     <div class="site-footer__columns">
       <div class="site-footer__col">
@@ -621,7 +641,6 @@
         <img class="site-footer__logo" src="assets/images/footer/bezalel-logo.png" alt="בצלאל אקדמיה לאמנות ועיצוב">
       </div>
       <div class="site-footer__col">
-        <span class="footer-col-brand" dir="ltr">NovoRelic</span>
         <span>עיצוב: נדב בירנבוים</span>
         <span>הנחיה: דניאל גרומר וענת גוטברג</span>
         <span>פונט משני באתר: סימפלר פרו, באדיבות מיכל סהר והגילדה</span>

@@ -49,8 +49,8 @@ body:not(.light-theme) .features-grid-section .fg-cell:hover .caption-hover__ove
   z-index: 1;
 }
 .fg-cell--endings:hover .fg-endings-circle { opacity: 1; }
-.fg-endings-circle--tr { right: 150px; top: 15px; }
-.fg-endings-circle--tl { left: -10px; top: 45px; }
+.fg-endings-circle--tr { right: 30%; top: 30px; }
+.fg-endings-circle--tl { left: -10px; top:60px; }
 body:not(.light-theme) .fg-endings-circle { border: none; background-color: var(--fg-theme-color); }
 
 .fg-endings-half {

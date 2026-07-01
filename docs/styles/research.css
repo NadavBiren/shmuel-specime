@@ -146,8 +146,10 @@
   margin-top: calc(-1 * var(--tab-height, 80px));
   pointer-events: none;
   background-color: transparent;
-  display: flex;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0;
+  align-items: start;
   margin-bottom: 0;
 }
 
@@ -193,8 +195,6 @@
 ─────────────────────────────────────────────────────────────── */
 .rs-tab {
   height: var(--tab-height, 80px);
-  width: calc(100% / 6);
-  flex-shrink: 0;
   border-top: 1px solid var(--tab-accent);
   border-left: 1px solid var(--tab-accent);
   border-right: 1px solid var(--tab-accent);
@@ -244,11 +244,18 @@
 
 /* Each tab lives in its own per-section .rs-tab-bar; margin-right pushes it to its grid column.
    Tab 00 is position:absolute in col 1 (rightmost); section tabs occupy cols 2–6 via margin-right. */
-.rs-tab-0 { --tab-accent: var(--color-orange); margin-right: calc(1 * 100% / 6); }
-.rs-tab-1 { --tab-accent: var(--color-green);  margin-right: calc(2 * 100% / 6); }
-.rs-tab-2 { --tab-accent: var(--color-pink);   margin-right: calc(3 * 100% / 6); }
-.rs-tab-3 { --tab-accent: var(--color-yellow); margin-right: calc(4 * 100% / 6); }
-.rs-tab-4 { --tab-accent: var(--color-white);  margin-right: calc(5 * 100% / 6); }
+.rs-tab-0 { --tab-accent: var(--color-orange); }
+.rs-tab-1 { --tab-accent: var(--color-green);  }
+.rs-tab-2 { --tab-accent: var(--color-pink);   }
+.rs-tab-3 { --tab-accent: var(--color-yellow); }
+.rs-tab-4 { --tab-accent: var(--color-white);  }
+
+/* Grid column placements — RTL: line 1 = rightmost, Tab 00 holds col 1 via fixed position */
+.rs-tab-bar .rs-tab-0 { grid-column: 2 / 3; }
+.rs-tab-bar .rs-tab-1 { grid-column: 3 / 4; }
+.rs-tab-bar .rs-tab-2 { grid-column: 4 / 5; }
+.rs-tab-bar .rs-tab-3 { grid-column: 5 / 6; }
+.rs-tab-bar .rs-tab-4 { grid-column: 6 / 7; }
 
 /* ── TAB 00 — fixed overlay label, col 1 (rightmost) ───────────────────────────────────
    Lives outside any .rs-tab-bar. Fixed so it occupies col-1 without affecting the layout
@@ -1067,6 +1074,7 @@
   top: 0;
   right: 0;
   height: 30px;
+  width: calc(100% / 6);
   background-color: var(--color-black);
   color: var(--tab-accent);
   align-items: flex-start;
@@ -1105,8 +1113,9 @@
 }
 
 /* ── TAB 05 FULL BLEED — extends to absolute left viewport edge ─────────── */
+/* width removed: in grid context 100% = one 1fr column, not the full bar.
+   margin-left: -2.5vw creates the bleed via negative end-margin in grid layout. */
 .rs-tab-bar .rs-tab-4 {
-  width: calc(100% / 6 + 2.5vw);
   margin-left: -2.5vw;
   border-left: none;
 }
@@ -1791,9 +1800,24 @@ body.light-theme .caption-hover__overlay {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(5, auto);
-  gap: 1vw; /* ה-Gap המקורי שהחזיק את המבנה */
-  padding-right: 2.5vw !important; /* החזרה ל-2.5vw כפי שביקשת */
-  padding-left: 2.5vw !important;
+  gap: 0;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+}
+
+/* Right border via ::after so it doesn't eat into the content area.
+   border-right: 1px on the container (box-sizing:border-box) would reduce the
+   inner 1fr track widths by 1px total, drifting columns away from tab alignment. */
+.features-grid-section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1px;
+  height: 100%;
+  background-color: color-mix(in srgb, currentColor 14%, transparent);
+  pointer-events: none;
 }
 
 .fg-row-sizer {
@@ -1814,10 +1838,10 @@ body.light-theme .caption-hover__overlay {
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
-  padding: var(--fg-pad); /* חזרה ל-Padding המקורי */
-  margin-top: 0;   /* הסרת ה-negative margin */
-  margin-left: 0;  /* הסרת ה-negative margin */
+  padding: var(--fg-pad);
   border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+  border-right: none;
+  border-bottom: none;
   display: flex;
   align-items: center;
   justify-content: center;

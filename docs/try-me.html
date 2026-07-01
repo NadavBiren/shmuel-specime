@@ -88,6 +88,13 @@
       <!-- ② + ③ משקל + הגדרות טיפוגרפיה ──────── -->
       <div class="tp-section">
 
+        <!-- Text content presets -->
+        <div class="weight-presets-group" id="text-presets-group">
+          <button class="weight-preset-btn is-active" type="button" data-text-preset="paragraph">פסקה</button>
+          <button class="weight-preset-btn" type="button" data-text-preset="line">שורה</button>
+          <button class="weight-preset-btn" type="button" data-text-preset="word">מילה</button>
+        </div>
+
         <!-- Weight presets -->
         <div class="weight-presets-group">
           <button class="weight-preset-btn" type="button" data-weight="500">רגיל</button>
@@ -107,9 +114,9 @@
 
         <div class="ctrl-group">
           <label class="ctrl-label" for="size-range">גודל</label>
-          <input class="ctrl-range" id="size-range" type="range" min="50" max="400" step="1" value="130">
+          <input class="ctrl-range" id="size-range" type="range" min="50" max="600" step="1" value="130">
           <div class="slider-val-wrapper">
-            <input type="number" class="ctrl-out-input" id="size-out" min="50" max="400" step="1" value="130">
+            <input type="number" class="ctrl-out-input" id="size-out" min="50" max="600" step="1" value="130">
             <span class="slider-unit">px</span>
             <div class="slider-reload-icon" data-target="tp-size"></div>
           </div>
@@ -117,9 +124,9 @@
 
         <div class="ctrl-group">
           <label class="ctrl-label" for="ls-range">ריווח</label>
-          <input class="ctrl-range" id="ls-range" type="range" min="-0.1" max="0.5" step="0.01" value="0">
+          <input class="ctrl-range" id="ls-range" type="range" min="-0.020" max="0.050" step="0.001" value="0">
           <div class="slider-val-wrapper">
-            <input type="number" class="ctrl-out-input" id="ls-out" min="-0.1" max="0.5" step="0.01" value="0">
+            <input type="text" inputmode="decimal" class="ctrl-out-input" id="ls-out" value="0.000">
             <span class="slider-unit">em</span>
             <div class="slider-reload-icon" data-target="tp-ls"></div>
           </div>
@@ -127,9 +134,9 @@
 
         <div class="ctrl-group">
           <label class="ctrl-label" for="lh-range">שורות</label>
-          <input class="ctrl-range" id="lh-range" type="range" min="0.7" max="2.5" step="0.05" value="0.8">
+          <input class="ctrl-range" id="lh-range" type="range" min="0.7" max="1" step="0.01" value="0.8">
           <div class="slider-val-wrapper">
-            <input type="number" class="ctrl-out-input" id="lh-out" min="0.7" max="2.5" step="0.05" value="0.8">
+            <input type="number" class="ctrl-out-input" id="lh-out" min="0.7" max="1" step="0.01" value="0.8">
             <span class="slider-unit">em</span>
             <div class="slider-reload-icon" data-target="tp-lh"></div>
           </div>
@@ -152,6 +159,7 @@
             <input type="text" id="tp-text-hex" class="tp-hex-input"
                    value="#94ff94" placeholder="#000000" maxlength="7" dir="ltr">
           </label>
+          <button id="tp-color-swap" class="tp-color-swap" type="button" aria-label="Swap Colors" title="החלף צבעים">▶◀</button>
           <label class="tp-color-group">
             <span class="tp-label">רקע</span>
             <input type="color" id="tp-bg-color"

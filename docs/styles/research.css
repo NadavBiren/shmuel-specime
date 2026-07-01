@@ -1803,7 +1803,17 @@ body.light-theme .caption-hover__overlay {
   gap: 0;
   padding-right: 0 !important;
   padding-left: 0 !important;
-  border-bottom: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+}
+
+.features-grid-section::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: calc(100% - 2.5vw);
+  height: 1px;
+  background-color: color-mix(in srgb, currentColor 14%, transparent);
+  pointer-events: none;
 }
 
 /* Right border via ::after so it doesn't eat into the content area.

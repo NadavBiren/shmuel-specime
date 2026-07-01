@@ -626,6 +626,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFloatingWeights();
   initFingersAnimation();
   initCacaoCeremonyAnimation();
+  initMiniTryMe();
 });
 
 // ── Fingers animation component ──────────────────────
@@ -773,4 +774,39 @@ function initCacaoCeremonyAnimation(root = document) {
   window.addEventListener("resize", requestUpdate);
 
   updateAnimation();
+}
+
+
+/* ── MINI TRY-ME ───────────────────────────────────────────────
+─────────────────────────────────────────────────────────────── */
+function initMiniTryMe() {
+  const text  = document.getElementById('miniTrymeText');
+  const wghtR = document.getElementById('mtr-wght');
+  const sizeR = document.getElementById('mtr-size');
+  const lsR   = document.getElementById('mtr-ls');
+  const wsR   = document.getElementById('mtr-ws');
+  if (!text || !wghtR || !sizeR || !lsR || !wsR) return;
+
+  const wghtOut = document.getElementById('mtr-wght-out');
+  const sizeOut = document.getElementById('mtr-size-out');
+  const lsOut   = document.getElementById('mtr-ls-out');
+  const wsOut   = document.getElementById('mtr-ws-out');
+
+  function apply() {
+    const wght = parseInt(wghtR.value, 10);
+    const size = parseInt(sizeR.value, 10);
+    const ls   = parseFloat(lsR.value);
+    const ws   = parseFloat(wsR.value);
+    text.style.fontVariationSettings = `'wght' ${wght}`;
+    text.style.fontSize              = size + 'px';
+    text.style.letterSpacing         = ls + 'em';
+    text.style.wordSpacing           = ws + 'em';
+    if (wghtOut) wghtOut.value = wght;
+    if (sizeOut) sizeOut.value = size;
+    if (lsOut)   lsOut.value  = ls.toFixed(3);
+    if (wsOut)   wsOut.value  = ws.toFixed(2);
+  }
+
+  [wghtR, sizeR, lsR, wsR].forEach(r => r.addEventListener('input', apply));
+  apply();
 }

@@ -639,107 +639,91 @@ function initSsCycle() {
   const cell = document.getElementById('fg-ss-cycle');
   if (!cell) return;
 
-  const ITEMS = [
-    { label: '',     feature: 'normal' },
-    { label: 'ss03', feature: '"ss03" 1' },
-    { label: 'ss04', feature: '"ss04" 1' },
-    { label: 'ss05', feature: '"ss05" 1' },
+  const slides = {
+    a: document.getElementById('fg-ss-a'),
+    b: document.getElementById('fg-ss-b')
+  };
+  const labelOverlay = document.getElementById('fg-ss-label-overlay');
+  if (!slides.a || !slides.b) return;
+
+  // Array updated: removed ss01, and set empty label for the regular/normal state
+  const features = [
+    { tag: 'normal', label: '' },
+    { tag: 'ss02', label: 'ss02' },
+    { tag: 'ss03', label: 'ss03' },
+    { tag: 'ss04', label: 'ss04' },
+    { tag: 'ss05', label: 'ss05' },
+    { tag: 'onum', label: '' }
   ];
 
-  const DISPLAY_MS  = 1500;
-  const TRANSIT_MS  = 1000;
-  const EASING      = 'cubic-bezier(0.4, 0, 0.2, 1)';
+  const DISPLAY_MS = 1500;
+  let intervalId = null;
+  let timeoutId = null;
+  let currentIndex = 0;
+  let isHovered = false;
 
-  let currentIdx = 0;
-
-  const slideA = document.getElementById('fg-ss-a');
-  const slideB = document.getElementById('fg-ss-b');
-  if (!slideA || !slideB) return;
-
-  const labelOverlay = document.getElementById('fg-ss-label-overlay');
-
-  function applyItem(slide, item) {
-    slide.querySelector('.fg-ss-number').style.fontFeatureSettings = item.feature;
+  function updateSlide(slideEl, index) {
+    if (!slideEl) return;
+    const feat = features[index];
+    if (feat.tag === 'normal') {
+      slideEl.style.fontFeatureSettings = 'normal';
+    } else {
+      slideEl.style.fontFeatureSettings = `"${feat.tag}" 1`;
+    }
   }
 
-  function setRole(frontEl, backEl) {
-    frontEl.classList.remove('fg-ss-slide--back');
-    backEl.classList.add('fg-ss-slide--back');
-  }
+  function tick() {
+    if (!isHovered) return;
 
-  function snap(el, y) {
-    el.style.transition = 'none';
-    el.style.transform  = `translateY(${y})`;
-  }
+    const isCurrentlySwapped = cell.classList.contains('is-swapped');
+    const nextSlideEl = isCurrentlySwapped ? slides.a : slides.b;
 
-  function slide(el, y) {
-    el.style.transition = `transform ${TRANSIT_MS}ms ${EASING}`;
-    el.style.transform  = `translateY(${y})`;
-  }
+    currentIndex = (currentIndex + 1) % features.length;
+    updateSlide(nextSlideEl, currentIndex);
 
-  applyItem(slideA, ITEMS[0]);
-  snap(slideA, '0%');
-  applyItem(slideB, ITEMS[1]);
-  snap(slideB, '110%');
-
-  let cur = slideA;
-  let nxt = slideB;
-  setRole(cur, nxt);
-
-  function advance() {
-    const nextIdx  = (currentIdx + 1) % ITEMS.length;
-    const nextItem = ITEMS[nextIdx];
-    applyItem(nxt, nextItem);
+    cell.classList.toggle('is-swapped');
 
     if (labelOverlay) {
-      labelOverlay.textContent = nextItem.label;
-      labelOverlay.classList.toggle('is-visible', !!nextItem.label);
+      labelOverlay.textContent = features[currentIndex].label;
     }
-
-    snap(nxt, '110%');
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        slide(cur, '-110%');
-        slide(nxt, '0%');
-      });
-    });
-
-    setTimeout(() => {
-      snap(cur, '110%');
-      [cur, nxt] = [nxt, cur];
-      setRole(cur, nxt);
-      currentIdx = nextIdx;
-    }, TRANSIT_MS + 80);
   }
 
-  let cycleTimer = null;
+  cell.addEventListener('mouseenter', () => {
+    if (isHovered) return;
+    isHovered = true;
 
-  function startCycle() {
-    if (cycleTimer) return;
-    cycleTimer = setTimeout(function tick() {
-      advance();
-      cycleTimer = setTimeout(tick, DISPLAY_MS + TRANSIT_MS);
-    }, 500);
-  }
+    // Start instantly on the standard regular text with NO label
+    currentIndex = 0;
+    updateSlide(slides.a, 0);
+    cell.classList.remove('is-swapped');
 
-  function stopCycle() {
-    clearTimeout(cycleTimer);
-    cycleTimer = null;
-    snap(cur, '0%');
-    snap(nxt, '110%');
-    setRole(cur, nxt);
-    currentIdx = 0;
-    applyItem(cur, ITEMS[0]);
-    applyItem(nxt, ITEMS[1]);
     if (labelOverlay) {
       labelOverlay.textContent = '';
+      labelOverlay.classList.add('is-visible');
+    }
+
+    // Freeze on the regular text for exactly 1 second (1000ms), then begin cycling
+    timeoutId = setTimeout(() => {
+      if (!isHovered) return;
+      tick(); // First step directly to ss02
+      intervalId = setInterval(tick, DISPLAY_MS);
+    }, 1000);
+  });
+
+  cell.addEventListener('mouseleave', () => {
+    isHovered = false;
+    clearTimeout(timeoutId);
+    clearInterval(intervalId);
+    timeoutId = null;
+    intervalId = null;
+
+    cell.classList.remove('is-swapped');
+    if (labelOverlay) {
       labelOverlay.classList.remove('is-visible');
     }
-  }
-
-  cell.addEventListener('mouseenter', startCycle);
-  cell.addEventListener('mouseleave', stopCycle);
+    slides.a.style.fontFeatureSettings = 'normal';
+    slides.b.style.fontFeatureSettings = 'normal';
+  });
 }
 
 
